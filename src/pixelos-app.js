@@ -28,6 +28,15 @@ const HOME_SCREENSHOTS = [
   }
 ];
 
+const SIDE_SHAPES = [
+  { shape: 'shape-a', tilt: '-6deg' },
+  { shape: 'shape-b', tilt: '4deg' },
+  { shape: 'shape-c', tilt: '-3deg' },
+  { shape: 'shape-d', tilt: '5deg' },
+  { shape: 'shape-e', tilt: '-5deg' },
+  { shape: 'shape-f', tilt: '3deg' }
+];
+
 const FLASH_STEPS = [
   {
     title: 'Reboot to bootloader',
@@ -114,6 +123,8 @@ class PixelosApp extends LitElement {
 
       --motion-standard: cubic-bezier(0.2, 0, 0, 1);
       --motion-emphasized: cubic-bezier(0.2, 0, 0, 1);
+      --side-left-shift: -90px;
+      --side-right-shift: -40px;
 
       color-scheme: dark;
       display: block;
@@ -133,6 +144,89 @@ class PixelosApp extends LitElement {
       width: min(100% - 2rem, 1100px);
       margin: 0 auto;
       padding: 1rem 0 1.8rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .side-gallery {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      width: clamp(84px, 10vw, 124px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.9;
+      overflow: hidden;
+    }
+
+    .side-gallery.left {
+      left: max(4px, calc((100vw - 1100px) / 2 - 118px));
+    }
+
+    .side-gallery.right {
+      right: max(4px, calc((100vw - 1100px) / 2 - 118px));
+    }
+
+    .side-track {
+      position: absolute;
+      left: 50%;
+      top: -240px;
+      display: grid;
+      gap: 0.7rem;
+      transform: translateX(-50%);
+      will-change: transform;
+    }
+
+    .side-gallery.left .side-track {
+      transform: translate(-50%, var(--side-left-shift));
+    }
+
+    .side-gallery.right .side-track {
+      transform: translate(-50%, var(--side-right-shift));
+    }
+
+    .side-art {
+      width: clamp(72px, 8vw, 96px);
+      height: clamp(132px, 15vw, 168px);
+      overflow: hidden;
+      --md-outlined-card-container-color: color-mix(in srgb, var(--md-sys-color-surface-container-high) 74%, transparent);
+      --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-primary) 28%, transparent);
+      --md-outlined-card-outline-width: 1px;
+      transform: rotate(var(--tile-tilt, 0deg));
+      box-shadow: 0 12px 28px rgb(0 0 0 / 24%);
+    }
+
+    .side-art img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      opacity: 0.94;
+      filter: saturate(1.08) contrast(1.03);
+    }
+
+    .side-art.shape-a {
+      --md-outlined-card-container-shape: 28px;
+    }
+
+    .side-art.shape-b {
+      --md-outlined-card-container-shape: 34px 12px 34px 12px;
+    }
+
+    .side-art.shape-c {
+      --md-outlined-card-container-shape: 40px 40px 18px 18px;
+    }
+
+    .side-art.shape-d {
+      --md-outlined-card-container-shape: 14px 36px 16px 36px;
+    }
+
+    .side-art.shape-e {
+      --md-outlined-card-container-shape: 48px 18px 48px 18px;
+    }
+
+    .side-art.shape-f {
+      --md-outlined-card-container-shape: 999px;
     }
 
     .top-bar {
@@ -751,6 +845,12 @@ class PixelosApp extends LitElement {
       }
     }
 
+    @media (max-width: 1320px) {
+      .side-gallery {
+        display: none;
+      }
+    }
+
     @media (max-width: 760px) {
       .screenshots-grid {
         grid-template-columns: 1fr;
@@ -778,17 +878,26 @@ class PixelosApp extends LitElement {
     this.copiedCommand = '';
     this.copyMessage = '';
     this.pendingInstructionsTarget = '';
+    this.scrollRaf = 0;
     this.handleHashChange = this.handleHashChange.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
   }
 
   connectedCallback() {
     super.connectedCallback();
     window.addEventListener('hashchange', this.handleHashChange);
+    window.addEventListener('scroll', this.handleScroll, { passive: true });
     this.handleHashChange();
+    this.handleScroll();
   }
 
   disconnectedCallback() {
     window.removeEventListener('hashchange', this.handleHashChange);
+    window.removeEventListener('scroll', this.handleScroll);
+    if (this.scrollRaf) {
+      cancelAnimationFrame(this.scrollRaf);
+      this.scrollRaf = 0;
+    }
     super.disconnectedCallback();
   }
 
@@ -812,6 +921,21 @@ class PixelosApp extends LitElement {
       this.route = nextRoute;
       this.motionKey += 1;
     }
+  }
+
+  handleScroll() {
+    if (this.scrollRaf) {
+      return;
+    }
+
+    this.scrollRaf = requestAnimationFrame(() => {
+      this.scrollRaf = 0;
+      const offset = window.scrollY || 0;
+      const leftShift = ((offset * 0.18) % 320) - 160;
+      const rightShift = -(((offset * 0.14) % 320) - 120);
+      this.style.setProperty('--side-left-shift', `${leftShift}px`);
+      this.style.setProperty('--side-right-shift', `${rightShift}px`);
+    });
   }
 
   navigate(route) {
@@ -888,6 +1012,25 @@ class PixelosApp extends LitElement {
     } catch {
       this.copyMessage = 'Copy failed';
     }
+  }
+
+  renderSideGallery(side = 'left') {
+    return html`
+      <aside class="side-gallery ${side}" aria-hidden="true">
+        <div class="side-track">
+          ${Array.from({ length: 10 }).map((_, index) => {
+            const style = SIDE_SHAPES[index % SIDE_SHAPES.length];
+            return html`
+              <md-outlined-card
+                class="side-art ${style.shape}"
+                style=${`--tile-tilt: ${style.tilt};`}>
+                <img src="/side-photo.png" alt="" loading="lazy" decoding="async" />
+              </md-outlined-card>
+            `;
+          })}
+        </div>
+      </aside>
+    `;
   }
 
   renderTopBar() {
@@ -1108,6 +1251,8 @@ class PixelosApp extends LitElement {
 
   render() {
     return html`
+      ${this.renderSideGallery('left')}
+      ${this.renderSideGallery('right')}
         <div class="shell">
         ${this.renderTopBar()}
         ${keyed(this.motionKey, this.route === 'instructions' ? this.renderInstructionsView() : this.renderHomeView())}
