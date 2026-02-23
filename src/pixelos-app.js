@@ -23,9 +23,17 @@ const FLASH_STEPS = [
     command: 'fastboot flash vendor_boot vendor_boot.img'
   },
   {
+    title: 'Reboot device',
+    command: 'fastboot reboot'
+  },
+  {
+    title: 'Boot into recovery manually',
+    note: 'Do not use adb reboot recovery. While the phone is turning on, keep tapping only the Volume Up button to enter recovery.'
+  },
+  {
     title: 'Sideload ROM from recovery',
     command: 'adb sideload PixelOS_xaga.zip',
-    note: 'Use hardware keys to enter recovery. Never run fastboot reboot recovery on xaga.'
+    note: 'In recovery, choose Apply update from ADB, then run this command.'
   },
   {
     title: 'Boot system',
@@ -682,19 +690,21 @@ class PixelosApp extends LitElement {
                   <li>
                     <h3>${step.title}</h3>
                     ${step.note ? html`<p>${step.note}</p>` : ''}
-                    <div class="command-row">
-                      <md-outlined-text-field
-                        class="command-field"
-                        label="Command"
-                        readonly
-                        .value=${step.command}></md-outlined-text-field>
-                      <md-icon-button
-                        class="copy"
-                        aria-label="Copy command"
-                        @click=${() => this.copyCommand(step.command)}>
-                        <md-icon>${this.copiedCommand === step.command ? 'check' : 'content_copy'}</md-icon>
-                      </md-icon-button>
-                    </div>
+                    ${step.command ? html`
+                      <div class="command-row">
+                        <md-outlined-text-field
+                          class="command-field"
+                          label="Command"
+                          readonly
+                          .value=${step.command}></md-outlined-text-field>
+                        <md-icon-button
+                          class="copy"
+                          aria-label="Copy command"
+                          @click=${() => this.copyCommand(step.command)}>
+                          <md-icon>${this.copiedCommand === step.command ? 'check' : 'content_copy'}</md-icon>
+                        </md-icon-button>
+                      </div>
+                    ` : ''}
                   </li>
                 `)}
               </ol>
