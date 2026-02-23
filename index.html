@@ -8,6 +8,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <script type="importmap">
+    {
+      "imports": {
+        "@material/web/": "https://esm.run/@material/web/"
+      }
+    }
+  </script>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -23,14 +31,14 @@
 
   <main class="container hero-page">
     <section class="hero-card">
-      <p class="tag">Official Device Hub</p>
+      <md-assist-chip label="Official Device Hub"></md-assist-chip>
       <h1>PixelOS for Xaga</h1>
       <p class="lead">
         Everything in one place: flashing guide, required images, and a spoofing helper section for post-install setup.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="instructions.html">Open Instructions</a>
-        <a class="btn btn-outline" href="instructions.html#downloads">Go to Downloads</a>
+        <md-filled-button href="instructions.html">Open Instructions</md-filled-button>
+        <md-outlined-button href="instructions.html#downloads">Go to Downloads</md-outlined-button>
       </div>
     </section>
 
@@ -54,5 +62,7 @@
     <p>PixelOS Xaga community website</p>
     <a href="https://github.com/Pixelos-xaga/website" target="_blank" rel="noopener noreferrer">GitHub</a>
   </footer>
+
+  <script type="module" src="material.js"></script>
 </body>
 </html>

@@ -8,6 +8,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <script type="importmap">
+    {
+      "imports": {
+        "@material/web/": "https://esm.run/@material/web/"
+      }
+    }
+  </script>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -36,18 +44,27 @@
 
         <h2>Downloads</h2>
         <div class="download-grid">
-          <a class="download-btn" href="https://pixelos.net/download/xaga" target="_blank" rel="noopener noreferrer">
-            <span>ROM Zip</span>
+          <div class="download-btn">
+            <md-filled-button href="https://pixelos.net/download/xaga" target="_blank">
+              <md-icon slot="icon">download</md-icon>
+              ROM Zip
+            </md-filled-button>
             <small>PixelOS_xaga.zip</small>
-          </a>
-          <a class="download-btn" href="https://github.com/Pixelos-xaga" target="_blank" rel="noopener noreferrer">
-            <span>boot.img</span>
+          </div>
+          <div class="download-btn">
+            <md-filled-button href="https://github.com/Pixelos-xaga" target="_blank">
+              <md-icon slot="icon">download</md-icon>
+              boot.img
+            </md-filled-button>
             <small>Kernel boot image</small>
-          </a>
-          <a class="download-btn" href="https://github.com/Pixelos-xaga" target="_blank" rel="noopener noreferrer">
-            <span>vendor_boot.img</span>
+          </div>
+          <div class="download-btn">
+            <md-filled-button href="https://github.com/Pixelos-xaga" target="_blank">
+              <md-icon slot="icon">download</md-icon>
+              vendor_boot.img
+            </md-filled-button>
             <small>Vendor boot image</small>
-          </a>
+          </div>
         </div>
       </article>
 
@@ -58,21 +75,21 @@
             <h3>Reboot to bootloader</h3>
             <div class="code-box">
               <code>adb reboot bootloader</code>
-              <button class="copy-btn" data-copy="adb reboot bootloader">Copy</button>
+              <md-filled-tonal-button class="copy-btn" data-copy="adb reboot bootloader">Copy</md-filled-tonal-button>
             </div>
           </li>
           <li>
             <h3>Flash boot image</h3>
             <div class="code-box">
               <code>fastboot flash boot boot.img</code>
-              <button class="copy-btn" data-copy="fastboot flash boot boot.img">Copy</button>
+              <md-filled-tonal-button class="copy-btn" data-copy="fastboot flash boot boot.img">Copy</md-filled-tonal-button>
             </div>
           </li>
           <li>
             <h3>Flash vendor boot image</h3>
             <div class="code-box">
               <code>fastboot flash vendor_boot vendor_boot.img</code>
-              <button class="copy-btn" data-copy="fastboot flash vendor_boot vendor_boot.img">Copy</button>
+              <md-filled-tonal-button class="copy-btn" data-copy="fastboot flash vendor_boot vendor_boot.img">Copy</md-filled-tonal-button>
             </div>
           </li>
           <li>
@@ -80,14 +97,14 @@
             <p>Do not use fastboot reboot recovery on xaga. Enter recovery using the safe key combo from the bootloader menu.</p>
             <div class="code-box">
               <code>adb sideload PixelOS_xaga.zip</code>
-              <button class="copy-btn" data-copy="adb sideload PixelOS_xaga.zip">Copy</button>
+              <md-filled-tonal-button class="copy-btn" data-copy="adb sideload PixelOS_xaga.zip">Copy</md-filled-tonal-button>
             </div>
           </li>
           <li>
             <h3>Boot system</h3>
             <div class="code-box">
               <code>adb reboot</code>
-              <button class="copy-btn" data-copy="adb reboot">Copy</button>
+              <md-filled-tonal-button class="copy-btn" data-copy="adb reboot">Copy</md-filled-tonal-button>
             </div>
           </li>
         </ol>
@@ -119,6 +136,7 @@
     <a href="https://github.com/Pixelos-xaga/website" target="_blank" rel="noopener noreferrer">GitHub</a>
   </footer>
 
+  <script type="module" src="material.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

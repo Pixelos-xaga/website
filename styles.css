@@ -37,6 +37,44 @@ body {
   overflow-x: hidden;
 }
 
+md-filled-button,
+md-outlined-button,
+md-filled-tonal-button,
+md-assist-chip {
+  --md-sys-typescale-label-large-font: var(--vp-font-family-base);
+}
+
+md-filled-button {
+  --md-filled-button-container-color: var(--vp-c-brand-1);
+  --md-filled-button-label-text-color: #061320;
+  --md-filled-button-container-height: 40px;
+  --md-filled-button-container-shape: 999px;
+}
+
+md-outlined-button {
+  --md-outlined-button-outline-color: var(--vp-c-divider-light);
+  --md-outlined-button-label-text-color: var(--vp-c-text-1);
+  --md-outlined-button-container-height: 40px;
+  --md-outlined-button-container-shape: 999px;
+}
+
+md-filled-tonal-button {
+  --md-filled-tonal-button-container-color: var(--vp-c-bg-mute);
+  --md-filled-tonal-button-label-text-color: var(--vp-c-text-1);
+  --md-filled-tonal-button-container-height: 34px;
+  --md-filled-tonal-button-container-shape: 999px;
+}
+
+md-assist-chip {
+  --md-assist-chip-container-shape: 999px;
+  --md-assist-chip-label-text-color: var(--vp-c-brand-2);
+  --md-assist-chip-outline-color: var(--vp-c-divider-light);
+}
+
+md-icon {
+  font-family: "Material Symbols Outlined";
+}
+
 .bg-noise,
 .bg-glow {
   position: fixed;
@@ -114,19 +152,6 @@ body {
   padding: clamp(1.2rem, 3vw, 2rem);
 }
 
-.tag {
-  display: inline-flex;
-  margin: 0;
-  padding: 0.25rem 0.7rem;
-  border: 1px solid var(--vp-c-divider-light);
-  border-radius: 999px;
-  color: var(--vp-c-brand-2);
-  font-size: 0.82rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
 h1,
 h2,
 h3 {
@@ -158,37 +183,6 @@ h3 {
   display: flex;
   gap: 0.7rem;
   flex-wrap: wrap;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  border-radius: 999px;
-  padding: 0.6rem 1.08rem;
-  font-weight: 700;
-  border: 1px solid transparent;
-  transition: background-color 120ms ease, border-color 120ms ease;
-}
-
-.btn-primary {
-  color: #08131b;
-  background: var(--vp-c-brand-1);
-}
-
-.btn-primary:hover {
-  background: var(--vp-c-brand-2);
-}
-
-.btn-outline {
-  color: var(--vp-c-text-1);
-  border-color: var(--vp-c-divider-light);
-  background: var(--vp-c-bg-mute);
-}
-
-.btn-outline:hover {
-  border-color: var(--vp-c-brand-2);
 }
 
 .quick-grid {
@@ -244,8 +238,6 @@ h3 {
 .download-btn {
   display: grid;
   gap: 0.2rem;
-  text-decoration: none;
-  color: var(--vp-c-text-1);
   border: 1px solid var(--vp-c-divider-light);
   border-radius: 10px;
   padding: 0.75rem;
@@ -296,19 +288,11 @@ code {
 }
 
 .copy-btn {
-  border: 1px solid var(--vp-c-divider-light);
-  border-radius: 999px;
-  background: var(--vp-c-bg-mute);
-  color: var(--vp-c-text-1);
-  font-weight: 700;
-  font-size: 0.8rem;
-  padding: 0.34rem 0.78rem;
-  cursor: pointer;
+  flex-shrink: 0;
 }
 
-.copy-btn:hover {
-  border-color: var(--vp-c-brand-2);
-  color: var(--vp-c-brand-2);
+.download-btn md-filled-button {
+  width: 100%;
 }
 
 .spoof-card ul {
