@@ -139,9 +139,10 @@ class PixelosApp extends LitElement {
       text-decoration: none;
     }
 
-    .brand .material-symbols-outlined {
-      font-size: 20px;
-      color: var(--md-sys-color-primary);
+    .brand-logo {
+      width: 20px;
+      height: 20px;
+      display: block;
     }
 
     md-tabs {
@@ -826,7 +827,7 @@ class PixelosApp extends LitElement {
           event.preventDefault();
           this.navigate('home');
         }}>
-          <span class="material-symbols-outlined">android</span>
+          <img class="brand-logo" src="/android-logo.svg" alt="" aria-hidden="true" />
           <span>PixelOS Xaga</span>
         </a>
 
