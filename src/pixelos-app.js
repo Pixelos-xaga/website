@@ -593,6 +593,28 @@ class PixelosApp extends LitElement {
       --md-ref-typeface-plain: var(--font-plain);
     }
 
+    md-icon {
+      font-family: "Material Symbols Outlined";
+      font-variation-settings:
+        "FILL" var(--m3-icon-fill, 0),
+        "wght" var(--m3-icon-weight, 500),
+        "GRAD" var(--m3-icon-grad, 0),
+        "opsz" var(--m3-icon-opsz, 24);
+      font-size: var(--m3-icon-size, 24px);
+      line-height: 1;
+    }
+
+    md-primary-tab md-icon {
+      --m3-icon-fill: 0;
+      --m3-icon-weight: 500;
+      --m3-icon-size: 22px;
+    }
+
+    md-primary-tab[active] md-icon {
+      --m3-icon-fill: 1;
+      --m3-icon-weight: 600;
+    }
+
     md-filled-button {
       --md-filled-button-container-height: 40px;
       --md-filled-button-container-shape: 999px;
@@ -657,6 +679,8 @@ class PixelosApp extends LitElement {
     }
 
     .warning-content md-icon {
+      --m3-icon-fill: 1;
+      --m3-icon-weight: 600;
       color: var(--md-sys-color-warning);
     }
 
@@ -826,8 +850,11 @@ class PixelosApp extends LitElement {
       --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-outline) 26%, transparent);
     }
 
-    .spoof-list .material-symbols-outlined {
+    .spoof-icon {
       color: var(--md-sys-color-primary);
+      --m3-icon-fill: 1;
+      --m3-icon-weight: 500;
+      --m3-icon-size: 20px;
       font-size: 20px;
       margin-top: 1px;
     }
@@ -970,13 +997,6 @@ class PixelosApp extends LitElement {
       --md-dialog-headline-color: var(--md-sys-color-on-surface);
       --md-dialog-supporting-text-color: var(--md-sys-color-on-surface-variant);
       --md-dialog-container-shape: 20px;
-    }
-
-    .material-symbols-outlined {
-      font-family: "Material Symbols Outlined";
-      font-weight: normal;
-      font-style: normal;
-      line-height: 1;
     }
 
     @keyframes shared-axis-in {
@@ -1429,7 +1449,7 @@ class PixelosApp extends LitElement {
               <ul class="spoof-list">
                 <li>
                   <md-outlined-card class="spoof-card">
-                    <span class="material-symbols-outlined">check_circle</span>
+                    <md-icon class="spoof-icon">check_circle</md-icon>
                     <div>
                       <strong>Finish first boot first</strong>
                       <p>Complete setup and sign in before spoofing work.</p>
@@ -1438,7 +1458,7 @@ class PixelosApp extends LitElement {
                 </li>
                 <li>
                   <md-outlined-card class="spoof-card">
-                    <span class="material-symbols-outlined">extension</span>
+                    <md-icon class="spoof-icon">extension</md-icon>
                     <div>
                       <strong>Add keybox or pif.json</strong>
                       <p>After finish boot setup, add keybox or pif.json through Developer options.</p>
@@ -1447,7 +1467,7 @@ class PixelosApp extends LitElement {
                 </li>
                 <li>
                   <md-outlined-card class="spoof-card">
-                    <span class="material-symbols-outlined">delete_sweep</span>
+                    <md-icon class="spoof-icon">delete_sweep</md-icon>
                     <div>
                       <strong>Clear Google app data</strong>
                       <p>Clear Play Store and Play Services after fingerprint changes.</p>
@@ -1456,7 +1476,7 @@ class PixelosApp extends LitElement {
                 </li>
                 <li>
                   <md-outlined-card class="spoof-card">
-                    <span class="material-symbols-outlined">verified</span>
+                    <md-icon class="spoof-icon">verified</md-icon>
                     <div>
                       <strong>Reboot and verify</strong>
                       <p>Reboot once and verify certification and login status.</p>
