@@ -5,7 +5,7 @@ const DOWNLOADS = [
   {
     name: 'Download PixelOS Xaga ROM',
     note: 'SourceForge project files',
-    href: 'https://sourceforge.net/projects/xagaproject/files/Pixelos-xaga/'
+    href: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
   }
 ];
 
