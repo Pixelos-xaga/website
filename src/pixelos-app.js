@@ -991,7 +991,7 @@ class PixelosApp extends LitElement {
         </footer>
 
         <p class="disclaimer">
-          This is not an official PixelOS website. Visit
+          This is not directly affiliated with
           <a href="https://pixelos.net/" target="_blank" rel="noopener noreferrer">official PixelOS</a>.
         </p>
 
