@@ -68,6 +68,10 @@ class PixelosApp extends LitElement {
       --md-sys-color-on-secondary-container: #e0f7ed;
       --md-sys-color-tertiary: #b4e3e7;
       --md-sys-color-on-tertiary: #07383c;
+      --md-sys-color-warning: #ffcf5a;
+      --md-sys-color-on-warning: #3f2e00;
+      --md-sys-color-warning-container: #5a4300;
+      --md-sys-color-on-warning-container: #ffe6a6;
       --md-sys-color-background: #11201c;
       --md-sys-color-on-background: #e5efe9;
       --md-sys-color-surface: #14231f;
@@ -287,14 +291,18 @@ class PixelosApp extends LitElement {
       gap: 0.55rem;
       border-radius: 16px;
       padding: 0.78rem 0.96rem;
-      color: var(--md-sys-color-error);
-      background: color-mix(in srgb, var(--md-sys-color-error-container) 36%, transparent);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-error) 55%, transparent);
+      color: var(--md-sys-color-on-warning-container);
+      background: color-mix(in srgb, var(--md-sys-color-warning-container) 52%, transparent);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-warning) 48%, transparent);
     }
 
     .warning p {
       margin: 0;
-      color: var(--md-sys-color-error);
+      color: var(--md-sys-color-on-warning-container);
+    }
+
+    .warning md-icon {
+      color: var(--md-sys-color-warning);
     }
 
     .tools {
