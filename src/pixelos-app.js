@@ -444,10 +444,36 @@ class PixelosApp extends LitElement {
       font-size: 0.95rem;
     }
 
-    .footer a {
+    .social-links {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .social-link {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       color: var(--md-sys-color-primary);
       text-decoration: none;
-      font-weight: 500;
+      background: var(--md-sys-color-surface-container-high);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 14%, transparent);
+      transition: transform 160ms var(--motion-standard), box-shadow 160ms var(--motion-standard), color 160ms var(--motion-standard);
+    }
+
+    .social-link:hover {
+      transform: translateY(-1px);
+      color: var(--md-sys-color-on-primary-container);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent);
+    }
+
+    .social-link svg {
+      width: 19px;
+      height: 19px;
+      stroke: currentColor;
     }
 
     .sr-only {
@@ -780,7 +806,18 @@ class PixelosApp extends LitElement {
 
         <footer class="footer">
           <span>PixelOS Xaga community website</span>
-          <a href="https://github.com/Pixelos-xaga/website" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <div class="social-links">
+            <a class="social-link" href="https://github.com/Pixelos-xaga/" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+              </svg>
+            </a>
+            <a class="social-link" href="https://t.me/XAGASupport" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" />
+              </svg>
+            </a>
+          </div>
         </footer>
 
         <md-dialog id="aboutDialog">
