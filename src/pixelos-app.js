@@ -58,7 +58,7 @@ const FLASH_STEPS = [
     title: 'Boot into recovery manually',
     guidance: {
       avoid: 'adb reboot recovery',
-      action: 'While the phone is turning on, keep tapping only the Volume Up button to enter recovery.'
+      action: 'While the phone is turning on, keep pressing only the Volume Up button to enter recovery.'
     }
   },
   {
