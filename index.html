@@ -22,39 +22,63 @@
   <div class="bg-noise"></div>
   <div class="bg-glow"></div>
 
-  <header class="nav container">
-    <a class="brand" href="index.html">PixelOS Xaga</a>
-    <nav>
-      <a href="instructions.html">Instructions</a>
-    </nav>
+  <header class="top-app-bar container">
+    <a class="brand" href="index.html">
+      <span class="brand-icon material-symbols-outlined">android</span>
+      <span>PixelOS Xaga</span>
+    </a>
+    <md-tabs class="nav-tabs" aria-label="Primary navigation">
+      <md-primary-tab active data-href="index.html">
+        <md-icon slot="icon">home</md-icon>
+        Home
+      </md-primary-tab>
+      <md-primary-tab data-href="instructions.html">
+        <md-icon slot="icon">terminal</md-icon>
+        Instructions
+      </md-primary-tab>
+    </md-tabs>
   </header>
 
   <main class="container hero-page">
-    <section class="hero-card">
+    <section class="m3-panel hero-panel">
       <md-assist-chip label="Official Device Hub"></md-assist-chip>
       <h1>PixelOS for Xaga</h1>
       <p class="lead">
-        Everything in one place: flashing guide, required images, and a spoofing helper section for post-install setup.
+        A Material 3 styled hub for ROM install instructions, downloads, and post-install spoofing notes.
       </p>
       <div class="hero-actions">
-        <md-filled-button href="instructions.html">Open Instructions</md-filled-button>
-        <md-outlined-button href="instructions.html#downloads">Go to Downloads</md-outlined-button>
+        <md-filled-button href="instructions.html">
+          <md-icon slot="icon">rocket_launch</md-icon>
+          Open Instructions
+        </md-filled-button>
+        <md-outlined-button href="instructions.html#downloads">
+          <md-icon slot="icon">download</md-icon>
+          Go to Downloads
+        </md-outlined-button>
       </div>
     </section>
 
-    <section class="quick-grid">
-      <article class="card">
-        <h2>Install Guide</h2>
-        <p>Step-by-step ROM flashing process with command copy buttons.</p>
-      </article>
-      <article class="card">
-        <h2>Download Area</h2>
-        <p>Dedicated links for ROM zip, boot image, and vendor_boot image.</p>
-      </article>
-      <article class="card">
-        <h2>Spoofing Notes</h2>
-        <p>A side panel where you can publish a short spoofing walkthrough.</p>
-      </article>
+    <section class="m3-panel">
+      <h2>What You Get</h2>
+      <md-list class="panel-list">
+        <md-list-item>
+          <md-icon slot="start">terminal</md-icon>
+          <div slot="headline">Install Guide</div>
+          <div slot="supporting-text">Step-by-step flashing flow with copyable commands.</div>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-list-item>
+          <md-icon slot="start">download</md-icon>
+          <div slot="headline">Download Section</div>
+          <div slot="supporting-text">Direct slots for ROM zip, boot image, and vendor_boot image.</div>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-list-item>
+          <md-icon slot="start">shield</md-icon>
+          <div slot="headline">Spoofing Help</div>
+          <div slot="supporting-text">A side guide area for your spoofing setup notes.</div>
+        </md-list-item>
+      </md-list>
     </section>
   </main>
 
@@ -64,5 +88,6 @@
   </footer>
 
   <script type="module" src="material.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

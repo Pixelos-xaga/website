@@ -1,22 +1,44 @@
 const copyButtons = document.querySelectorAll('.copy-btn');
 
 copyButtons.forEach((button) => {
-  const defaultLabel = button.textContent.trim() || 'Copy';
+  const icon = button.querySelector('md-icon');
+  const defaultIcon = icon?.textContent.trim() || 'content_copy';
 
   button.addEventListener('click', async () => {
     const command = button.dataset.copy || '';
 
     try {
       await navigator.clipboard.writeText(command);
-      button.textContent = 'Copied';
+      if (icon) {
+        icon.textContent = 'check';
+      }
+      button.setAttribute('aria-label', 'Copied');
       setTimeout(() => {
-        button.textContent = defaultLabel;
+        if (icon) {
+          icon.textContent = defaultIcon;
+        }
       }, 1100);
     } catch {
-      button.textContent = 'Failed';
+      if (icon) {
+        icon.textContent = 'error';
+      }
+      button.setAttribute('aria-label', 'Copy failed');
       setTimeout(() => {
-        button.textContent = defaultLabel;
+        if (icon) {
+          icon.textContent = defaultIcon;
+        }
       }, 1100);
+    }
+  });
+});
+
+const navTabs = document.querySelectorAll('md-primary-tab[data-href]');
+
+navTabs.forEach((tab) => {
+  tab.addEventListener('click', () => {
+    const href = tab.dataset.href;
+    if (href) {
+      window.location.href = href;
     }
   });
 });

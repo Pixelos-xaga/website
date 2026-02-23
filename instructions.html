@@ -22,43 +22,51 @@
   <div class="bg-noise"></div>
   <div class="bg-glow"></div>
 
-  <header class="nav container">
-    <a class="brand" href="index.html">PixelOS Xaga</a>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="#downloads">Downloads</a>
-    </nav>
+  <header class="top-app-bar container">
+    <a class="brand" href="index.html">
+      <span class="brand-icon material-symbols-outlined">android</span>
+      <span>PixelOS Xaga</span>
+    </a>
+    <md-tabs class="nav-tabs" aria-label="Primary navigation">
+      <md-primary-tab data-href="index.html">
+        <md-icon slot="icon">home</md-icon>
+        Home
+      </md-primary-tab>
+      <md-primary-tab active data-href="instructions.html">
+        <md-icon slot="icon">terminal</md-icon>
+        Instructions
+      </md-primary-tab>
+    </md-tabs>
   </header>
 
   <main class="container page-layout">
     <section class="warning-banner">
-      <strong>Warning:</strong> Never run <code>fastboot reboot recovery</code> on xaga. It can brick your device.
+      <md-icon>warning</md-icon>
+      <p><strong>Never run</strong> <code>fastboot reboot recovery</code> on xaga. It can hard-brick the device.</p>
     </section>
 
     <section class="main-column">
-      <article class="card" id="downloads">
+      <article class="m3-panel" id="downloads">
         <h1>Flashing Instructions</h1>
-        <p class="lead">
-          Follow these steps for a clean install. Keep all files in your platform-tools folder.
-        </p>
+        <p class="lead">Keep all files in your platform-tools folder before flashing.</p>
 
         <h2>Downloads</h2>
         <div class="download-grid">
-          <div class="download-btn">
+          <div class="download-item">
             <md-filled-button href="https://pixelos.net/download/xaga" target="_blank">
               <md-icon slot="icon">download</md-icon>
               ROM Zip
             </md-filled-button>
             <small>PixelOS_xaga.zip</small>
           </div>
-          <div class="download-btn">
+          <div class="download-item">
             <md-filled-button href="https://github.com/Pixelos-xaga" target="_blank">
               <md-icon slot="icon">download</md-icon>
               boot.img
             </md-filled-button>
             <small>Kernel boot image</small>
           </div>
-          <div class="download-btn">
+          <div class="download-item">
             <md-filled-button href="https://github.com/Pixelos-xaga" target="_blank">
               <md-icon slot="icon">download</md-icon>
               vendor_boot.img
@@ -68,43 +76,53 @@
         </div>
       </article>
 
-      <article class="card" id="steps">
+      <article class="m3-panel" id="steps">
         <h2>Flash Steps</h2>
         <ol class="steps">
           <li>
             <h3>Reboot to bootloader</h3>
-            <div class="code-box">
-              <code>adb reboot bootloader</code>
-              <md-filled-tonal-button class="copy-btn" data-copy="adb reboot bootloader">Copy</md-filled-tonal-button>
+            <div class="command-row">
+              <md-outlined-text-field class="command-field" label="Command" readonly value="adb reboot bootloader"></md-outlined-text-field>
+              <md-icon-button class="copy-btn" aria-label="Copy adb reboot bootloader" data-copy="adb reboot bootloader">
+                <md-icon>content_copy</md-icon>
+              </md-icon-button>
             </div>
           </li>
           <li>
             <h3>Flash boot image</h3>
-            <div class="code-box">
-              <code>fastboot flash boot boot.img</code>
-              <md-filled-tonal-button class="copy-btn" data-copy="fastboot flash boot boot.img">Copy</md-filled-tonal-button>
+            <div class="command-row">
+              <md-outlined-text-field class="command-field" label="Command" readonly value="fastboot flash boot boot.img"></md-outlined-text-field>
+              <md-icon-button class="copy-btn" aria-label="Copy fastboot flash boot boot.img" data-copy="fastboot flash boot boot.img">
+                <md-icon>content_copy</md-icon>
+              </md-icon-button>
             </div>
           </li>
           <li>
             <h3>Flash vendor boot image</h3>
-            <div class="code-box">
-              <code>fastboot flash vendor_boot vendor_boot.img</code>
-              <md-filled-tonal-button class="copy-btn" data-copy="fastboot flash vendor_boot vendor_boot.img">Copy</md-filled-tonal-button>
+            <div class="command-row">
+              <md-outlined-text-field class="command-field" label="Command" readonly value="fastboot flash vendor_boot vendor_boot.img"></md-outlined-text-field>
+              <md-icon-button class="copy-btn" aria-label="Copy fastboot flash vendor_boot vendor_boot.img" data-copy="fastboot flash vendor_boot vendor_boot.img">
+                <md-icon>content_copy</md-icon>
+              </md-icon-button>
             </div>
           </li>
           <li>
-            <h3>Boot recovery and sideload ROM</h3>
-            <p>Do not use fastboot reboot recovery on xaga. Enter recovery using the safe key combo from the bootloader menu.</p>
-            <div class="code-box">
-              <code>adb sideload PixelOS_xaga.zip</code>
-              <md-filled-tonal-button class="copy-btn" data-copy="adb sideload PixelOS_xaga.zip">Copy</md-filled-tonal-button>
+            <h3>Enter recovery and sideload ROM</h3>
+            <p>Use the safe hardware key combo from bootloader menu. Do not use fastboot reboot recovery.</p>
+            <div class="command-row">
+              <md-outlined-text-field class="command-field" label="Command" readonly value="adb sideload PixelOS_xaga.zip"></md-outlined-text-field>
+              <md-icon-button class="copy-btn" aria-label="Copy adb sideload PixelOS_xaga.zip" data-copy="adb sideload PixelOS_xaga.zip">
+                <md-icon>content_copy</md-icon>
+              </md-icon-button>
             </div>
           </li>
           <li>
             <h3>Boot system</h3>
-            <div class="code-box">
-              <code>adb reboot</code>
-              <md-filled-tonal-button class="copy-btn" data-copy="adb reboot">Copy</md-filled-tonal-button>
+            <div class="command-row">
+              <md-outlined-text-field class="command-field" label="Command" readonly value="adb reboot"></md-outlined-text-field>
+              <md-icon-button class="copy-btn" aria-label="Copy adb reboot" data-copy="adb reboot">
+                <md-icon>content_copy</md-icon>
+              </md-icon-button>
             </div>
           </li>
         </ol>
@@ -112,21 +130,34 @@
     </section>
 
     <aside class="side-column">
-      <article class="card spoof-card">
+      <article class="m3-panel spoof-card">
         <h2>Spoofing Guide</h2>
-        <p>
-          Use this panel to share your short spoofing method with users. You can edit these points any time.
-        </p>
-        <ul>
-          <li>Complete first boot and sign in once before starting spoofing setup.</li>
-          <li>Install your required root/module stack.</li>
-          <li>Apply fingerprint or integrity fixes recommended by your maintainer.</li>
-          <li>Clear Play Store + Google Play Services data after changes.</li>
-          <li>Reboot and verify app/device certification status.</li>
-        </ul>
-        <p class="spoof-note">
-          Tip: keep this section short and update-safe. Avoid posting methods that break OTA or security.
-        </p>
+        <p>Keep this short and practical. Replace these bullets with your current method.</p>
+        <md-list class="panel-list">
+          <md-list-item>
+            <md-icon slot="start">check_circle</md-icon>
+            <div slot="headline">Finish first boot first</div>
+            <div slot="supporting-text">Complete setup and sign in one time before spoofing.</div>
+          </md-list-item>
+          <md-divider></md-divider>
+          <md-list-item>
+            <md-icon slot="start">extension</md-icon>
+            <div slot="headline">Install module stack</div>
+            <div slot="supporting-text">Install only the root and spoofing modules you actually need.</div>
+          </md-list-item>
+          <md-divider></md-divider>
+          <md-list-item>
+            <md-icon slot="start">delete_sweep</md-icon>
+            <div slot="headline">Clear Google app data</div>
+            <div slot="supporting-text">Clear Play Store and Play Services data after changing fingerprints.</div>
+          </md-list-item>
+          <md-divider></md-divider>
+          <md-list-item>
+            <md-icon slot="start">verified</md-icon>
+            <div slot="headline">Reboot and verify</div>
+            <div slot="supporting-text">Reboot once and verify certification and app login status.</div>
+          </md-list-item>
+        </md-list>
       </article>
     </aside>
   </main>
