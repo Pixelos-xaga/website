@@ -22,10 +22,10 @@ npm run preview
 
 ## Routes
 
-- Home: `/#/`
-- Instructions: `/#/instructions`
+- Home: `/`
+- Instructions: `/instructions`
 
-`instructions.html` redirects to `/#/instructions` for compatibility.
+`instructions.html` redirects to `/instructions` for compatibility.
 
 ## Deploy on Vercel
 
@@ -35,3 +35,5 @@ Use these project settings:
 - Install Command: `npm install`
 - Build Command: `npm run build`
 - Output Directory: `dist`
+
+`vercel.json` already includes a rewrite for `/instructions` to `/` so SPA routing works on direct loads.

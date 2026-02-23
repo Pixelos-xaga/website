@@ -1131,7 +1131,7 @@ class PixelosApp extends LitElement {
     this.routeLoadingTimer = 0;
     this.routeLoadingHardStopTimer = 0;
     this.routeLoadingStart = 0;
-    this.handleHashChange = this.handleHashChange.bind(this);
+    this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
     this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
   }
@@ -1139,10 +1139,10 @@ class PixelosApp extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.startRouteLoading();
-    window.addEventListener('hashchange', this.handleHashChange);
+    window.addEventListener('popstate', this.handleLocationChange);
     window.addEventListener('scroll', this.handleScroll, { passive: true });
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
-    this.handleHashChange();
+    this.handleLocationChange();
     this.handleScroll();
   }
 
@@ -1151,7 +1151,7 @@ class PixelosApp extends LitElement {
   }
 
   disconnectedCallback() {
-    window.removeEventListener('hashchange', this.handleHashChange);
+    window.removeEventListener('popstate', this.handleLocationChange);
     window.removeEventListener('scroll', this.handleScroll);
     document.removeEventListener('visibilitychange', this.handleVisibilityChange);
     if (this.scrollRaf) {
@@ -1181,9 +1181,23 @@ class PixelosApp extends LitElement {
     }
   }
 
-  handleHashChange() {
-    const raw = window.location.hash.replace(/^#\/?/, '').toLowerCase();
-    const nextRoute = raw.startsWith('instructions') ? 'instructions' : 'home';
+  getRouteFromPathname(pathname) {
+    const normalized = (pathname || '/').toLowerCase().replace(/\/+$/, '') || '/';
+    return /^\/instructions(?:\/|$)/.test(normalized) ? 'instructions' : 'home';
+  }
+
+  handleLocationChange() {
+    let nextRoute = this.getRouteFromPathname(window.location.pathname);
+
+    if (nextRoute === 'home') {
+      const legacyHash = window.location.hash.replace(/^#\/?/, '').toLowerCase();
+      if (legacyHash.startsWith('instructions')) {
+        nextRoute = 'instructions';
+        if (window.location.pathname !== '/instructions') {
+          window.history.replaceState({}, '', '/instructions');
+        }
+      }
+    }
 
     if (this.route !== nextRoute) {
       this.startRouteLoading();
@@ -1275,14 +1289,16 @@ class PixelosApp extends LitElement {
   }
 
   navigate(route) {
-    this.startRouteLoading();
-    const hash = route === 'instructions' ? '#/instructions' : '#/';
-    if (window.location.hash !== hash) {
-      window.location.hash = hash;
-      return;
+    const path = route === 'instructions' ? '/instructions' : '/';
+    const currentPath = (window.location.pathname || '/').replace(/\/+$/, '') || '/';
+    if (currentPath !== path) {
+      window.history.pushState({}, '', path);
     }
 
-    this.route = route;
+    this.startRouteLoading();
+    if (this.route !== route) {
+      this.route = route;
+    }
     this.motionKey += 1;
   }
 

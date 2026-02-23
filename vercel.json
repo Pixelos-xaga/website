@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/instructions",
+      "destination": "/"
+    },
+    {
+      "source": "/instructions/",
+      "destination": "/"
+    }
+  ]
+}
