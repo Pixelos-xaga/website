@@ -3,19 +3,9 @@ import { keyed } from 'lit/directives/keyed.js';
 
 const DOWNLOADS = [
   {
-    name: 'ROM Zip',
-    note: 'PixelOS_xaga.zip',
-    href: 'https://pixelos.net/download/xaga'
-  },
-  {
-    name: 'boot.img',
-    note: 'Kernel boot image',
-    href: 'https://github.com/Pixelos-xaga'
-  },
-  {
-    name: 'vendor_boot.img',
-    note: 'Vendor boot image',
-    href: 'https://github.com/Pixelos-xaga'
+    name: 'Download PixelOS Xaga Files',
+    note: 'SourceForge project files',
+    href: 'https://sourceforge.net/projects/xagaproject/files/Pixelos-xaga/'
   }
 ];
 
