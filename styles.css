@@ -1,5 +1,7 @@
 :root {
-  --font-base: "Inter", "Roboto", "Noto Sans", "Segoe UI", sans-serif;
+  --font-brand: "Google Sans", "Roboto", "Noto Sans", "Segoe UI", sans-serif;
+  --font-plain: "Google Sans Text", "Roboto", "Noto Sans", "Segoe UI", sans-serif;
+  --font-mono: "Google Sans Mono", "Roboto Mono", "Consolas", monospace;
 
   --md-sys-color-primary: #a8c8ff;
   --md-sys-color-on-primary: #03315f;
@@ -24,10 +26,17 @@
   --md-sys-color-on-error: #690005;
   --md-sys-color-error-container: #93000a;
   --md-sys-color-on-error-container: #ffdad6;
+  --md-sys-color-shadow: #000;
+  --md-sys-elevation-level1: 0px 1px 2px 0px rgb(0 0 0 / 30%), 0px 1px 3px 1px rgb(0 0 0 / 15%);
+
+  --md-ref-typeface-brand: var(--font-brand);
+  --md-ref-typeface-plain: var(--font-plain);
 
   --radius-xl: 28px;
   --radius-lg: 20px;
   --radius-md: 16px;
+
+  color-scheme: dark;
 }
 
 * {
@@ -42,7 +51,7 @@ body {
 }
 
 body {
-  font-family: var(--font-base);
+  font-family: var(--md-ref-typeface-plain);
   color: var(--md-sys-color-on-background);
   background: var(--md-sys-color-background);
   line-height: 1.6;
@@ -74,6 +83,7 @@ body {
   border-radius: var(--radius-xl);
   border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 30%, transparent);
   background: var(--md-sys-color-surface-container-high);
+  box-shadow: var(--md-sys-elevation-level1);
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 1rem;
@@ -142,6 +152,7 @@ body {
   border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 28%, transparent);
   border-radius: var(--radius-lg);
   padding: 1.1rem;
+  box-shadow: var(--md-sys-elevation-level1);
 }
 
 .hero-panel {
@@ -152,6 +163,8 @@ body {
 h1,
 h2,
 h3 {
+  font-family: var(--md-ref-typeface-brand);
+  font-weight: 500;
   margin: 0 0 0.55rem;
   line-height: 1.25;
 }
@@ -226,6 +239,12 @@ h3 {
   padding-bottom: 1.25rem;
 }
 
+.page-tools {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .warning-banner {
   grid-column: 1 / -1;
   display: flex;
@@ -244,6 +263,10 @@ h3 {
 
 .warning-banner code {
   color: #ffe1de;
+}
+
+code {
+  font-family: var(--font-mono);
 }
 
 .main-column,
@@ -350,6 +373,23 @@ h3 {
   color: var(--md-sys-color-on-surface-variant);
 }
 
+.dialog-content {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.dialog-content p {
+  margin: 0 0 0.65rem;
+}
+
+.dialog-content ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.dialog-content li {
+  margin-bottom: 0.35rem;
+}
+
 .footer {
   padding: 1rem 0 2rem;
   display: flex;
@@ -375,11 +415,12 @@ md-icon {
 md-filled-button,
 md-filled-tonal-button,
 md-outlined-button,
+md-text-button,
 md-assist-chip,
 md-outlined-text-field,
 md-icon-button {
-  --md-ref-typeface-brand: var(--font-base);
-  --md-ref-typeface-plain: var(--font-base);
+  --md-ref-typeface-brand: var(--font-brand);
+  --md-ref-typeface-plain: var(--font-plain);
 }
 
 md-filled-button {
@@ -413,6 +454,13 @@ md-outlined-button md-icon {
 md-assist-chip {
   --md-assist-chip-outline-color: color-mix(in srgb, var(--md-sys-color-outline) 55%, transparent);
   --md-assist-chip-label-text-color: var(--md-sys-color-primary);
+}
+
+md-dialog {
+  --md-dialog-container-color: var(--md-sys-color-surface-container-high);
+  --md-dialog-headline-color: var(--md-sys-color-on-surface);
+  --md-dialog-supporting-text-color: var(--md-sys-color-on-surface-variant);
+  --md-dialog-container-shape: var(--radius-lg);
 }
 
 @media (max-width: 960px) {

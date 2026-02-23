@@ -7,7 +7,7 @@
   <meta name="description" content="Flashing instructions, downloads, and spoofing notes for PixelOS on xaga." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Text:wght@400;500;700&family=Google+Sans+Mono:wght@400;500&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
   <script type="importmap">
     {
@@ -43,6 +43,13 @@
     <section class="warning-banner">
       <md-icon>warning</md-icon>
       <p><strong>Never run</strong> <code>fastboot reboot recovery</code> on xaga. It can hard-brick the device.</p>
+    </section>
+
+    <section class="page-tools">
+      <md-outlined-button data-dialog-open="flash-safety-dialog">
+        <md-icon slot="icon">gpp_bad</md-icon>
+        Open Safety Dialog
+      </md-outlined-button>
     </section>
 
     <section class="main-column">
@@ -171,6 +178,21 @@
     <p>PixelOS Xaga community website</p>
     <a href="https://github.com/Pixelos-xaga/website" target="_blank" rel="noopener noreferrer">GitHub</a>
   </footer>
+
+  <md-dialog id="flash-safety-dialog">
+    <div slot="headline">Xaga Flash Safety</div>
+    <form id="flash-safety-form" slot="content" method="dialog" class="dialog-content">
+      <p>Follow these mandatory checks before flashing:</p>
+      <ul>
+        <li>Use the exact `boot.img` and `vendor_boot.img` for the current build.</li>
+        <li>Never run <code>fastboot reboot recovery</code> on xaga.</li>
+        <li>Always keep a working stock package for recovery.</li>
+      </ul>
+    </form>
+    <div slot="actions">
+      <md-text-button form="flash-safety-form" value="close">Close</md-text-button>
+    </div>
+  </md-dialog>
 
   <script type="module" src="material.js"></script>
   <script src="script.js"></script>

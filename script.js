@@ -31,3 +31,19 @@ copyButtons.forEach((button) => {
     }
   });
 });
+
+const dialogButtons = document.querySelectorAll('[data-dialog-open]');
+
+dialogButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    const dialogId = button.dataset.dialogOpen;
+    if (!dialogId) {
+      return;
+    }
+
+    const dialog = document.getElementById(dialogId);
+    if (dialog && typeof dialog.show === 'function') {
+      dialog.show();
+    }
+  });
+});
