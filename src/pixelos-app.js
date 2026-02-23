@@ -87,6 +87,90 @@ class PixelosApp extends LitElement {
 
       --md-ref-typeface-brand: var(--font-brand);
       --md-ref-typeface-plain: var(--font-plain);
+      --md-ref-typeface-weight-regular: 400;
+      --md-ref-typeface-weight-medium: 500;
+      --md-ref-typeface-weight-bold: 700;
+
+      /* Material 3 typography scale */
+      --md-sys-typescale-display-large-font: var(--font-brand);
+      --md-sys-typescale-display-large-size: 3.5625rem;
+      --md-sys-typescale-display-large-line-height: 4rem;
+      --md-sys-typescale-display-large-weight: var(--md-ref-typeface-weight-regular);
+      --md-sys-typescale-display-large-tracking: -0.015625rem;
+      --md-sys-typescale-display-medium-font: var(--font-brand);
+      --md-sys-typescale-display-medium-size: 2.8125rem;
+      --md-sys-typescale-display-medium-line-height: 3.25rem;
+      --md-sys-typescale-display-medium-weight: var(--md-ref-typeface-weight-regular);
+      --md-sys-typescale-display-medium-tracking: 0rem;
+      --md-sys-typescale-display-small-font: var(--font-brand);
+      --md-sys-typescale-display-small-size: 2.25rem;
+      --md-sys-typescale-display-small-line-height: 2.75rem;
+      --md-sys-typescale-display-small-weight: var(--md-ref-typeface-weight-regular);
+      --md-sys-typescale-display-small-tracking: 0rem;
+
+      --md-sys-typescale-headline-large-font: var(--font-brand);
+      --md-sys-typescale-headline-large-size: 2rem;
+      --md-sys-typescale-headline-large-line-height: 2.5rem;
+      --md-sys-typescale-headline-large-weight: var(--md-ref-typeface-weight-regular);
+      --md-sys-typescale-headline-large-tracking: 0rem;
+      --md-sys-typescale-headline-medium-font: var(--font-brand);
+      --md-sys-typescale-headline-medium-size: 1.75rem;
+      --md-sys-typescale-headline-medium-line-height: 2.25rem;
+      --md-sys-typescale-headline-medium-weight: var(--md-ref-typeface-weight-regular);
+      --md-sys-typescale-headline-medium-tracking: 0rem;
+      --md-sys-typescale-headline-small-font: var(--font-brand);
+      --md-sys-typescale-headline-small-size: 1.5rem;
+      --md-sys-typescale-headline-small-line-height: 2rem;
+      --md-sys-typescale-headline-small-weight: var(--md-ref-typeface-weight-regular);
+      --md-sys-typescale-headline-small-tracking: 0rem;
+
+      --md-sys-typescale-title-large-font: var(--font-brand);
+      --md-sys-typescale-title-large-size: 1.375rem;
+      --md-sys-typescale-title-large-line-height: 1.75rem;
+      --md-sys-typescale-title-large-weight: var(--md-ref-typeface-weight-regular);
+      --md-sys-typescale-title-large-tracking: 0rem;
+      --md-sys-typescale-title-medium-font: var(--font-brand);
+      --md-sys-typescale-title-medium-size: 1rem;
+      --md-sys-typescale-title-medium-line-height: 1.5rem;
+      --md-sys-typescale-title-medium-weight: var(--md-ref-typeface-weight-medium);
+      --md-sys-typescale-title-medium-tracking: 0.009375rem;
+      --md-sys-typescale-title-small-font: var(--font-brand);
+      --md-sys-typescale-title-small-size: 0.875rem;
+      --md-sys-typescale-title-small-line-height: 1.25rem;
+      --md-sys-typescale-title-small-weight: var(--md-ref-typeface-weight-medium);
+      --md-sys-typescale-title-small-tracking: 0.00625rem;
+
+      --md-sys-typescale-body-large-font: var(--font-plain);
+      --md-sys-typescale-body-large-size: 1rem;
+      --md-sys-typescale-body-large-line-height: 1.5rem;
+      --md-sys-typescale-body-large-weight: var(--md-ref-typeface-weight-regular);
+      --md-sys-typescale-body-large-tracking: 0.03125rem;
+      --md-sys-typescale-body-medium-font: var(--font-plain);
+      --md-sys-typescale-body-medium-size: 0.875rem;
+      --md-sys-typescale-body-medium-line-height: 1.25rem;
+      --md-sys-typescale-body-medium-weight: var(--md-ref-typeface-weight-regular);
+      --md-sys-typescale-body-medium-tracking: 0.015625rem;
+      --md-sys-typescale-body-small-font: var(--font-plain);
+      --md-sys-typescale-body-small-size: 0.75rem;
+      --md-sys-typescale-body-small-line-height: 1rem;
+      --md-sys-typescale-body-small-weight: var(--md-ref-typeface-weight-regular);
+      --md-sys-typescale-body-small-tracking: 0.025rem;
+
+      --md-sys-typescale-label-large-font: var(--font-plain);
+      --md-sys-typescale-label-large-size: 0.875rem;
+      --md-sys-typescale-label-large-line-height: 1.25rem;
+      --md-sys-typescale-label-large-weight: var(--md-ref-typeface-weight-medium);
+      --md-sys-typescale-label-large-tracking: 0.00625rem;
+      --md-sys-typescale-label-medium-font: var(--font-plain);
+      --md-sys-typescale-label-medium-size: 0.75rem;
+      --md-sys-typescale-label-medium-line-height: 1rem;
+      --md-sys-typescale-label-medium-weight: var(--md-ref-typeface-weight-medium);
+      --md-sys-typescale-label-medium-tracking: 0.03125rem;
+      --md-sys-typescale-label-small-font: var(--font-plain);
+      --md-sys-typescale-label-small-size: 0.6875rem;
+      --md-sys-typescale-label-small-line-height: 1rem;
+      --md-sys-typescale-label-small-weight: var(--md-ref-typeface-weight-medium);
+      --md-sys-typescale-label-small-tracking: 0.03125rem;
 
       --md-sys-color-primary: #9bc1ff;
       --md-sys-color-on-primary: #002b61;
@@ -248,9 +332,11 @@ class PixelosApp extends LitElement {
     }
 
     .brand {
-      font-family: var(--font-brand);
-      font-weight: 700;
-      font-size: 1.06rem;
+      font-family: var(--md-sys-typescale-title-large-font);
+      font-size: var(--md-sys-typescale-title-large-size);
+      line-height: var(--md-sys-typescale-title-large-line-height);
+      letter-spacing: var(--md-sys-typescale-title-large-tracking);
+      font-weight: var(--md-sys-typescale-title-large-weight);
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
@@ -276,7 +362,10 @@ class PixelosApp extends LitElement {
 
     .brand-xaga {
       color: var(--md-sys-color-on-surface-variant);
-      font-weight: 600;
+      font-weight: var(--md-sys-typescale-title-medium-weight);
+      font-size: var(--md-sys-typescale-title-medium-size);
+      line-height: var(--md-sys-typescale-title-medium-line-height);
+      letter-spacing: var(--md-sys-typescale-title-medium-tracking);
     }
 
     md-tabs {
@@ -356,34 +445,62 @@ class PixelosApp extends LitElement {
     h2,
     h3 {
       margin: 0 0 0.56rem;
-      line-height: 1.25;
-      font-family: var(--font-brand);
-      font-weight: 500;
+      font-family: var(--md-sys-typescale-headline-medium-font);
       color: var(--md-sys-color-on-surface);
     }
 
     h1 {
       margin-top: 0.85rem;
-      font-size: clamp(2rem, 4.6vw, 3.25rem);
+      font-family: var(--md-sys-typescale-display-small-font);
+      font-size: clamp(2.1rem, 4.6vw, var(--md-sys-typescale-display-small-size));
+      line-height: var(--md-sys-typescale-display-small-line-height);
+      letter-spacing: var(--md-sys-typescale-display-small-tracking);
+      font-weight: var(--md-sys-typescale-display-small-weight);
     }
 
     h2 {
-      font-size: clamp(1.2rem, 2.6vw, 1.8rem);
+      font-family: var(--md-sys-typescale-headline-small-font);
+      font-size: var(--md-sys-typescale-headline-small-size);
+      line-height: var(--md-sys-typescale-headline-small-line-height);
+      letter-spacing: var(--md-sys-typescale-headline-small-tracking);
+      font-weight: var(--md-sys-typescale-headline-small-weight);
     }
 
     h3 {
-      font-size: 1.02rem;
+      font-family: var(--md-sys-typescale-title-medium-font);
+      font-size: var(--md-sys-typescale-title-medium-size);
+      line-height: var(--md-sys-typescale-title-medium-line-height);
+      letter-spacing: var(--md-sys-typescale-title-medium-tracking);
+      font-weight: var(--md-sys-typescale-title-medium-weight);
     }
 
     p,
-    li,
+    li {
+      color: var(--md-sys-color-on-surface-variant);
+      font-family: var(--md-sys-typescale-body-medium-font);
+      font-size: var(--md-sys-typescale-body-medium-size);
+      line-height: var(--md-sys-typescale-body-medium-line-height);
+      letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+      font-weight: var(--md-sys-typescale-body-medium-weight);
+    }
+
     small {
       color: var(--md-sys-color-on-surface-variant);
+      font-family: var(--md-sys-typescale-label-medium-font);
+      font-size: var(--md-sys-typescale-label-medium-size);
+      line-height: var(--md-sys-typescale-label-medium-line-height);
+      letter-spacing: var(--md-sys-typescale-label-medium-tracking);
+      font-weight: var(--md-sys-typescale-label-medium-weight);
     }
 
     .lead {
       margin: 0;
       max-width: 70ch;
+      font-family: var(--md-sys-typescale-body-large-font);
+      font-size: var(--md-sys-typescale-body-large-size);
+      line-height: var(--md-sys-typescale-body-large-line-height);
+      letter-spacing: var(--md-sys-typescale-body-large-tracking);
+      font-weight: var(--md-sys-typescale-body-large-weight);
     }
 
     .hero-actions {
@@ -638,10 +755,11 @@ class PixelosApp extends LitElement {
       align-items: center;
       padding: 0.12rem 0.48rem;
       border-radius: 999px;
-      font-family: var(--font-brand);
-      font-weight: 700;
-      font-size: 0.78rem;
-      letter-spacing: 0.02em;
+      font-family: var(--md-sys-typescale-label-medium-font);
+      font-size: var(--md-sys-typescale-label-medium-size);
+      line-height: var(--md-sys-typescale-label-medium-line-height);
+      letter-spacing: var(--md-sys-typescale-label-medium-tracking);
+      font-weight: var(--md-sys-typescale-label-medium-weight);
       text-transform: uppercase;
       color: var(--md-sys-color-on-surface);
       background: color-mix(in srgb, var(--md-sys-color-primary) 20%, transparent);
@@ -717,8 +835,11 @@ class PixelosApp extends LitElement {
     .spoof-list strong {
       color: var(--md-sys-color-on-surface);
       display: block;
-      font-family: var(--font-brand);
-      font-weight: 500;
+      font-family: var(--md-sys-typescale-title-small-font);
+      font-size: var(--md-sys-typescale-title-small-size);
+      line-height: var(--md-sys-typescale-title-small-line-height);
+      letter-spacing: var(--md-sys-typescale-title-small-tracking);
+      font-weight: var(--md-sys-typescale-title-small-weight);
     }
 
     .spoof-list p {
@@ -787,14 +908,21 @@ class PixelosApp extends LitElement {
       padding: 0 0.2rem;
       text-align: center;
       color: var(--md-sys-color-on-surface-variant);
-      font-size: 0.9rem;
+      font-family: var(--md-sys-typescale-label-large-font);
+      font-size: var(--md-sys-typescale-label-large-size);
+      line-height: var(--md-sys-typescale-label-large-line-height);
+      letter-spacing: var(--md-sys-typescale-label-large-tracking);
+      font-weight: var(--md-sys-typescale-label-large-weight);
     }
 
     .disclaimer a {
       color: var(--md-sys-color-primary);
       text-decoration: none;
-      font-family: var(--font-brand);
-      font-weight: 500;
+      font-family: var(--md-sys-typescale-label-large-font);
+      font-size: var(--md-sys-typescale-label-large-size);
+      line-height: var(--md-sys-typescale-label-large-line-height);
+      letter-spacing: var(--md-sys-typescale-label-large-tracking);
+      font-weight: var(--md-sys-typescale-label-large-weight);
     }
 
     .disclaimer a:hover {
@@ -805,14 +933,21 @@ class PixelosApp extends LitElement {
       margin: 0.25rem 0 0;
       text-align: center;
       color: var(--md-sys-color-on-surface-variant);
-      font-size: 0.88rem;
+      font-family: var(--md-sys-typescale-label-medium-font);
+      font-size: var(--md-sys-typescale-label-medium-size);
+      line-height: var(--md-sys-typescale-label-medium-line-height);
+      letter-spacing: var(--md-sys-typescale-label-medium-tracking);
+      font-weight: var(--md-sys-typescale-label-medium-weight);
     }
 
     .credit a {
       color: var(--md-sys-color-primary);
       text-decoration: none;
-      font-family: var(--font-brand);
-      font-weight: 500;
+      font-family: var(--md-sys-typescale-label-large-font);
+      font-size: var(--md-sys-typescale-label-large-size);
+      line-height: var(--md-sys-typescale-label-large-line-height);
+      letter-spacing: var(--md-sys-typescale-label-large-tracking);
+      font-weight: var(--md-sys-typescale-label-large-weight);
     }
 
     .credit a:hover {
