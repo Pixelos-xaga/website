@@ -29,12 +29,12 @@ const HOME_SCREENSHOTS = [
 ];
 
 const SIDE_SHAPES = [
-  { shape: 'shape-a', tilt: '-6deg' },
-  { shape: 'shape-b', tilt: '4deg' },
-  { shape: 'shape-c', tilt: '-3deg' },
-  { shape: 'shape-d', tilt: '5deg' },
-  { shape: 'shape-e', tilt: '-5deg' },
-  { shape: 'shape-f', tilt: '3deg' }
+  { shape: 'shape-none', tilt: '-4deg' },
+  { shape: 'shape-small', tilt: '3deg' },
+  { shape: 'shape-medium', tilt: '-2deg' },
+  { shape: 'shape-large', tilt: '4deg' },
+  { shape: 'shape-xlarge', tilt: '-4deg' },
+  { shape: 'shape-full', tilt: '2deg' }
 ];
 
 const FLASH_STEPS = [
@@ -120,6 +120,7 @@ class PixelosApp extends LitElement {
       --md-sys-shape-corner-large: 20px;
       --md-sys-shape-corner-medium: 16px;
       --md-sys-shape-corner-small: 12px;
+      --md-sys-shape-corner-extra-small: 8px;
 
       --md-sys-elevation-level1: 0px 1px 2px 0px rgb(0 0 0 / 30%), 0px 1px 3px 1px rgb(0 0 0 / 15%);
 
@@ -154,7 +155,7 @@ class PixelosApp extends LitElement {
       position: fixed;
       top: 0;
       bottom: 0;
-      width: clamp(76px, 9vw, 112px);
+      width: clamp(100px, 11vw, 140px);
       pointer-events: none;
       z-index: 0;
       opacity: 0.9;
@@ -162,11 +163,11 @@ class PixelosApp extends LitElement {
     }
 
     .side-gallery.left {
-      left: max(-26px, calc((100vw - 1100px) / 2 - 152px));
+      left: max(-44px, calc((100vw - 1100px) / 2 - 188px));
     }
 
     .side-gallery.right {
-      right: max(-26px, calc((100vw - 1100px) / 2 - 152px));
+      right: max(-44px, calc((100vw - 1100px) / 2 - 188px));
     }
 
     .side-track {
@@ -174,7 +175,7 @@ class PixelosApp extends LitElement {
       left: 50%;
       top: -240px;
       display: grid;
-      gap: 0.7rem;
+      gap: 1.15rem;
       transform: translateX(-50%);
       will-change: transform;
     }
@@ -188,10 +189,10 @@ class PixelosApp extends LitElement {
     }
 
     .side-art {
-      width: clamp(66px, 7.4vw, 88px);
+      width: clamp(88px, 9.2vw, 120px);
       aspect-ratio: 1 / 1;
       overflow: hidden;
-      padding: 2px;
+      padding: 3px;
       --md-outlined-card-container-color: color-mix(in srgb, var(--md-sys-color-surface-container-high) 74%, transparent);
       --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-primary) 28%, transparent);
       --md-outlined-card-outline-width: 1px;
@@ -210,27 +211,27 @@ class PixelosApp extends LitElement {
       filter: saturate(1.08) contrast(1.03);
     }
 
-    .side-art.shape-a {
-      --md-outlined-card-container-shape: 28px;
+    .side-art.shape-none {
+      --md-outlined-card-container-shape: 0px;
     }
 
-    .side-art.shape-b {
-      --md-outlined-card-container-shape: 34px 12px 34px 12px;
+    .side-art.shape-small {
+      --md-outlined-card-container-shape: var(--md-sys-shape-corner-extra-small);
     }
 
-    .side-art.shape-c {
-      --md-outlined-card-container-shape: 40px 40px 18px 18px;
+    .side-art.shape-medium {
+      --md-outlined-card-container-shape: var(--md-sys-shape-corner-small);
     }
 
-    .side-art.shape-d {
-      --md-outlined-card-container-shape: 14px 36px 16px 36px;
+    .side-art.shape-large {
+      --md-outlined-card-container-shape: var(--md-sys-shape-corner-medium);
     }
 
-    .side-art.shape-e {
-      --md-outlined-card-container-shape: 48px 18px 48px 18px;
+    .side-art.shape-xlarge {
+      --md-outlined-card-container-shape: var(--md-sys-shape-corner-extra-large);
     }
 
-    .side-art.shape-f {
+    .side-art.shape-full {
       --md-outlined-card-container-shape: 999px;
     }
 
@@ -1095,16 +1096,13 @@ class PixelosApp extends LitElement {
     return html`
       <aside class="side-gallery ${side}" aria-hidden="true">
         <div class="side-track">
-          ${Array.from({ length: 10 }).map((_, index) => {
-            const style = SIDE_SHAPES[index % SIDE_SHAPES.length];
-            return html`
-              <md-outlined-card
-                class="side-art ${style.shape}"
-                style=${`--tile-tilt: ${style.tilt};`}>
-                <img src="/side-photo.png" alt="" loading="lazy" decoding="async" />
-              </md-outlined-card>
-            `;
-          })}
+          ${SIDE_SHAPES.map((shapeStyle) => html`
+            <md-outlined-card
+              class="side-art ${shapeStyle.shape}"
+              style=${`--tile-tilt: ${shapeStyle.tilt};`}>
+              <img src="/side-photo.png" alt="" loading="lazy" decoding="async" />
+            </md-outlined-card>
+          `)}
         </div>
       </aside>
     `;
