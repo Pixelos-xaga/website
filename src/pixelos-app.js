@@ -136,13 +136,28 @@ class PixelosApp extends LitElement {
       align-items: center;
       gap: 0.4rem;
       color: var(--md-sys-color-on-surface);
+    }
+
+    .brand-pixelos {
+      color: var(--md-sys-color-on-surface);
       text-decoration: none;
+    }
+
+    .brand-pixelos:hover {
+      color: var(--md-sys-color-primary);
+      text-decoration: underline;
+      text-underline-offset: 0.18em;
     }
 
     .brand-logo {
       width: 20px;
       height: 20px;
       display: block;
+    }
+
+    .brand-xaga {
+      color: var(--md-sys-color-on-surface-variant);
+      font-weight: 600;
     }
 
     md-tabs {
@@ -823,13 +838,11 @@ class PixelosApp extends LitElement {
   renderTopBar() {
     return html`
       <md-elevated-card class="top-bar">
-        <a class="brand" href="#/" @click=${(event) => {
-          event.preventDefault();
-          this.navigate('home');
-        }}>
+        <div class="brand">
+          <a class="brand-pixelos" href="https://blog.pixelos.net/" target="_blank" rel="noopener noreferrer">PixelOS</a>
           <img class="brand-logo" src="/android-logo.svg" alt="" aria-hidden="true" />
-          <span>PixelOS Xaga</span>
-        </a>
+          <span class="brand-xaga">Xaga</span>
+        </div>
 
         <md-tabs>
           <md-primary-tab
