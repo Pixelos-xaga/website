@@ -4,109 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PixelOS for Xaga</title>
-  <meta name="description" content="PixelOS for xaga: install resources, downloads, and flashing instructions." />
+  <meta name="description" content="PixelOS for xaga: Material Web install guide, downloads, and spoofing notes." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Google+Sans+Text:wght@400;500;700&family=Google+Sans+Mono:wght@400;500&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <script type="importmap">
-    {
-      "imports": {
-        "@material/web/": "https://esm.run/@material/web/"
-      }
-    }
-  </script>
-  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="bg-noise"></div>
-  <div class="bg-glow"></div>
-
-  <header class="top-app-bar container">
-    <a class="brand" href="index.html">
-      <span class="brand-icon material-symbols-outlined">android</span>
-      <span>PixelOS Xaga</span>
-    </a>
-    <nav class="nav-links" aria-label="Primary navigation">
-      <a class="nav-link active" href="index.html">
-        <span class="material-symbols-outlined">home</span>
-        <span>Home</span>
-      </a>
-      <a class="nav-link" href="instructions.html">
-        <span class="material-symbols-outlined">terminal</span>
-        <span>Instructions</span>
-      </a>
-    </nav>
-  </header>
-
-  <main class="container hero-page">
-    <section class="m3-panel hero-panel">
-      <md-assist-chip label="Official Device Hub"></md-assist-chip>
-      <h1>PixelOS for Xaga</h1>
-      <p class="lead">
-        A Material 3 styled hub for ROM install instructions, downloads, and post-install spoofing notes.
-      </p>
-      <div class="hero-actions">
-        <md-filled-button href="instructions.html">
-          <md-icon slot="icon">rocket_launch</md-icon>
-          Open Instructions
-        </md-filled-button>
-        <md-filled-tonal-button href="instructions.html#downloads">
-          <md-icon slot="icon">download</md-icon>
-          Go to Downloads
-        </md-filled-tonal-button>
-        <md-outlined-button data-dialog-open="m3-about-dialog">
-          <md-icon slot="icon">info</md-icon>
-          M3 Details
-        </md-outlined-button>
-      </div>
-    </section>
-
-    <section class="m3-panel">
-      <h2>What You Get</h2>
-      <div class="feature-grid">
-        <article class="feature-item">
-          <div class="feature-title">
-            <span class="material-symbols-outlined">terminal</span>
-            <h3>Install Guide</h3>
-          </div>
-          <p>Step-by-step flashing flow with copyable commands.</p>
-        </article>
-        <article class="feature-item">
-          <div class="feature-title">
-            <span class="material-symbols-outlined">download</span>
-            <h3>Download Section</h3>
-          </div>
-          <p>Direct slots for ROM zip, boot image, and vendor_boot image.</p>
-        </article>
-        <article class="feature-item">
-          <div class="feature-title">
-            <span class="material-symbols-outlined">shield</span>
-            <h3>Spoofing Help</h3>
-          </div>
-          <p>A side guide area for your spoofing setup notes.</p>
-        </article>
-      </div>
-    </section>
-  </main>
-
-  <footer class="container footer">
-    <p>PixelOS Xaga community website</p>
-    <a href="https://github.com/Pixelos-xaga/website" target="_blank" rel="noopener noreferrer">GitHub</a>
-  </footer>
-
-  <md-dialog id="m3-about-dialog">
-    <div slot="headline">Material 3 Web Setup</div>
-    <form id="m3-about-form" slot="content" method="dialog" class="dialog-content">
-      <p>This site now uses Material Web components, M3 color roles, Material Symbols icons, and Google Sans typography style used by Material guidance.</p>
-      <p>Core components in use: buttons, tonal buttons, outlined buttons, assist chip, icon button, outlined text field, and dialog.</p>
-    </form>
-    <div slot="actions">
-      <md-text-button form="m3-about-form" value="close">Close</md-text-button>
-    </div>
-  </md-dialog>
-
-  <script type="module" src="material.js"></script>
-  <script src="script.js"></script>
+  <pixelos-app></pixelos-app>
+  <script type="module" src="/src/main.js"></script>
 </body>
 </html>

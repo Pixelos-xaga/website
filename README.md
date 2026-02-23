@@ -1,23 +1,37 @@
 # PixelOS Xaga Website
 
-Static site for PixelOS xaga with:
+Material 3 website built with the recommended Material Web stack:
 
-- Home page (`index.html`) with "PixelOS for Xaga"
-- Instructions page (`instructions.html`) with:
-  - Flash commands and copy buttons
-  - ROM/image download links
-  - Spoofing helper section
+- Framework: Lit
+- Component library: `@material/web`
+- Tooling: Vite
 
-## Local preview
+## Local development
 
-Open `index.html` in a browser.
+```bash
+npm install
+npm run dev
+```
+
+## Production build
+
+```bash
+npm run build
+npm run preview
+```
+
+## Routes
+
+- Home: `/#/`
+- Instructions: `/#/instructions`
+
+`instructions.html` redirects to `/#/instructions` for compatibility.
 
 ## Deploy on Vercel
 
-1. Push this repository to GitHub.
-2. In Vercel, click **Add New Project**.
-3. Import `Pixelos-xaga/website`.
-4. Framework preset: **Other**.
-5. Build command: empty.
-6. Output directory: empty.
-7. Deploy.
+Use these project settings:
+
+- Framework Preset: `Vite`
+- Install Command: `npm install`
+- Build Command: `npm run build`
+- Output Directory: `dist`
