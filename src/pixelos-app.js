@@ -152,7 +152,7 @@ class PixelosApp extends LitElement {
       position: fixed;
       top: 0;
       bottom: 0;
-      width: clamp(84px, 10vw, 124px);
+      width: clamp(76px, 9vw, 112px);
       pointer-events: none;
       z-index: 0;
       opacity: 0.9;
@@ -160,11 +160,11 @@ class PixelosApp extends LitElement {
     }
 
     .side-gallery.left {
-      left: max(4px, calc((100vw - 1100px) / 2 - 118px));
+      left: max(-26px, calc((100vw - 1100px) / 2 - 152px));
     }
 
     .side-gallery.right {
-      right: max(4px, calc((100vw - 1100px) / 2 - 118px));
+      right: max(-26px, calc((100vw - 1100px) / 2 - 152px));
     }
 
     .side-track {
@@ -186,9 +186,10 @@ class PixelosApp extends LitElement {
     }
 
     .side-art {
-      width: clamp(72px, 8vw, 96px);
-      height: clamp(132px, 15vw, 168px);
+      width: clamp(66px, 7.4vw, 88px);
+      aspect-ratio: 1 / 1;
       overflow: hidden;
+      padding: 2px;
       --md-outlined-card-container-color: color-mix(in srgb, var(--md-sys-color-surface-container-high) 74%, transparent);
       --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-primary) 28%, transparent);
       --md-outlined-card-outline-width: 1px;
@@ -200,7 +201,9 @@ class PixelosApp extends LitElement {
       width: 100%;
       height: 100%;
       display: block;
-      object-fit: cover;
+      object-fit: contain;
+      object-position: center;
+      background: color-mix(in srgb, var(--md-sys-color-surface-container-low) 90%, transparent);
       opacity: 0.94;
       filter: saturate(1.08) contrast(1.03);
     }
