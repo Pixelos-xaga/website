@@ -156,6 +156,7 @@ h3 {
 .hero-actions {
   margin-top: 1.15rem;
   display: flex;
+  align-items: center;
   gap: 0.75rem;
   flex-wrap: wrap;
 }
@@ -293,6 +294,7 @@ md-icon {
 }
 
 md-filled-button,
+md-filled-tonal-button,
 md-outlined-button,
 md-assist-chip,
 md-outlined-text-field,
@@ -309,11 +311,25 @@ md-filled-button {
   --md-filled-button-container-shape: 999px;
 }
 
+md-filled-tonal-button {
+  --md-filled-tonal-button-container-color: var(--md-sys-color-secondary-container);
+  --md-filled-tonal-button-label-text-color: var(--md-sys-color-on-secondary-container);
+  --md-filled-tonal-button-container-height: 40px;
+  --md-filled-tonal-button-container-shape: 999px;
+}
+
 md-outlined-button {
   --md-outlined-button-outline-color: color-mix(in srgb, var(--md-sys-color-outline) 55%, transparent);
   --md-outlined-button-label-text-color: var(--md-sys-color-on-surface);
   --md-outlined-button-container-shape: 999px;
   --md-outlined-button-container-height: 40px;
+}
+
+md-filled-button md-icon,
+md-filled-tonal-button md-icon,
+md-outlined-button md-icon {
+  font-size: 18px;
+  line-height: 1;
 }
 
 md-assist-chip {
