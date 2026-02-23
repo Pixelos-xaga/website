@@ -412,18 +412,18 @@ class PixelosApp extends LitElement {
     }
 
     .step-guidance {
-      margin-top: 0.28rem;
+      margin-top: 0.42rem;
       display: grid;
-      gap: 0.34rem;
+      gap: 0.46rem;
     }
 
     .guidance-row {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 0.45rem;
-      align-items: start;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.34rem;
       border-radius: 10px;
-      padding: 0.38rem 0.52rem;
+      padding: 0.46rem 0.58rem;
       background: color-mix(in srgb, var(--md-sys-color-surface-container-highest) 86%, transparent);
       box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 20%, transparent);
     }
@@ -435,18 +435,29 @@ class PixelosApp extends LitElement {
     }
 
     .guidance-label {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.12rem 0.48rem;
+      border-radius: 999px;
       font-family: var(--font-brand);
       font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
       color: var(--md-sys-color-on-surface);
-      white-space: nowrap;
+      background: color-mix(in srgb, var(--md-sys-color-primary) 20%, transparent);
     }
 
     .guidance-row.warning .guidance-label {
       color: var(--md-sys-color-on-warning-container);
+      background: color-mix(in srgb, var(--md-sys-color-warning) 24%, transparent);
     }
 
     .guidance-text {
       margin: 0;
+      width: 100%;
+      text-align: left;
+      line-height: 1.35;
       color: var(--md-sys-color-on-surface-variant);
     }
 
@@ -908,7 +919,7 @@ class PixelosApp extends LitElement {
                         <div class="step-guidance">
                           <div class="guidance-row warning">
                             <span class="guidance-label">Avoid</span>
-                            <p class="guidance-text"><strong>Do not use ${step.guidance.avoid}</strong></p>
+                            <p class="guidance-text"><strong>Do not use ${step.guidance.avoid}.</strong></p>
                           </div>
                           <div class="guidance-row">
                             <span class="guidance-label">Do this</span>
