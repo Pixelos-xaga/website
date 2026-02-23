@@ -590,18 +590,52 @@ class PixelosApp extends LitElement {
       height: 22px;
     }
 
-    .page-loader {
-      margin: 0.15rem 0 0.55rem;
-      display: flex;
-      justify-content: center;
+    .route-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 25;
+      display: grid;
+      place-items: center;
       pointer-events: none;
+      opacity: 0;
+      background: color-mix(in srgb, var(--md-sys-color-scrim) 24%, transparent);
+      transition: opacity 180ms var(--motion-standard);
     }
 
-    .page-loader md-circular-progress {
+    .route-overlay.active {
+      opacity: 1;
+    }
+
+    .route-loader-card {
+      width: min(90vw, 280px);
+      padding: 0.9rem 1rem;
+      display: grid;
+      gap: 0.7rem;
+      justify-items: center;
+      --md-elevated-card-container-color: var(--md-sys-color-surface-container-high);
+      --md-elevated-card-container-shape: var(--md-sys-shape-corner-large);
+      --md-elevated-card-container-elevation: 2;
+    }
+
+    .route-loader-text {
+      color: var(--md-sys-color-on-surface-variant);
+      font-family: var(--md-sys-typescale-label-large-font);
+      font-size: var(--md-sys-typescale-label-large-size);
+      line-height: var(--md-sys-typescale-label-large-line-height);
+      letter-spacing: var(--md-sys-typescale-label-large-tracking);
+      font-weight: var(--md-sys-typescale-label-large-weight);
+    }
+
+    .route-loader-card md-circular-progress {
       --md-circular-progress-active-indicator-color: var(--md-sys-color-primary);
       width: 26px;
       height: 26px;
-      opacity: 0.92;
+    }
+
+    .route-loader-card md-linear-progress {
+      width: 100%;
+      --md-linear-progress-active-indicator-color: var(--md-sys-color-primary);
+      --md-linear-progress-track-color: color-mix(in srgb, var(--md-sys-color-surface-variant) 55%, transparent);
     }
 
     md-filled-button,
@@ -1098,16 +1132,21 @@ class PixelosApp extends LitElement {
     this.pendingInstructionsTarget = '';
     this.scrollRaf = 0;
     this.routeLoadingTimer = 0;
+    this.routeLoadingStart = 0;
     this.handleHashChange = this.handleHashChange.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
   }
 
   connectedCallback() {
     super.connectedCallback();
+    this.startRouteLoading();
     window.addEventListener('hashchange', this.handleHashChange);
     window.addEventListener('scroll', this.handleScroll, { passive: true });
     this.handleHashChange();
     this.handleScroll();
+  }
+
+  firstUpdated() {
     this.scheduleRouteLoadingEnd();
   }
 
@@ -1171,6 +1210,7 @@ class PixelosApp extends LitElement {
   }
 
   startRouteLoading() {
+    this.routeLoadingStart = performance.now();
     this.routeLoading = true;
     if (this.routeLoadingTimer) {
       clearTimeout(this.routeLoadingTimer);
@@ -1183,10 +1223,13 @@ class PixelosApp extends LitElement {
       clearTimeout(this.routeLoadingTimer);
     }
 
+    const elapsed = this.routeLoadingStart ? performance.now() - this.routeLoadingStart : 0;
+    const delay = Math.max(180, 520 - elapsed);
+
     this.routeLoadingTimer = setTimeout(() => {
       this.routeLoading = false;
       this.routeLoadingTimer = 0;
-    }, 280);
+    }, delay);
   }
 
   navigate(route) {
@@ -1523,13 +1566,15 @@ class PixelosApp extends LitElement {
   render() {
     return html`
       ${this.renderSideGallery('left')}
+      <div class="route-overlay ${this.routeLoading ? 'active' : ''}" role="status" aria-live="polite" aria-label="Loading">
+        <md-elevated-card class="route-loader-card">
+          <md-circular-progress indeterminate></md-circular-progress>
+          <span class="route-loader-text">Loading content...</span>
+          <md-linear-progress indeterminate></md-linear-progress>
+        </md-elevated-card>
+      </div>
         <div class="shell">
         ${this.renderTopBar()}
-        ${this.routeLoading ? html`
-          <div class="page-loader" role="status" aria-label="Loading page content">
-            <md-circular-progress indeterminate></md-circular-progress>
-          </div>
-        ` : ''}
         ${keyed(this.motionKey, this.route === 'instructions' ? this.renderInstructionsView() : this.renderHomeView())}
 
         <md-elevated-card class="footer">
