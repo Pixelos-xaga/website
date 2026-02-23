@@ -263,6 +263,12 @@ class PixelosApp extends LitElement {
       --md-fab-container-height: 46px;
     }
 
+    .downloads-fab {
+      --md-fab-secondary-container-color: color-mix(in srgb, var(--md-sys-color-surface-container-high) 78%, var(--md-sys-color-surface-container-low) 22%);
+      --md-fab-secondary-label-text-color: var(--md-sys-color-on-surface);
+      --md-fab-secondary-icon-color: var(--md-sys-color-on-surface);
+    }
+
     md-filled-button,
     md-filled-tonal-button,
     md-fab,
@@ -602,6 +608,24 @@ class PixelosApp extends LitElement {
       text-decoration: underline;
     }
 
+    .credit {
+      margin: 0.25rem 0 0;
+      text-align: center;
+      color: var(--md-sys-color-on-surface-variant);
+      font-size: 0.88rem;
+    }
+
+    .credit a {
+      color: var(--md-sys-color-primary);
+      text-decoration: none;
+      font-family: var(--font-brand);
+      font-weight: 500;
+    }
+
+    .credit a:hover {
+      text-decoration: underline;
+    }
+
     .sr-only {
       position: absolute;
       width: 1px;
@@ -840,6 +864,7 @@ class PixelosApp extends LitElement {
               <md-icon slot="icon">rocket_launch</md-icon>
             </md-fab>
             <md-fab
+              class="downloads-fab"
               lowered
               variant="secondary"
               label="Go to Downloads"
@@ -1026,6 +1051,10 @@ class PixelosApp extends LitElement {
         <p class="disclaimer">
           This is not directly affiliated with
           <a href="https://pixelos.net/" target="_blank" rel="noopener noreferrer">official PixelOS</a>.
+        </p>
+        <p class="credit">
+          By Angad -
+          <a href="https://t.me/Angxddeep" target="_blank" rel="noopener noreferrer">@Angxddeep</a>
         </p>
 
         <md-dialog id="safetyDialog">
