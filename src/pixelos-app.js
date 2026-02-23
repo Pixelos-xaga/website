@@ -626,16 +626,45 @@ class PixelosApp extends LitElement {
       font-weight: var(--md-sys-typescale-label-large-weight);
     }
 
-    .route-loader-card md-circular-progress {
-      --md-circular-progress-active-indicator-color: var(--md-sys-color-primary);
-      width: 26px;
-      height: 26px;
+    .route-loader-track {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.34rem;
+      padding: 0.16rem 0.08rem;
     }
 
-    .route-loader-card md-linear-progress {
-      width: 100%;
-      --md-linear-progress-active-indicator-color: var(--md-sys-color-primary);
-      --md-linear-progress-track-color: color-mix(in srgb, var(--md-sys-color-surface-variant) 55%, transparent);
+    .route-loader-segment {
+      width: 18px;
+      height: 8px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--md-sys-color-primary) 86%, white 14%);
+      opacity: 0.42;
+      transform-origin: center;
+      animation: expressive-loader 1080ms var(--motion-emphasized) infinite;
+      animation-delay: calc(var(--loader-index, 0) * 90ms);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 22%, transparent);
+    }
+
+    .route-loader-segment.dot {
+      width: 8px;
+      border-radius: 999px;
+    }
+
+    @keyframes expressive-loader {
+      0%, 100% {
+        opacity: 0.35;
+        transform: translateY(0) scaleX(0.7);
+      }
+
+      35% {
+        opacity: 1;
+        transform: translateY(-1px) scaleX(1.18);
+      }
+
+      70% {
+        opacity: 0.55;
+        transform: translateY(1px) scaleX(0.82);
+      }
     }
 
     md-filled-button,
@@ -1568,9 +1597,14 @@ class PixelosApp extends LitElement {
       ${this.renderSideGallery('left')}
       <div class="route-overlay ${this.routeLoading ? 'active' : ''}" role="status" aria-live="polite" aria-label="Loading">
         <md-elevated-card class="route-loader-card">
-          <md-circular-progress indeterminate></md-circular-progress>
+          <div class="route-loader-track" aria-hidden="true">
+            <span class="route-loader-segment dot" style="--loader-index: 0"></span>
+            <span class="route-loader-segment" style="--loader-index: 1"></span>
+            <span class="route-loader-segment" style="--loader-index: 2"></span>
+            <span class="route-loader-segment" style="--loader-index: 3"></span>
+            <span class="route-loader-segment dot" style="--loader-index: 4"></span>
+          </div>
           <span class="route-loader-text">Loading content...</span>
-          <md-linear-progress indeterminate></md-linear-progress>
         </md-elevated-card>
       </div>
         <div class="shell">
