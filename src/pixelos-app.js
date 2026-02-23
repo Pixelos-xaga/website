@@ -710,10 +710,6 @@ class PixelosApp extends LitElement {
               <md-icon slot="icon">download</md-icon>
               Go to Downloads
             </md-filled-tonal-button>
-            <md-outlined-button @click=${() => this.openDialog('aboutDialog')}>
-              <md-icon slot="icon">info</md-icon>
-              Framework Details
-            </md-outlined-button>
           </div>
         </article>
 
@@ -876,17 +872,6 @@ class PixelosApp extends LitElement {
             </a>
           </div>
         </footer>
-
-        <md-dialog id="aboutDialog">
-          <div slot="headline">Framework Stack</div>
-          <div slot="content" class="dialog-content">
-            <p>This site now uses Material Web with Lit and Vite, following the Material web development approach.</p>
-            <p>Material components are used directly with M3 color roles, typography tokens, and built-in motion + state layer behavior.</p>
-          </div>
-          <div slot="actions">
-            <md-text-button @click=${() => this.closeDialog('aboutDialog')}>Close</md-text-button>
-          </div>
-        </md-dialog>
 
         <md-dialog id="safetyDialog">
           <div slot="headline">Xaga Flash Safety</div>
