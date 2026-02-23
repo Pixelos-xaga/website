@@ -322,7 +322,7 @@ class PixelosApp extends LitElement {
       gap: 1rem;
     }
 
-    .warning {
+    .warning-content {
       display: flex;
       align-items: center;
       gap: 0.55rem;
@@ -335,12 +335,12 @@ class PixelosApp extends LitElement {
       --md-filled-card-container-shape: var(--md-sys-shape-corner-large);
     }
 
-    .warning p {
+    .warning-content p {
       margin: 0;
       color: var(--md-sys-color-on-warning-container);
     }
 
-    .warning md-icon {
+    .warning-content md-icon {
       color: var(--md-sys-color-warning);
     }
 
@@ -865,9 +865,11 @@ class PixelosApp extends LitElement {
   renderInstructionsView() {
     return html`
       <section class="view" aria-label="Instructions view">
-        <md-filled-card class="warning warning-card motion-item" style="--delay: 10ms">
-          <md-icon>warning</md-icon>
-          <p><strong>Never run</strong> <code>fastboot reboot recovery</code> on xaga.</p>
+        <md-filled-card class="warning-card motion-item" style="--delay: 10ms">
+          <div class="warning-content">
+            <md-icon>warning</md-icon>
+            <p><strong>Never run</strong> <code>fastboot reboot recovery</code> on xaga.</p>
+          </div>
         </md-filled-card>
 
         <div class="tools motion-item" style="--delay: 30ms">
