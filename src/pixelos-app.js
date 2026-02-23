@@ -1410,7 +1410,7 @@ class PixelosApp extends LitElement {
         <md-filled-card class="panel hero motion-item" style="--delay: 10ms">
           <md-assist-chip label="Official Device Hub"></md-assist-chip>
           <h1>PixelOS for Xaga</h1>
-          <p class="lead">Material Web powered install portal with ROM downloads, flash commands, and spoofing notes.</p>
+          <p class="lead">PixelOS A16 for xaga(REDMI K50i,Poco X4 GT,Redmi Note 11t/pro+).</p>
           <div class="hero-actions">
             <md-filled-button @click=${() => this.navigateToInstructions('steps')}>
               <md-icon slot="icon">rocket_launch</md-icon>
