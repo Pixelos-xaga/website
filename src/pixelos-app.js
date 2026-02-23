@@ -38,10 +38,6 @@ const FLASH_STEPS = [
     command: 'adb sideload <rom-filename>.zip',
     copyable: false,
     note: 'In recovery, choose Apply update from ADB, then type this manually with your exact ROM zip filename.'
-  },
-  {
-    title: 'Boot system',
-    command: 'adb reboot'
   }
 ];
 
