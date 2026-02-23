@@ -175,11 +175,31 @@ class PixelosApp extends LitElement {
       animation: shared-axis-in 320ms var(--motion-emphasized);
     }
 
+    .home-view {
+      display: grid;
+      gap: 1.05rem;
+    }
+
     .panel {
+      position: relative;
       border-radius: 20px;
       padding: 1.15rem;
       background: var(--md-sys-color-surface-container-low);
       box-shadow: var(--md-sys-elevation-level1), inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 14%, transparent);
+    }
+
+    .panel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: linear-gradient(
+        140deg,
+        color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent),
+        transparent 46%
+      );
+      opacity: 0.09;
     }
 
     .hero {
@@ -564,12 +584,40 @@ class PixelosApp extends LitElement {
       }
     }
 
+    @supports (animation-timeline: view()) {
+      .panel::after {
+        opacity: 0;
+        animation: panel-scroll-glow linear both;
+        animation-timeline: view();
+        animation-range: entry 4% cover 40%;
+      }
+    }
+
+    @keyframes panel-scroll-glow {
+      0% {
+        opacity: 0;
+      }
+
+      50% {
+        opacity: 0.2;
+      }
+
+      100% {
+        opacity: 0.08;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .view,
       .motion-item {
         animation: none;
         opacity: 1;
         transform: none;
+      }
+
+      .panel::after {
+        animation: none;
+        opacity: 0.08;
       }
     }
 
@@ -745,7 +793,7 @@ class PixelosApp extends LitElement {
 
   renderHomeView() {
     return html`
-      <section class="view" aria-label="Home view">
+      <section class="view home-view" aria-label="Home view">
         <article class="panel hero motion-item" style="--delay: 10ms">
           <md-assist-chip label="Official Device Hub"></md-assist-chip>
           <h1>PixelOS for Xaga</h1>
