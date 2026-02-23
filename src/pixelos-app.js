@@ -9,6 +9,25 @@ const DOWNLOADS = [
   }
 ];
 
+const HOME_SCREENSHOTS = [
+  {
+    src: '/screenshots/screenshot-1.png',
+    alt: 'PixelOS home screen screenshot 1'
+  },
+  {
+    src: '/screenshots/screenshot-2.png',
+    alt: 'PixelOS home screen screenshot 2'
+  },
+  {
+    src: '/screenshots/screenshot-3.png',
+    alt: 'PixelOS system UI screenshot 1'
+  },
+  {
+    src: '/screenshots/screenshot-4.png',
+    alt: 'PixelOS system UI screenshot 2'
+  }
+];
+
 const FLASH_STEPS = [
   {
     title: 'Reboot to bootloader',
@@ -283,6 +302,34 @@ class PixelosApp extends LitElement {
       --md-fab-secondary-container-color: color-mix(in srgb, var(--md-sys-color-surface-container-high) 78%, var(--md-sys-color-surface-container-low) 22%);
       --md-fab-secondary-label-text-color: var(--md-sys-color-on-surface);
       --md-fab-secondary-icon-color: var(--md-sys-color-on-surface);
+    }
+
+    .screenshots-panel {
+      --md-elevated-card-container-color: var(--md-sys-color-surface-container-low);
+    }
+
+    .screenshots-grid {
+      margin-top: 0.55rem;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.72rem;
+    }
+
+    .screenshot-item {
+      display: block;
+      margin: 0;
+      overflow: hidden;
+      border-radius: 16px;
+      background: var(--md-sys-color-surface-container-high);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 22%, transparent);
+      aspect-ratio: 9 / 20;
+    }
+
+    .screenshot-item img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
     }
 
     md-filled-button,
@@ -695,12 +742,20 @@ class PixelosApp extends LitElement {
     }
 
     @media (max-width: 940px) {
+      .screenshots-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .content-grid {
         grid-template-columns: 1fr;
       }
     }
 
     @media (max-width: 760px) {
+      .screenshots-grid {
+        grid-template-columns: 1fr;
+      }
+
       .top-bar {
         grid-template-columns: 1fr;
         --md-elevated-card-container-shape: var(--md-sys-shape-corner-large);
@@ -888,7 +943,18 @@ class PixelosApp extends LitElement {
           </div>
         </md-filled-card>
 
-        <md-elevated-card class="panel motion-item" style="--delay: 70ms">
+        <md-elevated-card class="panel screenshots-panel motion-item" style="--delay: 45ms">
+          <h2>Screenshots</h2>
+          <div class="screenshots-grid">
+            ${HOME_SCREENSHOTS.map((shot) => html`
+              <figure class="screenshot-item">
+                <img src=${shot.src} alt=${shot.alt} loading="lazy" decoding="async" />
+              </figure>
+            `)}
+          </div>
+        </md-elevated-card>
+
+        <md-elevated-card class="panel motion-item" style="--delay: 80ms">
           <h2>What You Get</h2>
           <md-list>
             <md-list-item>
