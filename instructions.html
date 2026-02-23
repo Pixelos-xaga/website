@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PixelOS Xaga Instructions</title>
+  <meta name="description" content="Flashing instructions, downloads, and spoofing notes for PixelOS on xaga." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-noise"></div>
+  <div class="bg-glow"></div>
+
+  <header class="nav container">
+    <a class="brand" href="index.html">PixelOS Xaga</a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="#downloads">Downloads</a>
+    </nav>
+  </header>
+
+  <main class="container page-layout">
+    <section class="main-column">
+      <article class="card" id="downloads">
+        <h1>Flashing Instructions</h1>
+        <p class="lead">
+          Follow these steps for a clean install. Keep all files in your platform-tools folder.
+        </p>
+
+        <h2>Downloads</h2>
+        <div class="download-grid">
+          <a class="download-btn" href="https://pixelos.net/download/xaga" target="_blank" rel="noopener noreferrer">
+            <span>ROM Zip</span>
+            <small>PixelOS_xaga.zip</small>
+          </a>
+          <a class="download-btn" href="https://github.com/Pixelos-xaga" target="_blank" rel="noopener noreferrer">
+            <span>boot.img</span>
+            <small>Kernel boot image</small>
+          </a>
+          <a class="download-btn" href="https://github.com/Pixelos-xaga" target="_blank" rel="noopener noreferrer">
+            <span>vendor_boot.img</span>
+            <small>Vendor boot image</small>
+          </a>
+        </div>
+      </article>
+
+      <article class="card" id="steps">
+        <h2>Flash Steps</h2>
+        <ol class="steps">
+          <li>
+            <h3>Reboot to bootloader</h3>
+            <div class="code-box">
+              <code>adb reboot bootloader</code>
+              <button class="copy-btn" data-copy="adb reboot bootloader">Copy</button>
+            </div>
+          </li>
+          <li>
+            <h3>Flash boot image</h3>
+            <div class="code-box">
+              <code>fastboot flash boot boot.img</code>
+              <button class="copy-btn" data-copy="fastboot flash boot boot.img">Copy</button>
+            </div>
+          </li>
+          <li>
+            <h3>Flash vendor boot image</h3>
+            <div class="code-box">
+              <code>fastboot flash vendor_boot vendor_boot.img</code>
+              <button class="copy-btn" data-copy="fastboot flash vendor_boot vendor_boot.img">Copy</button>
+            </div>
+          </li>
+          <li>
+            <h3>Reboot recovery and sideload ROM</h3>
+            <div class="code-box">
+              <code>fastboot reboot recovery</code>
+              <button class="copy-btn" data-copy="fastboot reboot recovery">Copy</button>
+            </div>
+            <div class="code-box">
+              <code>adb sideload PixelOS_xaga.zip</code>
+              <button class="copy-btn" data-copy="adb sideload PixelOS_xaga.zip">Copy</button>
+            </div>
+          </li>
+          <li>
+            <h3>Boot system</h3>
+            <div class="code-box">
+              <code>adb reboot</code>
+              <button class="copy-btn" data-copy="adb reboot">Copy</button>
+            </div>
+          </li>
+        </ol>
+      </article>
+    </section>
+
+    <aside class="side-column">
+      <article class="card spoof-card">
+        <h2>Spoofing Guide</h2>
+        <p>
+          Use this panel to share your short spoofing method with users. You can edit these points any time.
+        </p>
+        <ul>
+          <li>Complete first boot and sign in once before starting spoofing setup.</li>
+          <li>Install your required root/module stack.</li>
+          <li>Apply fingerprint or integrity fixes recommended by your maintainer.</li>
+          <li>Clear Play Store + Google Play Services data after changes.</li>
+          <li>Reboot and verify app/device certification status.</li>
+        </ul>
+        <p class="spoof-note">
+          Tip: keep this section short and update-safe. Avoid posting methods that break OTA or security.
+        </p>
+      </article>
+    </aside>
+  </main>
+
+  <footer class="container footer">
+    <p>PixelOS Xaga community website</p>
+    <a href="https://github.com/Pixelos-xaga/website" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
