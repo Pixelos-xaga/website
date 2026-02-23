@@ -74,7 +74,9 @@ class PixelosApp extends LitElement {
     route: { state: true },
     motionKey: { state: true },
     copiedCommand: { state: true },
-    copyMessage: { state: true }
+    copyMessage: { state: true },
+    routeLoading: { state: true },
+    pendingScreenshots: { state: true }
   };
 
   static styles = css`
@@ -403,6 +405,7 @@ class PixelosApp extends LitElement {
 
     .screenshots-panel {
       --md-elevated-card-container-color: var(--md-sys-color-surface-container-low);
+      position: relative;
     }
 
     .screenshots-grid {
@@ -427,6 +430,35 @@ class PixelosApp extends LitElement {
       height: 100%;
       display: block;
       object-fit: cover;
+    }
+
+    .screenshots-loader {
+      margin-top: 0.72rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.48rem;
+      color: var(--md-sys-color-on-surface-variant);
+      font-size: 0.9rem;
+    }
+
+    .screenshots-loader md-circular-progress {
+      --md-circular-progress-active-indicator-color: var(--md-sys-color-primary);
+      width: 22px;
+      height: 22px;
+    }
+
+    .page-loader {
+      margin: 0.15rem 0 0.55rem;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .page-loader md-circular-progress {
+      --md-circular-progress-active-indicator-color: var(--md-sys-color-primary);
+      width: 26px;
+      height: 26px;
+      opacity: 0.92;
     }
 
     md-filled-button,
@@ -880,8 +912,11 @@ class PixelosApp extends LitElement {
     this.motionKey = 0;
     this.copiedCommand = '';
     this.copyMessage = '';
+    this.routeLoading = true;
+    this.pendingScreenshots = HOME_SCREENSHOTS.length;
     this.pendingInstructionsTarget = '';
     this.scrollRaf = 0;
+    this.routeLoadingTimer = 0;
     this.handleHashChange = this.handleHashChange.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
   }
@@ -892,6 +927,7 @@ class PixelosApp extends LitElement {
     window.addEventListener('scroll', this.handleScroll, { passive: true });
     this.handleHashChange();
     this.handleScroll();
+    this.scheduleRouteLoadingEnd();
   }
 
   disconnectedCallback() {
@@ -900,6 +936,10 @@ class PixelosApp extends LitElement {
     if (this.scrollRaf) {
       cancelAnimationFrame(this.scrollRaf);
       this.scrollRaf = 0;
+    }
+    if (this.routeLoadingTimer) {
+      clearTimeout(this.routeLoadingTimer);
+      this.routeLoadingTimer = 0;
     }
     super.disconnectedCallback();
   }
@@ -914,6 +954,13 @@ class PixelosApp extends LitElement {
       this.pendingInstructionsTarget = '';
       this.scheduleInstructionsScroll(target);
     }
+
+    if (
+      this.routeLoading
+      && (changedProperties.has('route') || changedProperties.has('motionKey'))
+    ) {
+      this.scheduleRouteLoadingEnd();
+    }
   }
 
   handleHashChange() {
@@ -921,6 +968,7 @@ class PixelosApp extends LitElement {
     const nextRoute = raw.startsWith('instructions') ? 'instructions' : 'home';
 
     if (this.route !== nextRoute) {
+      this.startRouteLoading();
       this.route = nextRoute;
       this.motionKey += 1;
     }
@@ -941,7 +989,27 @@ class PixelosApp extends LitElement {
     });
   }
 
+  startRouteLoading() {
+    this.routeLoading = true;
+    if (this.routeLoadingTimer) {
+      clearTimeout(this.routeLoadingTimer);
+      this.routeLoadingTimer = 0;
+    }
+  }
+
+  scheduleRouteLoadingEnd() {
+    if (this.routeLoadingTimer) {
+      clearTimeout(this.routeLoadingTimer);
+    }
+
+    this.routeLoadingTimer = setTimeout(() => {
+      this.routeLoading = false;
+      this.routeLoadingTimer = 0;
+    }, 280);
+  }
+
   navigate(route) {
+    this.startRouteLoading();
     const hash = route === 'instructions' ? '#/instructions' : '#/';
     if (window.location.hash !== hash) {
       window.location.hash = hash;
@@ -1014,6 +1082,12 @@ class PixelosApp extends LitElement {
       }, 1200);
     } catch {
       this.copyMessage = 'Copy failed';
+    }
+  }
+
+  handleScreenshotSettled() {
+    if (this.pendingScreenshots > 0) {
+      this.pendingScreenshots -= 1;
     }
   }
 
@@ -1094,10 +1168,22 @@ class PixelosApp extends LitElement {
           <div class="screenshots-grid">
             ${HOME_SCREENSHOTS.map((shot) => html`
               <figure class="screenshot-item">
-                <img src=${shot.src} alt=${shot.alt} loading="lazy" decoding="async" />
+                <img
+                  src=${shot.src}
+                  alt=${shot.alt}
+                  loading="lazy"
+                  decoding="async"
+                  @load=${() => this.handleScreenshotSettled()}
+                  @error=${() => this.handleScreenshotSettled()} />
               </figure>
             `)}
           </div>
+          ${this.pendingScreenshots > 0 ? html`
+            <div class="screenshots-loader" role="status" aria-live="polite">
+              <md-circular-progress indeterminate></md-circular-progress>
+              <span>Loading screenshots...</span>
+            </div>
+          ` : ''}
         </md-elevated-card>
 
         <md-elevated-card class="panel motion-item" style="--delay: 80ms">
@@ -1258,6 +1344,11 @@ class PixelosApp extends LitElement {
       ${this.renderSideGallery('right')}
         <div class="shell">
         ${this.renderTopBar()}
+        ${this.routeLoading ? html`
+          <div class="page-loader" role="status" aria-label="Loading page content">
+            <md-circular-progress indeterminate></md-circular-progress>
+          </div>
+        ` : ''}
         ${keyed(this.motionKey, this.route === 'instructions' ? this.renderInstructionsView() : this.renderHomeView())}
 
         <md-elevated-card class="footer">
