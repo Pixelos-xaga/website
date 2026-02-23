@@ -145,6 +145,7 @@ class PixelosApp extends LitElement {
       border-radius: 999px;
       background: var(--md-sys-color-surface-container);
       box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 14%, transparent);
+      --md-primary-tab-container-color: transparent;
       --md-primary-tab-active-indicator-color: var(--md-sys-color-primary);
       --md-primary-tab-active-label-text-color: var(--md-sys-color-primary);
       --md-primary-tab-inactive-label-text-color: var(--md-sys-color-on-surface-variant);
@@ -161,6 +162,7 @@ class PixelosApp extends LitElement {
     md-primary-tab {
       border-radius: 999px;
       margin-inline: 2px;
+      background: transparent;
     }
 
     md-primary-tab[active] {
