@@ -1161,9 +1161,11 @@ class PixelosApp extends LitElement {
     this.pendingInstructionsTarget = '';
     this.scrollRaf = 0;
     this.routeLoadingTimer = 0;
+    this.routeLoadingHardStopTimer = 0;
     this.routeLoadingStart = 0;
     this.handleHashChange = this.handleHashChange.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
+    this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
   }
 
   connectedCallback() {
@@ -1171,6 +1173,7 @@ class PixelosApp extends LitElement {
     this.startRouteLoading();
     window.addEventListener('hashchange', this.handleHashChange);
     window.addEventListener('scroll', this.handleScroll, { passive: true });
+    document.addEventListener('visibilitychange', this.handleVisibilityChange);
     this.handleHashChange();
     this.handleScroll();
   }
@@ -1182,14 +1185,12 @@ class PixelosApp extends LitElement {
   disconnectedCallback() {
     window.removeEventListener('hashchange', this.handleHashChange);
     window.removeEventListener('scroll', this.handleScroll);
+    document.removeEventListener('visibilitychange', this.handleVisibilityChange);
     if (this.scrollRaf) {
       cancelAnimationFrame(this.scrollRaf);
       this.scrollRaf = 0;
     }
-    if (this.routeLoadingTimer) {
-      clearTimeout(this.routeLoadingTimer);
-      this.routeLoadingTimer = 0;
-    }
+    this.clearRouteLoadingTimers();
     super.disconnectedCallback();
   }
 
@@ -1238,26 +1239,70 @@ class PixelosApp extends LitElement {
     });
   }
 
-  startRouteLoading() {
-    this.routeLoadingStart = performance.now();
-    this.routeLoading = true;
+  handleVisibilityChange() {
+    if (document.visibilityState === 'hidden') {
+      this.finishRouteLoading();
+      return;
+    }
+
+    if (this.routeLoading) {
+      this.scheduleRouteLoadingEnd();
+    }
+  }
+
+  clearRouteLoadingTimers() {
     if (this.routeLoadingTimer) {
       clearTimeout(this.routeLoadingTimer);
       this.routeLoadingTimer = 0;
     }
+
+    if (this.routeLoadingHardStopTimer) {
+      clearTimeout(this.routeLoadingHardStopTimer);
+      this.routeLoadingHardStopTimer = 0;
+    }
+  }
+
+  finishRouteLoading() {
+    this.clearRouteLoadingTimers();
+    this.routeLoading = false;
+  }
+
+  startRouteLoading() {
+    this.routeLoadingStart = performance.now();
+    this.routeLoading = true;
+    this.clearRouteLoadingTimers();
+
+    if (document.visibilityState !== 'visible') {
+      this.finishRouteLoading();
+      return;
+    }
+
+    this.routeLoadingHardStopTimer = setTimeout(() => {
+      this.finishRouteLoading();
+    }, 2000);
   }
 
   scheduleRouteLoadingEnd() {
+    if (!this.routeLoading) {
+      this.clearRouteLoadingTimers();
+      return;
+    }
+
+    if (document.visibilityState !== 'visible') {
+      this.finishRouteLoading();
+      return;
+    }
+
     if (this.routeLoadingTimer) {
       clearTimeout(this.routeLoadingTimer);
+      this.routeLoadingTimer = 0;
     }
 
     const elapsed = this.routeLoadingStart ? performance.now() - this.routeLoadingStart : 0;
     const delay = Math.max(180, 520 - elapsed);
 
     this.routeLoadingTimer = setTimeout(() => {
-      this.routeLoading = false;
-      this.routeLoadingTimer = 0;
+      this.finishRouteLoading();
     }, delay);
   }
 
