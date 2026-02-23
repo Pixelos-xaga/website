@@ -601,6 +601,7 @@ class PixelosApp extends LitElement {
     this.motionKey = 0;
     this.copiedCommand = '';
     this.copyMessage = '';
+    this.pendingInstructionsTarget = '';
     this.handleHashChange = this.handleHashChange.bind(this);
   }
 
@@ -613,6 +614,18 @@ class PixelosApp extends LitElement {
   disconnectedCallback() {
     window.removeEventListener('hashchange', this.handleHashChange);
     super.disconnectedCallback();
+  }
+
+  updated(changedProperties) {
+    if (
+      this.route === 'instructions'
+      && this.pendingInstructionsTarget
+      && (changedProperties.has('route') || changedProperties.has('motionKey'))
+    ) {
+      const target = this.pendingInstructionsTarget;
+      this.pendingInstructionsTarget = '';
+      this.scheduleInstructionsScroll(target);
+    }
   }
 
   handleHashChange() {
@@ -634,6 +647,42 @@ class PixelosApp extends LitElement {
 
     this.route = route;
     this.motionKey += 1;
+  }
+
+  navigateToInstructions(target = 'downloads') {
+    this.pendingInstructionsTarget = target;
+    this.navigate('instructions');
+  }
+
+  scheduleInstructionsScroll(target) {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => this.scrollInstructionsTarget(target));
+    });
+  }
+
+  scrollInstructionsTarget(target) {
+    const targetSelector = target === 'steps' ? '#flash-steps-card' : '#downloads-card';
+    const targetElement = this.renderRoot?.querySelector(targetSelector);
+    if (!targetElement) {
+      return;
+    }
+
+    const targetRect = targetElement.getBoundingClientRect();
+    const targetTop = window.scrollY + targetRect.top;
+    let scrollTop = targetTop - 88;
+
+    if (target === 'steps') {
+      scrollTop = targetTop - (window.innerHeight * 0.42);
+      const downloadsElement = this.renderRoot?.querySelector('#downloads-card');
+      if (downloadsElement) {
+        const downloadsRect = downloadsElement.getBoundingClientRect();
+        const downloadsTop = window.scrollY + downloadsRect.top;
+        const maxScrollWithDownloadsVisible = downloadsTop + downloadsRect.height - 84;
+        scrollTop = Math.min(scrollTop, maxScrollWithDownloadsVisible);
+      }
+    }
+
+    window.scrollTo({ top: Math.max(0, scrollTop), behavior: 'smooth' });
   }
 
   openDialog(id) {
@@ -702,11 +751,11 @@ class PixelosApp extends LitElement {
           <h1>PixelOS for Xaga</h1>
           <p class="lead">Material Web powered install portal with ROM downloads, flash commands, and spoofing notes.</p>
           <div class="hero-actions">
-            <md-filled-button @click=${() => this.navigate('instructions')}>
+            <md-filled-button @click=${() => this.navigateToInstructions('steps')}>
               <md-icon slot="icon">rocket_launch</md-icon>
               Open Instructions
             </md-filled-button>
-            <md-filled-tonal-button @click=${() => this.navigate('instructions')}>
+            <md-filled-tonal-button @click=${() => this.navigateToInstructions('downloads')}>
               <md-icon slot="icon">download</md-icon>
               Go to Downloads
             </md-filled-tonal-button>
@@ -754,7 +803,7 @@ class PixelosApp extends LitElement {
 
         <div class="content-grid">
           <section class="view-grid">
-            <article class="panel motion-item" style="--delay: 50ms">
+            <article id="downloads-card" class="panel motion-item" style="--delay: 50ms">
               <h2 id="downloads">Downloads</h2>
               <div class="download-grid">
                 ${DOWNLOADS.map((item) => html`
@@ -769,7 +818,7 @@ class PixelosApp extends LitElement {
               </div>
             </article>
 
-            <article class="panel motion-item" style="--delay: 90ms">
+            <article id="flash-steps-card" class="panel motion-item" style="--delay: 90ms">
               <h2>Flash Steps</h2>
               <ol class="commands">
                 ${FLASH_STEPS.map((step) => html`
