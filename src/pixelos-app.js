@@ -3,7 +3,7 @@ import { keyed } from 'lit/directives/keyed.js';
 
 const DOWNLOADS = [
   {
-    name: 'Download PixelOS Xaga Files',
+    name: 'Download PixelOS Xaga ROM',
     note: 'SourceForge project files',
     href: 'https://sourceforge.net/projects/xagaproject/files/Pixelos-xaga/'
   }
