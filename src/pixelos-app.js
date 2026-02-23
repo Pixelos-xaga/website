@@ -538,6 +538,25 @@ class PixelosApp extends LitElement {
       stroke: currentColor;
     }
 
+    .disclaimer {
+      margin-top: 0.65rem;
+      padding: 0 0.2rem;
+      text-align: center;
+      color: var(--md-sys-color-on-surface-variant);
+      font-size: 0.9rem;
+    }
+
+    .disclaimer a {
+      color: var(--md-sys-color-primary);
+      text-decoration: none;
+      font-family: var(--font-brand);
+      font-weight: 500;
+    }
+
+    .disclaimer a:hover {
+      text-decoration: underline;
+    }
+
     .sr-only {
       position: absolute;
       width: 1px;
@@ -968,6 +987,11 @@ class PixelosApp extends LitElement {
             </a>
           </div>
         </footer>
+
+        <p class="disclaimer">
+          This is not an official PixelOS website. Visit
+          <a href="https://pixelos.net/" target="_blank" rel="noopener noreferrer">official PixelOS</a>.
+        </p>
 
         <md-dialog id="safetyDialog">
           <div slot="headline">Xaga Flash Safety</div>
