@@ -1523,7 +1523,6 @@ class PixelosApp extends LitElement {
   render() {
     return html`
       ${this.renderSideGallery('left')}
-      ${this.renderSideGallery('right')}
         <div class="shell">
         ${this.renderTopBar()}
         ${this.routeLoading ? html`
