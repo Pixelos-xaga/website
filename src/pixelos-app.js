@@ -81,10 +81,15 @@ class PixelosApp extends LitElement {
       --md-sys-color-surface-container-high: #29403a;
       --md-sys-color-surface-container-highest: #34504a;
       --md-sys-color-outline: #98aba2;
+      --md-sys-color-outline-variant: #6f8279;
       --md-sys-color-on-surface-variant: #c8dbd2;
       --md-sys-color-error: #ffb4ab;
       --md-sys-color-error-container: #93000a;
       --md-sys-color-shadow: #000;
+      --md-sys-shape-corner-extra-large: 28px;
+      --md-sys-shape-corner-large: 20px;
+      --md-sys-shape-corner-medium: 16px;
+      --md-sys-shape-corner-small: 12px;
 
       --md-sys-elevation-level1: 0px 1px 2px 0px rgb(0 0 0 / 30%), 0px 1px 3px 1px rgb(0 0 0 / 15%);
 
@@ -112,9 +117,9 @@ class PixelosApp extends LitElement {
     }
 
     .top-bar {
-      border-radius: 28px;
-      background: var(--md-sys-color-surface-container-high);
-      box-shadow: var(--md-sys-elevation-level1), inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 14%, transparent);
+      --md-elevated-card-container-color: var(--md-sys-color-surface-container-high);
+      --md-elevated-card-container-shape: var(--md-sys-shape-corner-extra-large);
+      --md-elevated-card-container-elevation: 1;
       display: grid;
       grid-template-columns: auto 1fr;
       align-items: center;
@@ -180,29 +185,28 @@ class PixelosApp extends LitElement {
     }
 
     .panel {
-      position: relative;
-      border-radius: 20px;
+      display: block;
       padding: 1.15rem;
-      background: var(--md-sys-color-surface-container-low);
-      box-shadow: var(--md-sys-elevation-level1), inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 14%, transparent);
     }
 
-    .panel::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      pointer-events: none;
-      background: linear-gradient(
-        140deg,
-        color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent),
-        transparent 46%
-      );
-      opacity: 0.09;
+    md-filled-card.panel {
+      --md-filled-card-container-color: color-mix(in srgb, var(--md-sys-color-primary-container) 40%, var(--md-sys-color-surface-container-high) 60%);
+      --md-filled-card-container-shape: var(--md-sys-shape-corner-extra-large);
+    }
+
+    md-elevated-card.panel {
+      --md-elevated-card-container-color: var(--md-sys-color-surface-container-low);
+      --md-elevated-card-container-shape: var(--md-sys-shape-corner-large);
+      --md-elevated-card-container-elevation: 1;
+    }
+
+    md-outlined-card.panel {
+      --md-outlined-card-container-color: var(--md-sys-color-surface-container-low);
+      --md-outlined-card-container-shape: var(--md-sys-shape-corner-large);
+      --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-outline) 42%, transparent);
     }
 
     .hero {
-      border-radius: 28px;
       padding: clamp(1.2rem, 3vw, 2rem);
     }
 
@@ -255,8 +259,13 @@ class PixelosApp extends LitElement {
       align-items: center;
     }
 
+    .hero-actions md-fab {
+      --md-fab-container-height: 46px;
+    }
+
     md-filled-button,
     md-filled-tonal-button,
+    md-fab,
     md-outlined-button,
     md-text-button,
     md-assist-chip,
@@ -276,6 +285,12 @@ class PixelosApp extends LitElement {
     md-filled-tonal-button {
       --md-filled-tonal-button-container-height: 40px;
       --md-filled-tonal-button-container-shape: 999px;
+    }
+
+    md-fab {
+      --md-fab-container-shape: var(--md-sys-shape-corner-large);
+      --md-fab-container-elevation: 1;
+      --md-fab-lowered-container-elevation: 1;
     }
 
     md-outlined-button {
@@ -311,11 +326,13 @@ class PixelosApp extends LitElement {
       display: flex;
       align-items: center;
       gap: 0.55rem;
-      border-radius: 16px;
       padding: 0.78rem 0.96rem;
       color: var(--md-sys-color-on-warning-container);
-      background: color-mix(in srgb, var(--md-sys-color-warning-container) 52%, transparent);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-warning) 48%, transparent);
+    }
+
+    .warning-card {
+      --md-filled-card-container-color: color-mix(in srgb, var(--md-sys-color-warning-container) 48%, var(--md-sys-color-surface-container-low) 52%);
+      --md-filled-card-container-shape: var(--md-sys-shape-corner-large);
     }
 
     .warning p {
@@ -348,10 +365,12 @@ class PixelosApp extends LitElement {
     }
 
     .download-item {
-      border-radius: 14px;
+      display: block;
       padding: 0.72rem;
-      background: var(--md-sys-color-surface-container-high);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 12%, transparent);
+      --md-outlined-card-container-color: var(--md-sys-color-surface-container-high);
+      --md-outlined-card-container-shape: var(--md-sys-shape-corner-medium);
+      --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-outline) 30%, transparent);
+      --md-outlined-card-outline-width: 1px;
       display: grid;
       gap: 0.35rem;
     }
@@ -365,10 +384,17 @@ class PixelosApp extends LitElement {
     }
 
     .commands li {
-      border-radius: 14px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .command-item {
+      display: block;
       padding: 0.75rem;
-      background: var(--md-sys-color-surface-container-high);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 11%, transparent);
+      --md-outlined-card-container-color: var(--md-sys-color-surface-container-high);
+      --md-outlined-card-container-shape: var(--md-sys-shape-corner-medium);
+      --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-outline) 28%, transparent);
     }
 
     .commands p {
@@ -457,13 +483,19 @@ class PixelosApp extends LitElement {
     }
 
     .spoof-list li {
-      border-radius: 14px;
-      padding: 0.66rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .spoof-card {
       display: grid;
       grid-template-columns: auto 1fr;
       gap: 0.5rem;
-      background: var(--md-sys-color-surface-container-high);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 11%, transparent);
+      padding: 0.66rem;
+      --md-outlined-card-container-color: var(--md-sys-color-surface-container-high);
+      --md-outlined-card-container-shape: var(--md-sys-shape-corner-medium);
+      --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-outline) 26%, transparent);
     }
 
     .spoof-list .material-symbols-outlined {
@@ -495,15 +527,15 @@ class PixelosApp extends LitElement {
     }
 
     .footer {
+      --md-elevated-card-container-color: var(--md-sys-color-surface-container-low);
+      --md-elevated-card-container-shape: var(--md-sys-shape-corner-large);
+      --md-elevated-card-container-elevation: 1;
       margin-top: 1rem;
-      border-radius: 18px;
       padding: 0.8rem 1rem;
       display: flex;
       justify-content: space-between;
       gap: 1rem;
       flex-wrap: wrap;
-      background: var(--md-sys-color-surface-container-low);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 11%, transparent);
       color: var(--md-sys-color-on-surface-variant);
       font-size: 0.95rem;
     }
@@ -602,40 +634,12 @@ class PixelosApp extends LitElement {
       }
     }
 
-    @supports (animation-timeline: view()) {
-      .panel::after {
-        opacity: 0;
-        animation: panel-scroll-glow linear both;
-        animation-timeline: view();
-        animation-range: entry 4% cover 40%;
-      }
-    }
-
-    @keyframes panel-scroll-glow {
-      0% {
-        opacity: 0;
-      }
-
-      50% {
-        opacity: 0.2;
-      }
-
-      100% {
-        opacity: 0.08;
-      }
-    }
-
     @media (prefers-reduced-motion: reduce) {
       .view,
       .motion-item {
         animation: none;
         opacity: 1;
         transform: none;
-      }
-
-      .panel::after {
-        animation: none;
-        opacity: 0.08;
       }
     }
 
@@ -648,7 +652,7 @@ class PixelosApp extends LitElement {
     @media (max-width: 760px) {
       .top-bar {
         grid-template-columns: 1fr;
-        border-radius: 20px;
+        --md-elevated-card-container-shape: var(--md-sys-shape-corner-large);
       }
 
       md-tabs {
@@ -782,7 +786,7 @@ class PixelosApp extends LitElement {
 
   renderTopBar() {
     return html`
-      <header class="top-bar">
+      <md-elevated-card class="top-bar">
         <a class="brand" href="#/" @click=${(event) => {
           event.preventDefault();
           this.navigate('home');
@@ -805,30 +809,36 @@ class PixelosApp extends LitElement {
             Instructions
           </md-primary-tab>
         </md-tabs>
-      </header>
+      </md-elevated-card>
     `;
   }
 
   renderHomeView() {
     return html`
       <section class="view home-view" aria-label="Home view">
-        <article class="panel hero motion-item" style="--delay: 10ms">
+        <md-filled-card class="panel hero motion-item" style="--delay: 10ms">
           <md-assist-chip label="Official Device Hub"></md-assist-chip>
           <h1>PixelOS for Xaga</h1>
           <p class="lead">Material Web powered install portal with ROM downloads, flash commands, and spoofing notes.</p>
           <div class="hero-actions">
-            <md-filled-button @click=${() => this.navigateToInstructions('steps')}>
+            <md-fab
+              lowered
+              variant="primary"
+              label="Open Instructions"
+              @click=${() => this.navigateToInstructions('steps')}>
               <md-icon slot="icon">rocket_launch</md-icon>
-              Open Instructions
-            </md-filled-button>
-            <md-filled-tonal-button @click=${() => this.navigateToInstructions('downloads')}>
+            </md-fab>
+            <md-fab
+              lowered
+              variant="secondary"
+              label="Go to Downloads"
+              @click=${() => this.navigateToInstructions('downloads')}>
               <md-icon slot="icon">download</md-icon>
-              Go to Downloads
-            </md-filled-tonal-button>
+            </md-fab>
           </div>
-        </article>
+        </md-filled-card>
 
-        <article class="panel motion-item" style="--delay: 70ms">
+        <md-elevated-card class="panel motion-item" style="--delay: 70ms">
           <h2>What You Get</h2>
           <md-list>
             <md-list-item>
@@ -847,7 +857,7 @@ class PixelosApp extends LitElement {
               <div slot="supporting-text">Short post-install guidance panel.</div>
             </md-list-item>
           </md-list>
-        </article>
+        </md-elevated-card>
       </section>
     `;
   }
@@ -855,10 +865,10 @@ class PixelosApp extends LitElement {
   renderInstructionsView() {
     return html`
       <section class="view" aria-label="Instructions view">
-        <section class="warning motion-item" style="--delay: 10ms">
+        <md-filled-card class="warning warning-card motion-item" style="--delay: 10ms">
           <md-icon>warning</md-icon>
           <p><strong>Never run</strong> <code>fastboot reboot recovery</code> on xaga.</p>
-        </section>
+        </md-filled-card>
 
         <div class="tools motion-item" style="--delay: 30ms">
           <md-outlined-button @click=${() => this.openDialog('safetyDialog')}>
@@ -869,99 +879,109 @@ class PixelosApp extends LitElement {
 
         <div class="content-grid">
           <section class="view-grid">
-            <article id="downloads-card" class="panel motion-item" style="--delay: 50ms">
+            <md-outlined-card id="downloads-card" class="panel motion-item" style="--delay: 50ms">
               <h2 id="downloads">Downloads</h2>
               <div class="download-grid">
                 ${DOWNLOADS.map((item) => html`
-                  <div class="download-item">
+                  <md-outlined-card class="download-item">
                     <md-filled-button href=${item.href} target="_blank">
                       <md-icon slot="icon">download</md-icon>
                       ${item.name}
                     </md-filled-button>
                     <small>${item.note}</small>
-                  </div>
+                  </md-outlined-card>
                 `)}
               </div>
-            </article>
+            </md-outlined-card>
 
-            <article id="flash-steps-card" class="panel motion-item" style="--delay: 90ms">
+            <md-outlined-card id="flash-steps-card" class="panel motion-item" style="--delay: 90ms">
               <h2>Flash Steps</h2>
               <ol class="commands">
                 ${FLASH_STEPS.map((step) => html`
                   <li>
-                    <h3>${step.title}</h3>
-                    ${step.warning ? html`<p class="step-warning"><strong>${step.warning}</strong></p>` : ''}
-                    ${step.guidance ? html`
-                      <div class="step-guidance">
-                        <div class="guidance-row warning">
-                          <span class="guidance-label">Avoid</span>
-                          <p class="guidance-text"><strong>Do not use ${step.guidance.avoid}</strong></p>
+                    <md-outlined-card class="command-item">
+                      <h3>${step.title}</h3>
+                      ${step.warning ? html`<p class="step-warning"><strong>${step.warning}</strong></p>` : ''}
+                      ${step.guidance ? html`
+                        <div class="step-guidance">
+                          <div class="guidance-row warning">
+                            <span class="guidance-label">Avoid</span>
+                            <p class="guidance-text"><strong>Do not use ${step.guidance.avoid}</strong></p>
+                          </div>
+                          <div class="guidance-row">
+                            <span class="guidance-label">Do this</span>
+                            <p class="guidance-text">${step.guidance.action}</p>
+                          </div>
                         </div>
-                        <div class="guidance-row">
-                          <span class="guidance-label">Do this</span>
-                          <p class="guidance-text">${step.guidance.action}</p>
+                      ` : ''}
+                      ${step.note ? html`<p>${step.note}</p>` : ''}
+                      ${step.command ? html`
+                        <div class="command-row">
+                          <md-outlined-text-field
+                            class="command-field"
+                            label=${step.copyable === false ? 'Type manually' : 'Command'}
+                            readonly
+                            .value=${step.command}></md-outlined-text-field>
+                          ${step.copyable === false ? '' : html`
+                            <md-icon-button
+                              class="copy"
+                              aria-label="Copy command"
+                              @click=${() => this.copyCommand(step.command)}>
+                              <md-icon>${this.copiedCommand === step.command ? 'check' : 'content_copy'}</md-icon>
+                            </md-icon-button>
+                          `}
                         </div>
-                      </div>
-                    ` : ''}
-                    ${step.note ? html`<p>${step.note}</p>` : ''}
-                    ${step.command ? html`
-                      <div class="command-row">
-                        <md-outlined-text-field
-                          class="command-field"
-                          label=${step.copyable === false ? 'Type manually' : 'Command'}
-                          readonly
-                          .value=${step.command}></md-outlined-text-field>
-                        ${step.copyable === false ? '' : html`
-                          <md-icon-button
-                            class="copy"
-                            aria-label="Copy command"
-                            @click=${() => this.copyCommand(step.command)}>
-                            <md-icon>${this.copiedCommand === step.command ? 'check' : 'content_copy'}</md-icon>
-                          </md-icon-button>
-                        `}
-                      </div>
-                    ` : ''}
+                      ` : ''}
+                    </md-outlined-card>
                   </li>
                 `)}
               </ol>
-            </article>
+            </md-outlined-card>
           </section>
 
           <aside>
-            <article class="panel motion-item" style="--delay: 120ms">
+            <md-outlined-card class="panel motion-item" style="--delay: 120ms">
               <h2>Spoofing Guide</h2>
               <p>Keep this section short and update-safe. Replace with your latest tested method.</p>
               <ul class="spoof-list">
                 <li>
-                  <span class="material-symbols-outlined">check_circle</span>
-                  <div>
-                    <strong>Finish first boot first</strong>
-                    <p>Complete setup and sign in before spoofing work.</p>
-                  </div>
+                  <md-outlined-card class="spoof-card">
+                    <span class="material-symbols-outlined">check_circle</span>
+                    <div>
+                      <strong>Finish first boot first</strong>
+                      <p>Complete setup and sign in before spoofing work.</p>
+                    </div>
+                  </md-outlined-card>
                 </li>
                 <li>
-                  <span class="material-symbols-outlined">extension</span>
-                  <div>
-                    <strong>Add keybox or pif.json</strong>
-                    <p>After finish boot setup, add keybox or pif.json through Developer options.</p>
-                  </div>
+                  <md-outlined-card class="spoof-card">
+                    <span class="material-symbols-outlined">extension</span>
+                    <div>
+                      <strong>Add keybox or pif.json</strong>
+                      <p>After finish boot setup, add keybox or pif.json through Developer options.</p>
+                    </div>
+                  </md-outlined-card>
                 </li>
                 <li>
-                  <span class="material-symbols-outlined">delete_sweep</span>
-                  <div>
-                    <strong>Clear Google app data</strong>
-                    <p>Clear Play Store and Play Services after fingerprint changes.</p>
-                  </div>
+                  <md-outlined-card class="spoof-card">
+                    <span class="material-symbols-outlined">delete_sweep</span>
+                    <div>
+                      <strong>Clear Google app data</strong>
+                      <p>Clear Play Store and Play Services after fingerprint changes.</p>
+                    </div>
+                  </md-outlined-card>
                 </li>
                 <li>
-                  <span class="material-symbols-outlined">verified</span>
-                  <div>
-                    <strong>Reboot and verify</strong>
-                    <p>Reboot once and verify certification and login status.</p>
-                  </div>
+                  <md-outlined-card class="spoof-card">
+                    <span class="material-symbols-outlined">verified</span>
+                    <div>
+                      <strong>Reboot and verify</strong>
+                      <p>Reboot once and verify certification and login status.</p>
+                    </div>
+                  </md-outlined-card>
                 </li>
               </ul>
-            </article>
+            </md-outlined-card>
           </aside>
         </div>
       </section>
@@ -970,11 +990,11 @@ class PixelosApp extends LitElement {
 
   render() {
     return html`
-      <div class="shell">
+        <div class="shell">
         ${this.renderTopBar()}
         ${keyed(this.motionKey, this.route === 'instructions' ? this.renderInstructionsView() : this.renderHomeView())}
 
-        <footer class="footer">
+        <md-elevated-card class="footer">
           <span>PixelOS Xaga community website</span>
           <div class="social-links">
             <a class="social-link" href="https://github.com/Pixelos-xaga/" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
@@ -988,7 +1008,7 @@ class PixelosApp extends LitElement {
               </svg>
             </a>
           </div>
-        </footer>
+        </md-elevated-card>
 
         <p class="disclaimer">
           This is not directly affiliated with
