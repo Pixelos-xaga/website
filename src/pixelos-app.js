@@ -1050,7 +1050,7 @@ class PixelosApp extends LitElement {
         </md-elevated-card>
 
         <p class="disclaimer">
-          This is not directly affiliated with
+          This website is not directly affiliated with
           <a href="https://pixelos.net/" target="_blank" rel="noopener noreferrer">official PixelOS</a>.
         </p>
         <p class="credit">
