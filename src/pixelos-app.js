@@ -536,14 +536,9 @@ class PixelosApp extends LitElement {
       align-items: center;
     }
 
-    .hero-actions md-fab {
-      --md-fab-container-height: 46px;
-    }
-
-    .downloads-fab {
-      --md-fab-secondary-container-color: color-mix(in srgb, var(--md-sys-color-surface-container-high) 78%, var(--md-sys-color-surface-container-low) 22%);
-      --md-fab-secondary-label-text-color: var(--md-sys-color-on-surface);
-      --md-fab-secondary-icon-color: var(--md-sys-color-on-surface);
+    .hero-actions md-filled-button,
+    .hero-actions md-filled-tonal-button {
+      align-self: flex-start;
     }
 
     .screenshots-panel {
@@ -669,7 +664,7 @@ class PixelosApp extends LitElement {
 
     md-filled-button,
     md-filled-tonal-button,
-    md-fab,
+    md-elevated-button,
     md-outlined-button,
     md-text-button,
     md-assist-chip,
@@ -701,28 +696,6 @@ class PixelosApp extends LitElement {
     md-primary-tab[active] md-icon {
       --m3-icon-fill: 1;
       --m3-icon-weight: 600;
-    }
-
-    md-filled-button {
-      --md-filled-button-container-height: 40px;
-      --md-filled-button-container-shape: 999px;
-    }
-
-    md-filled-tonal-button {
-      --md-filled-tonal-button-container-height: 40px;
-      --md-filled-tonal-button-container-shape: 999px;
-    }
-
-    md-fab {
-      --md-fab-container-shape: var(--md-sys-shape-corner-large);
-      --md-fab-container-elevation: 1;
-      --md-fab-lowered-container-elevation: 1;
-    }
-
-    md-outlined-button {
-      --md-outlined-button-container-height: 40px;
-      --md-outlined-button-container-shape: 999px;
-      --md-outlined-button-outline-color: color-mix(in srgb, var(--md-sys-color-outline) 55%, transparent);
     }
 
     md-list {
@@ -907,11 +880,6 @@ class PixelosApp extends LitElement {
       --md-outlined-text-field-input-text-font: 500 13px/1.4 var(--font-mono);
       --md-outlined-text-field-input-text-color: var(--md-sys-color-on-surface);
       --md-outlined-text-field-label-text-color: var(--md-sys-color-on-surface-variant);
-    }
-
-    .copy {
-      --md-icon-button-icon-color: var(--md-sys-color-primary);
-      --md-icon-button-state-layer-color: var(--md-sys-color-primary);
     }
 
     .spoof-list {
@@ -1444,21 +1412,14 @@ class PixelosApp extends LitElement {
           <h1>PixelOS for Xaga</h1>
           <p class="lead">Material Web powered install portal with ROM downloads, flash commands, and spoofing notes.</p>
           <div class="hero-actions">
-            <md-fab
-              lowered
-              variant="primary"
-              label="Open Instructions"
-              @click=${() => this.navigateToInstructions('steps')}>
+            <md-filled-button @click=${() => this.navigateToInstructions('steps')}>
               <md-icon slot="icon">rocket_launch</md-icon>
-            </md-fab>
-            <md-fab
-              class="downloads-fab"
-              lowered
-              variant="secondary"
-              label="Go to Downloads"
-              @click=${() => this.navigateToInstructions('downloads')}>
+              Open Instructions
+            </md-filled-button>
+            <md-filled-tonal-button @click=${() => this.navigateToInstructions('downloads')}>
               <md-icon slot="icon">download</md-icon>
-            </md-fab>
+              Go to Downloads
+            </md-filled-tonal-button>
           </div>
         </md-filled-card>
 
@@ -1533,10 +1494,10 @@ class PixelosApp extends LitElement {
               <div class="download-grid">
                 ${DOWNLOADS.map((item) => html`
                   <md-outlined-card class="download-item">
-                    <md-filled-button href=${item.href} target="_blank">
+                    <md-elevated-button href=${item.href} target="_blank" rel="noopener noreferrer">
                       <md-icon slot="icon">download</md-icon>
                       ${item.name}
-                    </md-filled-button>
+                    </md-elevated-button>
                     <small>${item.note}</small>
                   </md-outlined-card>
                 `)}
@@ -1573,7 +1534,6 @@ class PixelosApp extends LitElement {
                             .value=${step.command}></md-outlined-text-field>
                           ${step.copyable === false ? '' : html`
                             <md-icon-button
-                              class="copy"
                               aria-label="Copy command"
                               @click=${() => this.copyCommand(step.command)}>
                               <md-icon>${this.copiedCommand === step.command ? 'check' : 'content_copy'}</md-icon>
