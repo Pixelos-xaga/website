@@ -235,8 +235,8 @@ class PixelosApp extends LitElement {
 
       --motion-standard: cubic-bezier(0.2, 0, 0, 1);
       --motion-emphasized: cubic-bezier(0.2, 0, 0, 1);
-      --side-left-shift: -90px;
-      --side-right-shift: -40px;
+      --side-left-shift: -62px;
+      --side-right-shift: -26px;
 
       color-scheme: dark;
       display: block;
@@ -282,7 +282,7 @@ class PixelosApp extends LitElement {
     .side-track {
       position: absolute;
       left: 50%;
-      top: -240px;
+      top: -160px;
       display: grid;
       gap: 1.15rem;
       transform: translateX(-50%);
@@ -1163,8 +1163,8 @@ class PixelosApp extends LitElement {
     this.scrollRaf = requestAnimationFrame(() => {
       this.scrollRaf = 0;
       const offset = window.scrollY || 0;
-      const leftShift = ((offset * 0.18) % 320) - 160;
-      const rightShift = -(((offset * 0.14) % 320) - 120);
+      const leftShift = ((offset * 0.14) % 190) - 72;
+      const rightShift = -(((offset * 0.12) % 190) - 48);
       this.style.setProperty('--side-left-shift', `${leftShift}px`);
       this.style.setProperty('--side-right-shift', `${rightShift}px`);
     });
@@ -1273,16 +1273,20 @@ class PixelosApp extends LitElement {
   }
 
   renderSideGallery(side = 'left') {
+    const sideTileCount = 8;
     return html`
       <aside class="side-gallery ${side}" aria-hidden="true">
         <div class="side-track">
-          ${SIDE_SHAPES.map((shapeStyle) => html`
+          ${Array.from({ length: sideTileCount }).map((_, index) => {
+            const shapeStyle = SIDE_SHAPES[index % SIDE_SHAPES.length];
+            return html`
             <md-outlined-card
               class="side-art ${shapeStyle.shape}"
               style=${`--tile-tilt: ${shapeStyle.tilt};`}>
               <img src="/side-photo.png" alt="" loading="lazy" decoding="async" />
             </md-outlined-card>
-          `)}
+          `;
+          })}
         </div>
       </aside>
     `;
