@@ -716,8 +716,8 @@ class PixelosApp extends LitElement {
                 <li>
                   <span class="material-symbols-outlined">extension</span>
                   <div>
-                    <strong>Install module stack</strong>
-                    <p>Install only modules required for your method.</p>
+                    <strong>Add keybox or pif.json</strong>
+                    <p>After finish boot setup, add keybox or pif.json through Developer options.</p>
                   </div>
                 </li>
                 <li>
