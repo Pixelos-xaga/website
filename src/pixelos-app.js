@@ -28,8 +28,10 @@ const FLASH_STEPS = [
   },
   {
     title: 'Boot into recovery manually',
-    warning: 'Do not use adb reboot recovery.',
-    note: 'While the phone is turning on, keep tapping only the Volume Up button to enter recovery.'
+    guidance: {
+      avoid: 'adb reboot recovery',
+      action: 'While the phone is turning on, keep tapping only the Volume Up button to enter recovery.'
+    }
   },
   {
     title: 'Sideload ROM from recovery',
@@ -362,6 +364,49 @@ class PixelosApp extends LitElement {
       background: color-mix(in srgb, var(--md-sys-color-warning-container) 52%, transparent);
       box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-warning) 48%, transparent);
       font-family: var(--font-brand);
+    }
+
+    .step-guidance {
+      margin-top: 0.28rem;
+      display: grid;
+      gap: 0.34rem;
+    }
+
+    .guidance-row {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.45rem;
+      align-items: start;
+      border-radius: 10px;
+      padding: 0.38rem 0.52rem;
+      background: color-mix(in srgb, var(--md-sys-color-surface-container-highest) 86%, transparent);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 20%, transparent);
+    }
+
+    .guidance-row.warning {
+      color: var(--md-sys-color-on-warning-container);
+      background: color-mix(in srgb, var(--md-sys-color-warning-container) 52%, transparent);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-warning) 48%, transparent);
+    }
+
+    .guidance-label {
+      font-family: var(--font-brand);
+      font-weight: 700;
+      color: var(--md-sys-color-on-surface);
+      white-space: nowrap;
+    }
+
+    .guidance-row.warning .guidance-label {
+      color: var(--md-sys-color-on-warning-container);
+    }
+
+    .guidance-text {
+      margin: 0;
+      color: var(--md-sys-color-on-surface-variant);
+    }
+
+    .guidance-row.warning .guidance-text {
+      color: var(--md-sys-color-on-warning-container);
     }
 
     .command-row {
@@ -735,6 +780,18 @@ class PixelosApp extends LitElement {
                   <li>
                     <h3>${step.title}</h3>
                     ${step.warning ? html`<p class="step-warning"><strong>${step.warning}</strong></p>` : ''}
+                    ${step.guidance ? html`
+                      <div class="step-guidance">
+                        <div class="guidance-row warning">
+                          <span class="guidance-label">Avoid</span>
+                          <p class="guidance-text"><strong>Do not use ${step.guidance.avoid}</strong></p>
+                        </div>
+                        <div class="guidance-row">
+                          <span class="guidance-label">Do this</span>
+                          <p class="guidance-text">${step.guidance.action}</p>
+                        </div>
+                      </div>
+                    ` : ''}
                     ${step.note ? html`<p>${step.note}</p>` : ''}
                     ${step.command ? html`
                       <div class="command-row">
