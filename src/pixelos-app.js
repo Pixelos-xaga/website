@@ -176,29 +176,54 @@ class PixelosApp extends LitElement {
       --md-sys-color-on-primary: #002b61;
       --md-sys-color-primary-container: #1a4a86;
       --md-sys-color-on-primary-container: #d8e6ff;
+      --md-sys-color-primary-fixed: #d8e6ff;
+      --md-sys-color-primary-fixed-dim: #adc6ff;
+      --md-sys-color-on-primary-fixed: #001a41;
+      --md-sys-color-on-primary-fixed-variant: #1a4a86;
+
       --md-sys-color-secondary: #bec9dc;
       --md-sys-color-on-secondary: #283141;
       --md-sys-color-secondary-container: #40495b;
       --md-sys-color-on-secondary-container: #dbe6fa;
-      --md-sys-color-tertiary: #87d7ff;
-      --md-sys-color-on-tertiary: #003548;
-      --md-sys-color-warning: #ffcf5a;
-      --md-sys-color-on-warning: #3f2e00;
-      --md-sys-color-warning-container: #5a4300;
-      --md-sys-color-on-warning-container: #ffe6a6;
+      --md-sys-color-secondary-fixed: #dbe6fa;
+      --md-sys-color-secondary-fixed-dim: #bec9dc;
+      --md-sys-color-on-secondary-fixed: #131c2b;
+      --md-sys-color-on-secondary-fixed-variant: #40495b;
+
+      --md-sys-color-tertiary: #e7c469;
+      --md-sys-color-on-tertiary: #3c2f00;
+      --md-sys-color-tertiary-container: #5a4500;
+      --md-sys-color-on-tertiary-container: #ffe8ad;
+      --md-sys-color-tertiary-fixed: #ffe8ad;
+      --md-sys-color-tertiary-fixed-dim: #e7c469;
+      --md-sys-color-on-tertiary-fixed: #231b00;
+      --md-sys-color-on-tertiary-fixed-variant: #5a4500;
+
+      --md-sys-color-error: #ffb4ab;
+      --md-sys-color-on-error: #690005;
+      --md-sys-color-error-container: #93000a;
+      --md-sys-color-on-error-container: #ffdad6;
+
       --md-sys-color-background: #10131b;
       --md-sys-color-on-background: #e3e7f1;
       --md-sys-color-surface: #121722;
       --md-sys-color-on-surface: #e3e7f1;
+      --md-sys-color-surface-dim: #0f141f;
+      --md-sys-color-surface-bright: #343d50;
+      --md-sys-color-surface-container-lowest: #0c111b;
       --md-sys-color-surface-container-low: #191f2c;
       --md-sys-color-surface-container: #1f2634;
       --md-sys-color-surface-container-high: #273042;
       --md-sys-color-surface-container-highest: #323d52;
+      --md-sys-color-surface-variant: #3f485b;
+      --md-sys-color-on-surface-variant: #c2c9d9;
       --md-sys-color-outline: #8f97aa;
       --md-sys-color-outline-variant: #6e7587;
-      --md-sys-color-on-surface-variant: #c2c9d9;
-      --md-sys-color-error: #ffb4ab;
-      --md-sys-color-error-container: #93000a;
+      --md-sys-color-surface-tint: var(--md-sys-color-primary);
+      --md-sys-color-inverse-surface: #e3e7f1;
+      --md-sys-color-inverse-on-surface: #2b3140;
+      --md-sys-color-inverse-primary: #2f5f9c;
+      --md-sys-color-scrim: #000;
       --md-sys-color-shadow: #000;
       --md-sys-shape-corner-extra-large: 28px;
       --md-sys-shape-corner-large: 20px;
@@ -665,23 +690,23 @@ class PixelosApp extends LitElement {
       align-items: center;
       gap: 0.55rem;
       padding: 0.78rem 0.96rem;
-      color: var(--md-sys-color-on-warning-container);
+      color: var(--md-sys-color-on-tertiary-container);
     }
 
     .warning-card {
-      --md-filled-card-container-color: color-mix(in srgb, var(--md-sys-color-warning-container) 48%, var(--md-sys-color-surface-container-low) 52%);
+      --md-filled-card-container-color: color-mix(in srgb, var(--md-sys-color-tertiary-container) 52%, var(--md-sys-color-surface-container-low) 48%);
       --md-filled-card-container-shape: var(--md-sys-shape-corner-large);
     }
 
     .warning-content p {
       margin: 0;
-      color: var(--md-sys-color-on-warning-container);
+      color: var(--md-sys-color-on-tertiary-container);
     }
 
     .warning-content md-icon {
       --m3-icon-fill: 1;
       --m3-icon-weight: 600;
-      color: var(--md-sys-color-warning);
+      color: var(--md-sys-color-tertiary);
     }
 
     .tools {
@@ -745,9 +770,9 @@ class PixelosApp extends LitElement {
       margin: 0.25rem 0 0;
       padding: 0.32rem 0.5rem;
       border-radius: 10px;
-      color: var(--md-sys-color-on-warning-container);
-      background: color-mix(in srgb, var(--md-sys-color-warning-container) 52%, transparent);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-warning) 48%, transparent);
+      color: var(--md-sys-color-on-tertiary-container);
+      background: color-mix(in srgb, var(--md-sys-color-tertiary-container) 52%, transparent);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-tertiary) 48%, transparent);
       font-family: var(--font-brand);
     }
 
@@ -769,9 +794,9 @@ class PixelosApp extends LitElement {
     }
 
     .guidance-row.warning {
-      color: var(--md-sys-color-on-warning-container);
-      background: color-mix(in srgb, var(--md-sys-color-warning-container) 52%, transparent);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-warning) 48%, transparent);
+      color: var(--md-sys-color-on-tertiary-container);
+      background: color-mix(in srgb, var(--md-sys-color-tertiary-container) 52%, transparent);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-tertiary) 48%, transparent);
     }
 
     .guidance-label {
@@ -790,8 +815,8 @@ class PixelosApp extends LitElement {
     }
 
     .guidance-row.warning .guidance-label {
-      color: var(--md-sys-color-on-warning-container);
-      background: color-mix(in srgb, var(--md-sys-color-warning) 24%, transparent);
+      color: var(--md-sys-color-on-tertiary-container);
+      background: color-mix(in srgb, var(--md-sys-color-tertiary) 24%, transparent);
     }
 
     .guidance-text {
@@ -803,7 +828,7 @@ class PixelosApp extends LitElement {
     }
 
     .guidance-row.warning .guidance-text {
-      color: var(--md-sys-color-on-warning-container);
+      color: var(--md-sys-color-on-tertiary-container);
     }
 
     .command-row {
