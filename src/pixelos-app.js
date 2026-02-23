@@ -35,8 +35,9 @@ const FLASH_STEPS = [
   },
   {
     title: 'Sideload ROM from recovery',
-    command: 'adb sideload PixelOS_xaga.zip',
-    note: 'In recovery, choose Apply update from ADB, then run this command.'
+    command: 'adb sideload <rom-filename>.zip',
+    copyable: false,
+    note: 'In recovery, choose Apply update from ADB, then type this manually with your exact ROM zip filename.'
   },
   {
     title: 'Boot system',
@@ -890,15 +891,17 @@ class PixelosApp extends LitElement {
                       <div class="command-row">
                         <md-outlined-text-field
                           class="command-field"
-                          label="Command"
+                          label=${step.copyable === false ? 'Type manually' : 'Command'}
                           readonly
                           .value=${step.command}></md-outlined-text-field>
-                        <md-icon-button
-                          class="copy"
-                          aria-label="Copy command"
-                          @click=${() => this.copyCommand(step.command)}>
-                          <md-icon>${this.copiedCommand === step.command ? 'check' : 'content_copy'}</md-icon>
-                        </md-icon-button>
+                        ${step.copyable === false ? '' : html`
+                          <md-icon-button
+                            class="copy"
+                            aria-label="Copy command"
+                            @click=${() => this.copyCommand(step.command)}>
+                            <md-icon>${this.copiedCommand === step.command ? 'check' : 'content_copy'}</md-icon>
+                          </md-icon-button>
+                        `}
                       </div>
                     ` : ''}
                   </li>
