@@ -139,9 +139,31 @@ class PixelosApp extends LitElement {
 
     md-tabs {
       justify-self: end;
+      padding: 0.2rem;
+      border-radius: 999px;
+      background: var(--md-sys-color-surface-container);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 14%, transparent);
       --md-primary-tab-active-indicator-color: var(--md-sys-color-primary);
       --md-primary-tab-active-label-text-color: var(--md-sys-color-primary);
       --md-primary-tab-inactive-label-text-color: var(--md-sys-color-on-surface-variant);
+      --md-primary-tab-active-indicator-height: 0px;
+      --md-primary-tab-active-indicator-shape: 999px;
+      --md-primary-tab-container-height: 44px;
+      --md-primary-tab-container-shape: 999px;
+    }
+
+    md-tabs::part(divider) {
+      display: none;
+    }
+
+    md-primary-tab {
+      border-radius: 999px;
+      margin-inline: 2px;
+    }
+
+    md-primary-tab[active] {
+      background: var(--md-sys-color-secondary-container);
+      color: var(--md-sys-color-on-secondary-container);
     }
 
     .view {
