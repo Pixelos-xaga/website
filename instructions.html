@@ -27,16 +27,16 @@
       <span class="brand-icon material-symbols-outlined">android</span>
       <span>PixelOS Xaga</span>
     </a>
-    <md-tabs class="nav-tabs" aria-label="Primary navigation">
-      <md-primary-tab data-href="index.html">
-        <md-icon slot="icon">home</md-icon>
-        Home
-      </md-primary-tab>
-      <md-primary-tab active data-href="instructions.html">
-        <md-icon slot="icon">terminal</md-icon>
-        Instructions
-      </md-primary-tab>
-    </md-tabs>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a class="nav-link" href="index.html">
+        <span class="material-symbols-outlined">home</span>
+        <span>Home</span>
+      </a>
+      <a class="nav-link active" href="instructions.html">
+        <span class="material-symbols-outlined">terminal</span>
+        <span>Instructions</span>
+      </a>
+    </nav>
   </header>
 
   <main class="container page-layout">
@@ -133,31 +133,36 @@
       <article class="m3-panel spoof-card">
         <h2>Spoofing Guide</h2>
         <p>Keep this short and practical. Replace these bullets with your current method.</p>
-        <md-list class="panel-list">
-          <md-list-item>
-            <md-icon slot="start">check_circle</md-icon>
-            <div slot="headline">Finish first boot first</div>
-            <div slot="supporting-text">Complete setup and sign in one time before spoofing.</div>
-          </md-list-item>
-          <md-divider></md-divider>
-          <md-list-item>
-            <md-icon slot="start">extension</md-icon>
-            <div slot="headline">Install module stack</div>
-            <div slot="supporting-text">Install only the root and spoofing modules you actually need.</div>
-          </md-list-item>
-          <md-divider></md-divider>
-          <md-list-item>
-            <md-icon slot="start">delete_sweep</md-icon>
-            <div slot="headline">Clear Google app data</div>
-            <div slot="supporting-text">Clear Play Store and Play Services data after changing fingerprints.</div>
-          </md-list-item>
-          <md-divider></md-divider>
-          <md-list-item>
-            <md-icon slot="start">verified</md-icon>
-            <div slot="headline">Reboot and verify</div>
-            <div slot="supporting-text">Reboot once and verify certification and app login status.</div>
-          </md-list-item>
-        </md-list>
+        <ul class="spoof-list">
+          <li>
+            <span class="material-symbols-outlined">check_circle</span>
+            <div>
+              <strong>Finish first boot first</strong>
+              <p>Complete setup and sign in one time before spoofing.</p>
+            </div>
+          </li>
+          <li>
+            <span class="material-symbols-outlined">extension</span>
+            <div>
+              <strong>Install module stack</strong>
+              <p>Install only the root and spoofing modules you actually need.</p>
+            </div>
+          </li>
+          <li>
+            <span class="material-symbols-outlined">delete_sweep</span>
+            <div>
+              <strong>Clear Google app data</strong>
+              <p>Clear Play Store and Play Services data after changing fingerprints.</p>
+            </div>
+          </li>
+          <li>
+            <span class="material-symbols-outlined">verified</span>
+            <div>
+              <strong>Reboot and verify</strong>
+              <p>Reboot once and verify certification and app login status.</p>
+            </div>
+          </li>
+        </ul>
       </article>
     </aside>
   </main>

@@ -27,16 +27,16 @@
       <span class="brand-icon material-symbols-outlined">android</span>
       <span>PixelOS Xaga</span>
     </a>
-    <md-tabs class="nav-tabs" aria-label="Primary navigation">
-      <md-primary-tab active data-href="index.html">
-        <md-icon slot="icon">home</md-icon>
-        Home
-      </md-primary-tab>
-      <md-primary-tab data-href="instructions.html">
-        <md-icon slot="icon">terminal</md-icon>
-        Instructions
-      </md-primary-tab>
-    </md-tabs>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a class="nav-link active" href="index.html">
+        <span class="material-symbols-outlined">home</span>
+        <span>Home</span>
+      </a>
+      <a class="nav-link" href="instructions.html">
+        <span class="material-symbols-outlined">terminal</span>
+        <span>Instructions</span>
+      </a>
+    </nav>
   </header>
 
   <main class="container hero-page">
@@ -60,25 +60,29 @@
 
     <section class="m3-panel">
       <h2>What You Get</h2>
-      <md-list class="panel-list">
-        <md-list-item>
-          <md-icon slot="start">terminal</md-icon>
-          <div slot="headline">Install Guide</div>
-          <div slot="supporting-text">Step-by-step flashing flow with copyable commands.</div>
-        </md-list-item>
-        <md-divider></md-divider>
-        <md-list-item>
-          <md-icon slot="start">download</md-icon>
-          <div slot="headline">Download Section</div>
-          <div slot="supporting-text">Direct slots for ROM zip, boot image, and vendor_boot image.</div>
-        </md-list-item>
-        <md-divider></md-divider>
-        <md-list-item>
-          <md-icon slot="start">shield</md-icon>
-          <div slot="headline">Spoofing Help</div>
-          <div slot="supporting-text">A side guide area for your spoofing setup notes.</div>
-        </md-list-item>
-      </md-list>
+      <div class="feature-grid">
+        <article class="feature-item">
+          <div class="feature-title">
+            <span class="material-symbols-outlined">terminal</span>
+            <h3>Install Guide</h3>
+          </div>
+          <p>Step-by-step flashing flow with copyable commands.</p>
+        </article>
+        <article class="feature-item">
+          <div class="feature-title">
+            <span class="material-symbols-outlined">download</span>
+            <h3>Download Section</h3>
+          </div>
+          <p>Direct slots for ROM zip, boot image, and vendor_boot image.</p>
+        </article>
+        <article class="feature-item">
+          <div class="feature-title">
+            <span class="material-symbols-outlined">shield</span>
+            <h3>Spoofing Help</h3>
+          </div>
+          <p>A side guide area for your spoofing setup notes.</p>
+        </article>
+      </div>
     </section>
   </main>
 

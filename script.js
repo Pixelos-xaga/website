@@ -31,14 +31,3 @@ copyButtons.forEach((button) => {
     }
   });
 });
-
-const navTabs = document.querySelectorAll('md-primary-tab[data-href]');
-
-navTabs.forEach((tab) => {
-  tab.addEventListener('click', () => {
-    const href = tab.dataset.href;
-    if (href) {
-      window.location.href = href;
-    }
-  });
-});
