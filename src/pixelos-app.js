@@ -28,7 +28,8 @@ const FLASH_STEPS = [
   },
   {
     title: 'Boot into recovery manually',
-    note: 'Do not use adb reboot recovery. While the phone is turning on, keep tapping only the Volume Up button to enter recovery.'
+    warning: 'Do not use adb reboot recovery.',
+    note: 'While the phone is turning on, keep tapping only the Volume Up button to enter recovery.'
   },
   {
     title: 'Sideload ROM from recovery',
@@ -351,6 +352,16 @@ class PixelosApp extends LitElement {
 
     .commands p {
       margin: 0.2rem 0 0;
+    }
+
+    .step-warning {
+      margin: 0.25rem 0 0;
+      padding: 0.32rem 0.5rem;
+      border-radius: 10px;
+      color: var(--md-sys-color-on-warning-container);
+      background: color-mix(in srgb, var(--md-sys-color-warning-container) 52%, transparent);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-warning) 48%, transparent);
+      font-family: var(--font-brand);
     }
 
     .command-row {
@@ -697,6 +708,7 @@ class PixelosApp extends LitElement {
                 ${FLASH_STEPS.map((step) => html`
                   <li>
                     <h3>${step.title}</h3>
+                    ${step.warning ? html`<p class="step-warning"><strong>${step.warning}</strong></p>` : ''}
                     ${step.note ? html`<p>${step.note}</p>` : ''}
                     ${step.command ? html`
                       <div class="command-row">
