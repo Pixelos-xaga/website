@@ -28,13 +28,13 @@ const HOME_SCREENSHOTS = [
   }
 ];
 
-const SIDE_SHAPES = [
-  { shape: 'shape-none', tilt: '-4deg' },
-  { shape: 'shape-small', tilt: '3deg' },
-  { shape: 'shape-medium', tilt: '-2deg' },
-  { shape: 'shape-large', tilt: '4deg' },
-  { shape: 'shape-xlarge', tilt: '-4deg' },
-  { shape: 'shape-full', tilt: '2deg' }
+const MATERIAL_SIDE_SHAPES = [
+  { shape: 'shape-circle', tilt: '-4deg' },
+  { shape: 'shape-square', tilt: '3deg' },
+  { shape: 'shape-slanted', tilt: '-2deg' },
+  { shape: 'shape-arch', tilt: '4deg' },
+  { shape: 'shape-gem', tilt: '-4deg' },
+  { shape: 'shape-sunny', tilt: '2deg' }
 ];
 
 const FLASH_STEPS = [
@@ -230,6 +230,13 @@ class PixelosApp extends LitElement {
       --md-sys-shape-corner-medium: 16px;
       --md-sys-shape-corner-small: 12px;
       --md-sys-shape-corner-extra-small: 8px;
+      --m3-shape-none: 0px;
+      --m3-shape-extra-small: 4px;
+      --m3-shape-small: 8px;
+      --m3-shape-medium: 12px;
+      --m3-shape-large: 16px;
+      --m3-shape-extra-large: 28px;
+      --m3-shape-full: 999px;
 
       --md-sys-elevation-level1: 0px 1px 2px 0px rgb(0 0 0 / 30%), 0px 1px 3px 1px rgb(0 0 0 / 15%);
 
@@ -301,47 +308,81 @@ class PixelosApp extends LitElement {
       width: clamp(88px, 9.2vw, 120px);
       aspect-ratio: 1 / 1;
       overflow: hidden;
-      padding: 3px;
+      --tile-shape: var(--m3-shape-large);
+      --tile-clip: inset(0 round var(--tile-shape));
+      --md-outlined-card-container-shape: var(--tile-shape);
+      padding: 0;
       --md-outlined-card-container-color: color-mix(in srgb, var(--md-sys-color-surface-container-high) 74%, transparent);
       --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-primary) 28%, transparent);
       --md-outlined-card-outline-width: 1px;
       transform: rotate(var(--tile-tilt, 0deg));
       box-shadow: 0 12px 28px rgb(0 0 0 / 24%);
+      border-radius: var(--tile-shape);
+      clip-path: var(--tile-clip);
     }
 
     .side-art img {
       width: 100%;
       height: 100%;
       display: block;
-      object-fit: contain;
+      object-fit: cover;
       object-position: center;
       background: color-mix(in srgb, var(--md-sys-color-surface-container-low) 90%, transparent);
       opacity: 0.94;
       filter: saturate(1.08) contrast(1.03);
+      border-radius: inherit;
+      clip-path: var(--tile-clip);
     }
 
-    .side-art.shape-none {
-      --md-outlined-card-container-shape: 0px;
+    .side-art.shape-circle {
+      --tile-shape: var(--m3-shape-full);
+      --tile-clip: circle(50% at 50% 50%);
     }
 
-    .side-art.shape-small {
-      --md-outlined-card-container-shape: var(--md-sys-shape-corner-extra-small);
+    .side-art.shape-square {
+      --tile-shape: var(--m3-shape-none);
+      --tile-clip: inset(0 round var(--tile-shape));
     }
 
-    .side-art.shape-medium {
-      --md-outlined-card-container-shape: var(--md-sys-shape-corner-small);
+    .side-art.shape-slanted {
+      --tile-shape: var(--m3-shape-none);
+      --tile-clip: polygon(93% 97%, 0% 97%, 7% 3%, 100% 3%);
     }
 
-    .side-art.shape-large {
-      --md-outlined-card-container-shape: var(--md-sys-shape-corner-medium);
+    .side-art.shape-arch {
+      --tile-shape: var(--m3-shape-none);
+      --tile-clip: inset(0 round 46% 46% 12% 12%);
     }
 
-    .side-art.shape-xlarge {
-      --md-outlined-card-container-shape: var(--md-sys-shape-corner-extra-large);
+    .side-art.shape-gem {
+      --tile-shape: var(--m3-shape-none);
+      --tile-clip: polygon(50% 100%, 0% 79%, 7% 26%, 43% 0%, 57% 0%, 93% 26%, 100% 79%);
     }
 
-    .side-art.shape-full {
-      --md-outlined-card-container-shape: 999px;
+    .side-art.shape-sunny {
+      --tile-shape: var(--m3-shape-none);
+      --tile-clip: polygon(
+        50% 0%,
+        61% 13%,
+        79% 8%,
+        87% 24%,
+        100% 37%,
+        92% 50%,
+        100% 63%,
+        87% 76%,
+        79% 92%,
+        61% 87%,
+        50% 100%,
+        39% 87%,
+        21% 92%,
+        13% 76%,
+        0% 63%,
+        8% 50%,
+        0% 37%,
+        13% 24%,
+        21% 8%,
+        39% 13%
+      );
     }
 
     .top-bar {
@@ -1379,7 +1420,7 @@ class PixelosApp extends LitElement {
       <aside class="side-gallery ${side}" aria-hidden="true">
         <div class="side-track">
           ${Array.from({ length: sideTileCount }).map((_, index) => {
-            const shapeStyle = SIDE_SHAPES[index % SIDE_SHAPES.length];
+            const shapeStyle = MATERIAL_SIDE_SHAPES[index % MATERIAL_SIDE_SHAPES.length];
             return html`
             <md-outlined-card
               class="side-art ${shapeStyle.shape}"
