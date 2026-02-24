@@ -1617,7 +1617,7 @@ class PixelosApp extends LitElement {
             <md-outlined-card id="flash-steps-card" class="panel motion-item" style="--delay: 50ms">
               <h2 class="section-title">
                 <md-icon aria-hidden="true">terminal</md-icon>
-                Flash Steps (Type this in admin Terminal)
+                Flash Steps (Type these commands in admin Terminal)
               </h2>
               <ol class="commands">
                 ${FLASH_STEPS.map((step) => html`
