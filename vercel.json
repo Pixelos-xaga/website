@@ -7,6 +7,14 @@
     {
       "source": "/instructions/",
       "destination": "/"
+    },
+    {
+      "source": "/downloads",
+      "destination": "/"
+    },
+    {
+      "source": "/downloads/",
+      "destination": "/"
     }
   ]
 }

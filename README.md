@@ -24,6 +24,7 @@ npm run preview
 
 - Home: `/`
 - Instructions: `/instructions`
+- Downloads & Resources: `/downloads`
 
 `instructions.html` redirects to `/instructions` for compatibility.
 
@@ -36,4 +37,4 @@ Use these project settings:
 - Build Command: `npm run build`
 - Output Directory: `dist`
 
-`vercel.json` already includes a rewrite for `/instructions` to `/` so SPA routing works on direct loads.
+`vercel.json` already includes rewrites for `/instructions` and `/downloads` to `/` so SPA routing works on direct loads.

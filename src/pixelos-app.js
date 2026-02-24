@@ -9,6 +9,43 @@ const DOWNLOADS = [
   }
 ];
 
+const RESOURCE_LINKS = [
+  {
+    name: 'Android Bootloader Interface Driver (Windows)',
+    note: 'Bootloader driver',
+    href: 'https://www.driverscape.com/download/android-bootloader-interface'
+  },
+  {
+    name: 'Android Platform-Tools (Official)',
+    note: 'Platform sdk tools',
+    href: 'https://developer.android.com/tools/releases/platform-tools'
+  }
+];
+
+const PLATFORM_TOOLS_CLI_COMMANDS = [
+  {
+    title: 'Ubuntu',
+    command: 'sudo apt update\nsudo apt install android-sdk-platform-tools'
+  },
+  {
+    title: 'Windows',
+    command: 'winget install -e --id Google.PlatformTools'
+  }
+];
+
+const PLATFORM_TOOLS_ZIP_OPTIONS = [
+  {
+    name: 'Windows ZIP',
+    note: 'Official Google ZIP package',
+    href: 'https://dl.google.com/android/repository/platform-tools-latest-windows.zip'
+  },
+  {
+    name: 'Linux ZIP (Ubuntu)',
+    note: 'Official Google ZIP package',
+    href: 'https://dl.google.com/android/repository/platform-tools-latest-linux.zip'
+  }
+];
+
 const HOME_SCREENSHOTS = [
   {
     src: '/screenshots/screenshot-1.png',
@@ -59,7 +96,8 @@ const FLASH_STEPS = [
     guidance: {
       avoid: 'adb reboot recovery',
       action: 'While the phone is turning on, keep pressing only the Volume Up button to enter recovery.'
-    }
+    },
+    note: 'In recovery, click Apply update, then Apply from ADB.'
   },
   {
     title: 'Sideload ROM from recovery',
@@ -762,6 +800,18 @@ class PixelosApp extends LitElement {
       gap: 1rem;
     }
 
+    .section-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .section-title md-icon {
+      --m3-icon-fill: 1;
+      --m3-icon-size: 20px;
+      color: var(--md-sys-color-primary);
+    }
+
     .warning-content {
       display: flex;
       align-items: center;
@@ -921,6 +971,19 @@ class PixelosApp extends LitElement {
       --md-outlined-text-field-input-text-font: 500 13px/1.4 var(--font-mono);
       --md-outlined-text-field-input-text-color: var(--md-sys-color-on-surface);
       --md-outlined-text-field-label-text-color: var(--md-sys-color-on-surface-variant);
+    }
+
+    .command-snippet {
+      margin: 0;
+      flex: 1;
+      padding: 0.62rem 0.75rem;
+      border-radius: 14px;
+      background: var(--md-sys-color-surface-container-high);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 24%, transparent);
+      color: var(--md-sys-color-on-surface);
+      font: 500 13px/1.4 var(--font-mono);
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
     }
 
     .spoof-list {
@@ -1224,7 +1287,13 @@ class PixelosApp extends LitElement {
 
   getRouteFromPathname(pathname) {
     const normalized = (pathname || '/').toLowerCase().replace(/\/+$/, '') || '/';
-    return /^\/instructions(?:\/|$)/.test(normalized) ? 'instructions' : 'home';
+    if (/^\/instructions(?:\/|$)/.test(normalized)) {
+      return 'instructions';
+    }
+    if (/^\/downloads(?:\/|$)/.test(normalized)) {
+      return 'downloads';
+    }
+    return 'home';
   }
 
   handleLocationChange() {
@@ -1330,7 +1399,7 @@ class PixelosApp extends LitElement {
   }
 
   navigate(route) {
-    const path = route === 'instructions' ? '/instructions' : '/';
+    const path = route === 'instructions' ? '/instructions' : route === 'downloads' ? '/downloads' : '/';
     const currentPath = (window.location.pathname || '/').replace(/\/+$/, '') || '/';
     if (currentPath !== path) {
       window.history.pushState({}, '', path);
@@ -1343,7 +1412,7 @@ class PixelosApp extends LitElement {
     this.motionKey += 1;
   }
 
-  navigateToInstructions(target = 'downloads') {
+  navigateToInstructions(target = 'steps') {
     this.pendingInstructionsTarget = target;
     this.navigate('instructions');
   }
@@ -1355,7 +1424,7 @@ class PixelosApp extends LitElement {
   }
 
   scrollInstructionsTarget(target) {
-    const targetSelector = target === 'steps' ? '#flash-steps-card' : '#downloads-card';
+    const targetSelector = '#flash-steps-card';
     const targetElement = this.renderRoot?.querySelector(targetSelector);
     if (!targetElement) {
       return;
@@ -1367,13 +1436,6 @@ class PixelosApp extends LitElement {
 
     if (target === 'steps') {
       scrollTop = targetTop - (window.innerHeight * 0.42);
-      const downloadsElement = this.renderRoot?.querySelector('#downloads-card');
-      if (downloadsElement) {
-        const downloadsRect = downloadsElement.getBoundingClientRect();
-        const downloadsTop = window.scrollY + downloadsRect.top;
-        const maxScrollWithDownloadsVisible = downloadsTop + downloadsRect.height - 84;
-        scrollTop = Math.min(scrollTop, maxScrollWithDownloadsVisible);
-      }
     }
 
     window.scrollTo({ top: Math.max(0, scrollTop), behavior: 'smooth' });
@@ -1456,6 +1518,12 @@ class PixelosApp extends LitElement {
             <md-icon slot="icon">terminal</md-icon>
             Instructions
           </md-primary-tab>
+          <md-primary-tab
+            ?active=${this.route === 'downloads'}
+            @click=${() => this.navigate('downloads')}>
+            <md-icon slot="icon">folder_zip</md-icon>
+            Downloads & Resources
+          </md-primary-tab>
         </md-tabs>
       </md-elevated-card>
     `;
@@ -1469,11 +1537,11 @@ class PixelosApp extends LitElement {
           <h1>PixelOS for Xaga</h1>
           <p class="lead">PixelOS A16 for xaga(REDMI K50i,Poco X4 GT,Redmi Note 11t/pro+).</p>
           <div class="hero-actions">
-            <md-filled-button @click=${() => this.navigateToInstructions('steps')}>
+            <md-filled-button @click=${() => this.navigateToInstructions()}>
               <md-icon slot="icon">rocket_launch</md-icon>
               Open Instructions
             </md-filled-button>
-            <md-filled-tonal-button @click=${() => this.navigateToInstructions('downloads')}>
+            <md-filled-tonal-button @click=${() => this.navigate('downloads')}>
               <md-icon slot="icon">download</md-icon>
               Go to Downloads
             </md-filled-tonal-button>
@@ -1546,23 +1614,11 @@ class PixelosApp extends LitElement {
 
         <div class="content-grid">
           <section class="view-grid">
-            <md-outlined-card id="downloads-card" class="panel motion-item" style="--delay: 50ms">
-              <h2 id="downloads">Downloads</h2>
-              <div class="download-grid">
-                ${DOWNLOADS.map((item) => html`
-                  <md-outlined-card class="download-item">
-                    <md-elevated-button href=${item.href} target="_blank" rel="noopener noreferrer">
-                      <md-icon slot="icon">download</md-icon>
-                      ${item.name}
-                    </md-elevated-button>
-                    <small>${item.note}</small>
-                  </md-outlined-card>
-                `)}
-              </div>
-            </md-outlined-card>
-
-            <md-outlined-card id="flash-steps-card" class="panel motion-item" style="--delay: 90ms">
-              <h2>Flash Steps</h2>
+            <md-outlined-card id="flash-steps-card" class="panel motion-item" style="--delay: 50ms">
+              <h2 class="section-title">
+                <md-icon aria-hidden="true">terminal</md-icon>
+                Flash Steps (Type this in admin Terminal)
+              </h2>
               <ol class="commands">
                 ${FLASH_STEPS.map((step) => html`
                   <li>
@@ -1654,6 +1710,79 @@ class PixelosApp extends LitElement {
     `;
   }
 
+  renderDownloadsView() {
+    return html`
+      <section class="view" aria-label="Downloads and resources view">
+        <section class="view-grid">
+          <md-outlined-card class="panel motion-item" style="--delay: 20ms">
+            <h2>ROM Downloads</h2>
+            <div class="download-grid">
+              ${DOWNLOADS.map((item) => html`
+                <md-outlined-card class="download-item">
+                  <md-elevated-button href=${item.href} target="_blank" rel="noopener noreferrer">
+                    <md-icon slot="icon">download</md-icon>
+                    ${item.name}
+                  </md-elevated-button>
+                  <small>${item.note}</small>
+                </md-outlined-card>
+              `)}
+            </div>
+          </md-outlined-card>
+
+          <md-outlined-card class="panel motion-item" style="--delay: 55ms">
+            <h2>Downloads & Resources</h2>
+            <div class="download-grid">
+              ${RESOURCE_LINKS.map((item) => html`
+                <md-outlined-card class="download-item">
+                  <md-elevated-button href=${item.href} target="_blank" rel="noopener noreferrer">
+                    <md-icon slot="icon">link</md-icon>
+                    ${item.name}
+                  </md-elevated-button>
+                  <small>${item.note}</small>
+                </md-outlined-card>
+              `)}
+            </div>
+          </md-outlined-card>
+
+          <md-outlined-card class="panel motion-item" style="--delay: 90ms">
+            <h2>Install Platform-Tools</h2>
+            <h3>Option 1: Install through CLI</h3>
+            <p>Run these in terminal:</p>
+            <ol class="commands">
+              ${PLATFORM_TOOLS_CLI_COMMANDS.map((item) => html`
+                <li>
+                  <md-outlined-card class="command-item">
+                    <h3>${item.title}</h3>
+                    <div class="command-row">
+                      <pre class="command-snippet">${item.command}</pre>
+                      <md-icon-button
+                        aria-label="Copy command"
+                        @click=${() => this.copyCommand(item.command)}>
+                        <md-icon>${this.copiedCommand === item.command ? 'check' : 'content_copy'}</md-icon>
+                      </md-icon-button>
+                    </div>
+                  </md-outlined-card>
+                </li>
+              `)}
+            </ol>
+            <h3>Option 2: Install through ZIP</h3>
+            <div class="download-grid">
+              ${PLATFORM_TOOLS_ZIP_OPTIONS.map((item) => html`
+                <md-outlined-card class="download-item">
+                  <md-elevated-button href=${item.href} target="_blank" rel="noopener noreferrer">
+                    <md-icon slot="icon">folder_zip</md-icon>
+                    ${item.name}
+                  </md-elevated-button>
+                  <small>${item.note}</small>
+                </md-outlined-card>
+              `)}
+            </div>
+          </md-outlined-card>
+        </section>
+      </section>
+    `;
+  }
+
   render() {
     return html`
       ${this.renderSideGallery('left')}
@@ -1671,7 +1800,11 @@ class PixelosApp extends LitElement {
       </div>
         <div class="shell">
         ${this.renderTopBar()}
-        ${keyed(this.motionKey, this.route === 'instructions' ? this.renderInstructionsView() : this.renderHomeView())}
+        ${keyed(this.motionKey, this.route === 'instructions'
+          ? this.renderInstructionsView()
+          : this.route === 'downloads'
+            ? this.renderDownloadsView()
+            : this.renderHomeView())}
 
         <md-elevated-card class="footer">
           <span>PixelOS Xaga community website</span>
