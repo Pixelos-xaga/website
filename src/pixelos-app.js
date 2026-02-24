@@ -1729,6 +1729,23 @@ class PixelosApp extends LitElement {
             </div>
           </md-outlined-card>
 
+          <md-outlined-card class="panel motion-item" style="--delay: 38ms">
+            <h2>Firmware Prerequisite</h2>
+            <p>If you are coming from an older ROM build, flash the latest firmware images first before continuing with PixelOS installation.</p>
+            <div class="download-grid">
+              <md-outlined-card class="download-item">
+                <md-elevated-button
+                  href="https://sourceforge.net/projects/xagaproject/files/Pixelos-xaga/Latest_firmware.zip/download"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  <md-icon slot="icon">download</md-icon>
+                  Download Latest Firmware Images
+                </md-elevated-button>
+                <small>Required for users upgrading from older ROM bases</small>
+              </md-outlined-card>
+            </div>
+          </md-outlined-card>
+
           <md-outlined-card class="panel motion-item" style="--delay: 55ms">
             <h2>Downloads & Resources</h2>
             <div class="download-grid">
