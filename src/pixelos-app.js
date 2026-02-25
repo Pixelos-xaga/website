@@ -1,26 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { keyed } from 'lit/directives/keyed.js';
-
-const DOWNLOADS = [
-  {
-    name: 'Download PixelOS Xaga ROM',
-    note: 'SourceForge project files',
-    href: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-  }
-];
-
-const RESOURCE_LINKS = [
-  {
-    name: 'Android Bootloader Interface Driver (Windows)',
-    note: 'Bootloader driver',
-    href: 'https://www.driverscape.com/download/android-bootloader-interface'
-  },
-  {
-    name: 'Android Platform-Tools (Official)',
-    note: 'Platform sdk tools',
-    href: 'https://developer.android.com/tools/releases/platform-tools'
-  }
-];
+import { DOWNLOADS, RESOURCE_LINKS } from './config.js';
 
 const PLATFORM_TOOLS_CLI_COMMANDS = [
   {
