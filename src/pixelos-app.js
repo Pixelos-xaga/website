@@ -68,6 +68,23 @@ const FLASH_STEPS = [
     command: 'fastboot flash vendor_boot vendor_boot.img'
   },
   {
+    title: 'Flash optional images',
+    isDropdown: true,
+    note: 'Flash these optional images if you ran into some issues.',
+    optionalImages: [
+      {
+        name: 'vbmeta.img',
+        command: 'fastboot flash vbmeta vbmeta.img',
+        description: 'Verified boot metadata image'
+      },
+      {
+        name: 'dtbo.img',
+        command: 'fastboot flash dtbo dtbo.img',
+        description: 'Device tree overlay image'
+      }
+    ]
+  },
+  {
     title: 'Reboot device',
     command: 'fastboot reboot'
   },
@@ -77,7 +94,8 @@ const FLASH_STEPS = [
       avoid: 'adb reboot recovery',
       action: 'While the phone is turning on, keep pressing only the Volume Up button to enter recovery.'
     },
-    note: 'In recovery, click Apply update, then Apply from ADB.'
+    note: 'In recovery, click Apply update, then Apply from ADB.',
+    noteHighlighted: true
   },
   {
     title: 'Sideload ROM from recovery',
@@ -822,6 +840,18 @@ class PixelosApp extends LitElement {
       color: var(--md-sys-color-tertiary);
     }
 
+    .warning-content .warning-command {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 6px;
+      background: color-mix(in srgb, var(--md-sys-color-tertiary) 25%, transparent);
+      color: var(--md-sys-color-on-tertiary-container);
+      font: 600 0.85rem/1.5 var(--font-mono);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-tertiary) 40%, transparent);
+      word-break: break-all;
+      max-width: 100%;
+    }
+
     .tools {
       display: flex;
       justify-content: flex-end;
@@ -851,6 +881,36 @@ class PixelosApp extends LitElement {
       --md-outlined-card-outline-width: 1px;
       display: grid;
       gap: 0.35rem;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .download-item md-elevated-button {
+      width: 100%;
+      justify-content: flex-start;
+      --md-filled-button-label-text-font: var(--font-plain);
+      --md-filled-button-label-text-size: 0.9rem;
+      --md-filled-button-label-text-line-height: 1.3;
+      --md-filled-button-label-text-weight: 500;
+      --md-filled-button-container-shape: 12px;
+      overflow: hidden;
+    }
+
+    .download-item md-elevated-button::part(label) {
+      white-space: normal;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      hyphens: auto;
+      text-align: left;
+    }
+
+    .download-item md-elevated-button::part(container) {
+      width: 100%;
+      justify-content: flex-start;
+    }
+
+    .download-item md-elevated-button [slot="icon"] {
+      flex-shrink: 0;
     }
 
     .commands {
@@ -887,6 +947,17 @@ class PixelosApp extends LitElement {
       background: color-mix(in srgb, var(--md-sys-color-tertiary-container) 52%, transparent);
       box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-tertiary) 48%, transparent);
       font-family: var(--font-brand);
+    }
+
+    .step-note-highlighted {
+      margin: 0.25rem 0 0;
+      padding: 0.5rem 0.65rem;
+      border-radius: 10px;
+      color: var(--md-sys-color-on-primary-container);
+      background: color-mix(in srgb, var(--md-sys-color-primary-container) 45%, transparent);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent);
+      font-family: var(--font-brand);
+      font-weight: 500;
     }
 
     .step-guidance {
@@ -950,6 +1021,81 @@ class PixelosApp extends LitElement {
       gap: 0.45rem;
       align-items: center;
       max-width: 100%;
+    }
+
+    .optional-images-dropdown {
+      margin-top: 0.5rem;
+      border-radius: 12px;
+      background: color-mix(in srgb, var(--md-sys-color-surface-container-highest) 60%, transparent);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 18%, transparent);
+      overflow: hidden;
+    }
+
+    .dropdown-summary {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.55rem 0.7rem;
+      cursor: pointer;
+      font-family: var(--md-sys-typescale-label-large-font);
+      font-size: var(--md-sys-typescale-label-large-size);
+      line-height: var(--md-sys-typescale-label-large-line-height);
+      letter-spacing: var(--md-sys-typescale-label-large-tracking);
+      font-weight: var(--md-sys-typescale-label-large-weight);
+      color: var(--md-sys-color-primary);
+      list-style: none;
+      user-select: none;
+    }
+
+    .dropdown-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .dropdown-summary md-icon {
+      --m3-icon-size: 20px;
+      --m3-icon-fill: 1;
+      transition: transform 200ms var(--motion-standard);
+    }
+
+    details[open] .dropdown-summary md-icon {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-content {
+      padding: 0 0.7rem 0.7rem;
+      display: grid;
+      gap: 0.65rem;
+    }
+
+    .optional-image-item {
+      padding: 0.65rem;
+      border-radius: 10px;
+      background: var(--md-sys-color-surface-container-high);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 16%, transparent);
+      display: grid;
+      gap: 0.4rem;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .optional-image-info strong {
+      color: var(--md-sys-color-on-surface);
+      font-family: var(--md-sys-typescale-title-small-font);
+      font-size: var(--md-sys-typescale-title-small-size);
+      line-height: var(--md-sys-typescale-title-small-line-height);
+      letter-spacing: var(--md-sys-typescale-title-small-tracking);
+      font-weight: var(--md-sys-typescale-title-small-weight);
+      display: block;
+    }
+
+    .optional-image-info p {
+      margin: 0.1rem 0 0;
+      color: var(--md-sys-color-on-surface-variant);
+      font-family: var(--md-sys-typescale-label-medium-font);
+      font-size: var(--md-sys-typescale-label-medium-size);
+      line-height: var(--md-sys-typescale-label-medium-line-height);
+      letter-spacing: var(--md-sys-typescale-label-medium-tracking);
+      font-weight: var(--md-sys-typescale-label-medium-weight);
     }
 
     .command-field {
@@ -1255,6 +1401,31 @@ class PixelosApp extends LitElement {
       .command-snippet {
         min-width: 0;
         max-width: 100%;
+      }
+
+      .warning-content {
+        gap: 0.5rem;
+      }
+
+      .warning-content p {
+        font-size: 0.9rem;
+      }
+
+      .warning-content .warning-command {
+        font-size: 0.8rem;
+        word-break: break-word;
+      }
+
+      .download-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .download-item md-elevated-button {
+        --md-filled-button-label-text-size: 0.85rem;
+      }
+
+      .download-item small {
+        font-size: 0.8rem;
       }
     }
   `;
@@ -1638,7 +1809,7 @@ class PixelosApp extends LitElement {
         <md-filled-card class="warning-card motion-item" style="--delay: 10ms">
           <div class="warning-content">
             <md-icon>warning</md-icon>
-            <p><strong>Never run</strong> <code>fastboot reboot recovery</code> on xaga.</p>
+            <p><strong>Never run</strong> <code class="warning-command">fastboot reboot recovery</code> on xaga.</p>
           </div>
         </md-filled-card>
 
@@ -1674,8 +1845,38 @@ class PixelosApp extends LitElement {
                           </div>
                         </div>
                       ` : ''}
-                      ${step.note ? html`<p>${step.note}</p>` : ''}
-                      ${step.command ? html`
+                      ${step.note ? html`<p class=${step.noteHighlighted ? 'step-note-highlighted' : ''}>${step.note}</p>` : ''}
+                      ${step.isDropdown && step.optionalImages ? html`
+                        <details class="optional-images-dropdown">
+                          <summary class="dropdown-summary">
+                            <md-icon>expand_more</md-icon>
+                            <span>Click to expand optional images</span>
+                          </summary>
+                          <div class="dropdown-content">
+                            ${step.optionalImages.map((image) => html`
+                              <div class="optional-image-item">
+                                <div class="optional-image-info">
+                                  <strong>${image.name}</strong>
+                                  <p>${image.description}</p>
+                                </div>
+                                <div class="command-row">
+                                  <md-outlined-text-field
+                                    class="command-field"
+                                    label="Command"
+                                    readonly
+                                    .value=${image.command}></md-outlined-text-field>
+                                  <md-icon-button
+                                    aria-label="Copy command"
+                                    @click=${() => this.copyCommand(image.command)}>
+                                    <md-icon>${this.copiedCommand === image.command ? 'check' : 'content_copy'}</md-icon>
+                                  </md-icon-button>
+                                </div>
+                              </div>
+                            `)}
+                          </div>
+                        </details>
+                      ` : ''}
+                      ${step.command && !step.isDropdown ? html`
                         <div class="command-row">
                           <md-outlined-text-field
                             class="command-field"
