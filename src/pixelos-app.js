@@ -127,145 +127,163 @@ class PixelosApp extends LitElement {
       --md-ref-typeface-weight-medium: 500;
       --md-ref-typeface-weight-bold: 700;
 
-      /* Material 3 typography scale */
+      /* Material 3 typography scale with proper tracking values */
       --md-sys-typescale-display-large-font: var(--font-brand);
       --md-sys-typescale-display-large-size: 3.5625rem;
       --md-sys-typescale-display-large-line-height: 4rem;
       --md-sys-typescale-display-large-weight: var(--md-ref-typeface-weight-regular);
-      --md-sys-typescale-display-large-tracking: -0.015625rem;
+      --md-sys-typescale-display-large-tracking: -0.028125em;
+
       --md-sys-typescale-display-medium-font: var(--font-brand);
       --md-sys-typescale-display-medium-size: 2.8125rem;
       --md-sys-typescale-display-medium-line-height: 3.25rem;
       --md-sys-typescale-display-medium-weight: var(--md-ref-typeface-weight-regular);
-      --md-sys-typescale-display-medium-tracking: 0rem;
+      --md-sys-typescale-display-medium-tracking: 0em;
+
       --md-sys-typescale-display-small-font: var(--font-brand);
       --md-sys-typescale-display-small-size: 2.25rem;
       --md-sys-typescale-display-small-line-height: 2.75rem;
       --md-sys-typescale-display-small-weight: var(--md-ref-typeface-weight-regular);
-      --md-sys-typescale-display-small-tracking: 0rem;
+      --md-sys-typescale-display-small-tracking: 0em;
 
       --md-sys-typescale-headline-large-font: var(--font-brand);
       --md-sys-typescale-headline-large-size: 2rem;
       --md-sys-typescale-headline-large-line-height: 2.5rem;
       --md-sys-typescale-headline-large-weight: var(--md-ref-typeface-weight-regular);
-      --md-sys-typescale-headline-large-tracking: 0rem;
+      --md-sys-typescale-headline-large-tracking: 0em;
+
       --md-sys-typescale-headline-medium-font: var(--font-brand);
       --md-sys-typescale-headline-medium-size: 1.75rem;
       --md-sys-typescale-headline-medium-line-height: 2.25rem;
       --md-sys-typescale-headline-medium-weight: var(--md-ref-typeface-weight-regular);
-      --md-sys-typescale-headline-medium-tracking: 0rem;
+      --md-sys-typescale-headline-medium-tracking: 0em;
+
       --md-sys-typescale-headline-small-font: var(--font-brand);
       --md-sys-typescale-headline-small-size: 1.5rem;
       --md-sys-typescale-headline-small-line-height: 2rem;
       --md-sys-typescale-headline-small-weight: var(--md-ref-typeface-weight-regular);
-      --md-sys-typescale-headline-small-tracking: 0rem;
+      --md-sys-typescale-headline-small-tracking: 0em;
 
       --md-sys-typescale-title-large-font: var(--font-brand);
       --md-sys-typescale-title-large-size: 1.375rem;
       --md-sys-typescale-title-large-line-height: 1.75rem;
       --md-sys-typescale-title-large-weight: var(--md-ref-typeface-weight-regular);
-      --md-sys-typescale-title-large-tracking: 0rem;
+      --md-sys-typescale-title-large-tracking: 0em;
+
       --md-sys-typescale-title-medium-font: var(--font-brand);
       --md-sys-typescale-title-medium-size: 1rem;
       --md-sys-typescale-title-medium-line-height: 1.5rem;
       --md-sys-typescale-title-medium-weight: var(--md-ref-typeface-weight-medium);
-      --md-sys-typescale-title-medium-tracking: 0.009375rem;
+      --md-sys-typescale-title-medium-tracking: 0.005em;
+
       --md-sys-typescale-title-small-font: var(--font-brand);
       --md-sys-typescale-title-small-size: 0.875rem;
       --md-sys-typescale-title-small-line-height: 1.25rem;
       --md-sys-typescale-title-small-weight: var(--md-ref-typeface-weight-medium);
-      --md-sys-typescale-title-small-tracking: 0.00625rem;
+      --md-sys-typescale-title-small-tracking: 0.007142857em;
 
       --md-sys-typescale-body-large-font: var(--font-plain);
       --md-sys-typescale-body-large-size: 1rem;
       --md-sys-typescale-body-large-line-height: 1.5rem;
       --md-sys-typescale-body-large-weight: var(--md-ref-typeface-weight-regular);
-      --md-sys-typescale-body-large-tracking: 0.03125rem;
+      --md-sys-typescale-body-large-tracking: 0.03125em;
+
       --md-sys-typescale-body-medium-font: var(--font-plain);
       --md-sys-typescale-body-medium-size: 0.875rem;
       --md-sys-typescale-body-medium-line-height: 1.25rem;
       --md-sys-typescale-body-medium-weight: var(--md-ref-typeface-weight-regular);
-      --md-sys-typescale-body-medium-tracking: 0.015625rem;
+      --md-sys-typescale-body-medium-tracking: 0.017857143em;
+
       --md-sys-typescale-body-small-font: var(--font-plain);
       --md-sys-typescale-body-small-size: 0.75rem;
       --md-sys-typescale-body-small-line-height: 1rem;
       --md-sys-typescale-body-small-weight: var(--md-ref-typeface-weight-regular);
-      --md-sys-typescale-body-small-tracking: 0.025rem;
+      --md-sys-typescale-body-small-tracking: 0.033333333em;
 
       --md-sys-typescale-label-large-font: var(--font-plain);
       --md-sys-typescale-label-large-size: 0.875rem;
       --md-sys-typescale-label-large-line-height: 1.25rem;
       --md-sys-typescale-label-large-weight: var(--md-ref-typeface-weight-medium);
-      --md-sys-typescale-label-large-tracking: 0.00625rem;
+      --md-sys-typescale-label-large-tracking: 0.007142857em;
+
       --md-sys-typescale-label-medium-font: var(--font-plain);
       --md-sys-typescale-label-medium-size: 0.75rem;
       --md-sys-typescale-label-medium-line-height: 1rem;
       --md-sys-typescale-label-medium-weight: var(--md-ref-typeface-weight-medium);
-      --md-sys-typescale-label-medium-tracking: 0.03125rem;
+      --md-sys-typescale-label-medium-tracking: 0.041666667em;
+
       --md-sys-typescale-label-small-font: var(--font-plain);
       --md-sys-typescale-label-small-size: 0.6875rem;
       --md-sys-typescale-label-small-line-height: 1rem;
       --md-sys-typescale-label-small-weight: var(--md-ref-typeface-weight-medium);
-      --md-sys-typescale-label-small-tracking: 0.03125rem;
+      --md-sys-typescale-label-small-tracking: 0.045454545em;
 
-      --md-sys-color-primary: #9bc1ff;
-      --md-sys-color-on-primary: #002b61;
-      --md-sys-color-primary-container: #1a4a86;
-      --md-sys-color-on-primary-container: #d8e6ff;
-      --md-sys-color-primary-fixed: #d8e6ff;
-      --md-sys-color-primary-fixed-dim: #adc6ff;
-      --md-sys-color-on-primary-fixed: #001a41;
-      --md-sys-color-on-primary-fixed-variant: #1a4a86;
+      --md-sys-color-primary: #a7c7ff;
+      --md-sys-color-on-primary: #002f6c;
+      --md-sys-color-primary-container: #00459e;
+      --md-sys-color-on-primary-container: #d8e3ff;
+      --md-sys-color-primary-fixed: #d8e3ff;
+      --md-sys-color-primary-fixed-dim: #a7c7ff;
+      --md-sys-color-on-primary-fixed: #001638;
+      --md-sys-color-on-primary-fixed-variant: #00459e;
 
-      --md-sys-color-secondary: #bec9dc;
-      --md-sys-color-on-secondary: #283141;
-      --md-sys-color-secondary-container: #40495b;
-      --md-sys-color-on-secondary-container: #dbe6fa;
-      --md-sys-color-secondary-fixed: #dbe6fa;
-      --md-sys-color-secondary-fixed-dim: #bec9dc;
-      --md-sys-color-on-secondary-fixed: #131c2b;
-      --md-sys-color-on-secondary-fixed-variant: #40495b;
+      --md-sys-color-secondary: #bcc7db;
+      --md-sys-color-on-secondary: #263140;
+      --md-sys-color-secondary-container: #3d4858;
+      --md-sys-color-on-secondary-container: #d8e3f8;
+      --md-sys-color-secondary-fixed: #d8e3f8;
+      --md-sys-color-secondary-fixed-dim: #bcc7db;
+      --md-sys-color-on-secondary-fixed: #121d2b;
+      --md-sys-color-on-secondary-fixed-variant: #3d4858;
 
-      --md-sys-color-tertiary: #e7c469;
-      --md-sys-color-on-tertiary: #3c2f00;
-      --md-sys-color-tertiary-container: #5a4500;
-      --md-sys-color-on-tertiary-container: #ffe8ad;
-      --md-sys-color-tertiary-fixed: #ffe8ad;
-      --md-sys-color-tertiary-fixed-dim: #e7c469;
-      --md-sys-color-on-tertiary-fixed: #231b00;
-      --md-sys-color-on-tertiary-fixed-variant: #5a4500;
+      --md-sys-color-tertiary: #dfba60;
+      --md-sys-color-on-tertiary: #3d2a00;
+      --md-sys-color-tertiary-container: #584000;
+      --md-sys-color-on-tertiary-container: #ffdfa6;
+      --md-sys-color-tertiary-fixed: #ffdfa6;
+      --md-sys-color-tertiary-fixed-dim: #dfba60;
+      --md-sys-color-on-tertiary-fixed: #221500;
+      --md-sys-color-on-tertiary-fixed-variant: #584000;
 
-      --md-sys-color-error: #ffb4ab;
-      --md-sys-color-on-error: #690005;
-      --md-sys-color-error-container: #93000a;
-      --md-sys-color-on-error-container: #ffdad6;
+      --md-sys-color-error: #ffb4a9;
+      --md-sys-color-on-error: #680003;
+      --md-sys-color-error-container: #930006;
+      --md-sys-color-on-error-container: #ffdad4;
 
-      --md-sys-color-background: #10131b;
-      --md-sys-color-on-background: #e3e7f1;
-      --md-sys-color-surface: #121722;
-      --md-sys-color-on-surface: #e3e7f1;
-      --md-sys-color-surface-dim: #0f141f;
-      --md-sys-color-surface-bright: #343d50;
-      --md-sys-color-surface-container-lowest: #0c111b;
-      --md-sys-color-surface-container-low: #191f2c;
-      --md-sys-color-surface-container: #1f2634;
-      --md-sys-color-surface-container-high: #273042;
-      --md-sys-color-surface-container-highest: #323d52;
-      --md-sys-color-surface-variant: #3f485b;
-      --md-sys-color-on-surface-variant: #c2c9d9;
-      --md-sys-color-outline: #8f97aa;
-      --md-sys-color-outline-variant: #6e7587;
+      --md-sys-color-background: #0f1424;
+      --md-sys-color-on-background: #e3e3eb;
+
+      --md-sys-color-surface: #0f1424;
+      --md-sys-color-on-surface: #e3e3eb;
+      --md-sys-color-surface-dim: #0f1424;
+      --md-sys-color-surface-bright: #353d52;
+      --md-sys-color-surface-container-lowest: #0a0e1a;
+      --md-sys-color-surface-container-low: #141a2e;
+      --md-sys-color-surface-container: #1a2138;
+      --md-sys-color-surface-container-high: #242d47;
+      --md-sys-color-surface-container-highest: #303a57;
+      --md-sys-color-surface-variant: #3f4863;
+      --md-sys-color-on-surface-variant: #c4c6cf;
+      --md-sys-color-outline: #7a8299;
+      --md-sys-color-outline-variant: #3f4863;
       --md-sys-color-surface-tint: var(--md-sys-color-primary);
-      --md-sys-color-inverse-surface: #e3e7f1;
-      --md-sys-color-inverse-on-surface: #2b3140;
-      --md-sys-color-inverse-primary: #2f5f9c;
+      --md-sys-color-inverse-surface: #e3e3eb;
+      --md-sys-color-inverse-on-surface: #2f323a;
+      --md-sys-color-inverse-primary: #0058c2;
       --md-sys-color-scrim: #000;
       --md-sys-color-shadow: #000;
+
+      /* MD3 State Layer Overlays */
+      --md-sys-state-hover-state-layer: 0.08;
+      --md-sys-state-focus-state-layer: 0.12;
+      --md-sys-state-pressed-state-layer: 0.12;
+      --md-sys-state-dragged-state-layer: 0.16;
       --md-sys-shape-corner-extra-large: 28px;
       --md-sys-shape-corner-large: 20px;
       --md-sys-shape-corner-medium: 16px;
       --md-sys-shape-corner-small: 12px;
       --md-sys-shape-corner-extra-small: 8px;
+      --md-sys-shape-corner-full: 9999px;
       --m3-shape-none: 0px;
       --m3-shape-extra-small: 4px;
       --m3-shape-small: 8px;
@@ -274,10 +292,39 @@ class PixelosApp extends LitElement {
       --m3-shape-extra-large: 28px;
       --m3-shape-full: 999px;
 
+      /* MD3 Elevation Tokens */
+      --md-sys-elevation-level0: 0px 0px 0px 0px rgb(0 0 0 / 0%), 0px 0px 0px 0px rgb(0 0 0 / 0%);
       --md-sys-elevation-level1: 0px 1px 2px 0px rgb(0 0 0 / 30%), 0px 1px 3px 1px rgb(0 0 0 / 15%);
+      --md-sys-elevation-level2: 0px 1px 2px 0px rgb(0 0 0 / 30%), 0px 2px 6px 2px rgb(0 0 0 / 15%);
+      --md-sys-elevation-level3: 0px 1px 3px 0px rgb(0 0 0 / 30%), 0px 4px 8px 3px rgb(0 0 0 / 15%);
+      --md-sys-elevation-level4: 0px 2px 3px 0px rgb(0 0 0 / 30%), 0px 6px 10px 4px rgb(0 0 0 / 15%);
+      --md-sys-elevation-level5: 0px 4px 4px 0px rgb(0 0 0 / 30%), 0px 8px 12px 6px rgb(0 0 0 / 15%);
 
-      --motion-standard: cubic-bezier(0.2, 0, 0, 1);
-      --motion-emphasized: cubic-bezier(0.2, 0, 0, 1);
+      /* MD3 Motion Duration Tokens */
+      --md-sys-motion-duration-extra-short1: 50ms;
+      --md-sys-motion-duration-extra-short2: 100ms;
+      --md-sys-motion-duration-extra-short3: 150ms;
+      --md-sys-motion-duration-short1: 200ms;
+      --md-sys-motion-duration-short2: 250ms;
+      --md-sys-motion-duration-short3: 300ms;
+      --md-sys-motion-duration-medium1: 350ms;
+      --md-sys-motion-duration-medium2: 400ms;
+      --md-sys-motion-duration-medium3: 500ms;
+      --md-sys-motion-duration-long1: 600ms;
+      --md-sys-motion-duration-long2: 700ms;
+      --md-sys-motion-duration-long3: 800ms;
+      --md-sys-motion-duration-extra-long1: 900ms;
+
+      /* MD3 Motion Easing Tokens */
+      --md-sys-motion-easing-linear: linear;
+      --md-sys-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+      --md-sys-motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+      --md-sys-motion-easing-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+      --md-sys-motion-easing-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+
+      /* Legacy aliases for backward compatibility */
+      --motion-standard: var(--md-sys-motion-easing-standard);
+      --motion-emphasized: var(--md-sys-motion-easing-emphasized);
       --side-left-shift: -62px;
       --side-right-shift: -26px;
 
@@ -348,11 +395,11 @@ class PixelosApp extends LitElement {
       --tile-clip: inset(0 round var(--tile-shape));
       --md-outlined-card-container-shape: var(--tile-shape);
       padding: 0;
-      --md-outlined-card-container-color: color-mix(in srgb, var(--md-sys-color-surface-container-high) 74%, transparent);
-      --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-primary) 28%, transparent);
+      --md-outlined-card-container-color: color-mix(in srgb, var(--md-sys-color-primary-container) 45%, var(--md-sys-color-surface-container-high) 55%);
+      --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-primary-fixed-dim) 55%, transparent);
       --md-outlined-card-outline-width: 1px;
       transform: rotate(var(--tile-tilt, 0deg));
-      box-shadow: 0 12px 28px rgb(0 0 0 / 24%);
+      box-shadow: 0 12px 28px rgb(0 0 0 / 30%), 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 20%, transparent);
       border-radius: var(--tile-shape);
       clip-path: var(--tile-clip);
     }
@@ -503,7 +550,7 @@ class PixelosApp extends LitElement {
     }
 
     .view {
-      animation: shared-axis-in 320ms var(--motion-emphasized);
+      animation: shared-axis-in var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized);
     }
 
     .home-view {
@@ -518,20 +565,22 @@ class PixelosApp extends LitElement {
     }
 
     md-filled-card.panel {
-      --md-filled-card-container-color: color-mix(in srgb, var(--md-sys-color-primary-container) 40%, var(--md-sys-color-surface-container-high) 60%);
+      --md-filled-card-container-color: color-mix(in srgb, var(--md-sys-color-primary-container) 70%, var(--md-sys-color-surface-container-high) 30%);
       --md-filled-card-container-shape: var(--md-sys-shape-corner-extra-large);
+      box-shadow: 0 4px 16px rgb(0 0 0 / 20%), inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 30%, transparent);
     }
 
     md-elevated-card.panel {
-      --md-elevated-card-container-color: var(--md-sys-color-surface-container-low);
+      --md-elevated-card-container-color: color-mix(in srgb, var(--md-sys-color-secondary-container) 18%, var(--md-sys-color-surface-container) 82%);
       --md-elevated-card-container-shape: var(--md-sys-shape-corner-large);
       --md-elevated-card-container-elevation: 1;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 15%), inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-secondary) 20%, transparent);
     }
 
     md-outlined-card.panel {
-      --md-outlined-card-container-color: var(--md-sys-color-surface-container-low);
+      --md-outlined-card-container-color: color-mix(in srgb, var(--md-sys-color-tertiary-container) 12%, var(--md-sys-color-surface-container) 88%);
       --md-outlined-card-container-shape: var(--md-sys-shape-corner-large);
-      --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-outline) 42%, transparent);
+      --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent);
     }
 
     .hero {
@@ -540,8 +589,8 @@ class PixelosApp extends LitElement {
 
     .motion-item {
       opacity: 0;
-      transform: translateY(14px);
-      animation: rise-in 350ms var(--motion-standard) forwards;
+      transform: translateY(12px);
+      animation: rise-in var(--md-sys-motion-duration-medium1) var(--md-sys-motion-easing-emphasized-decelerate) forwards;
       animation-delay: var(--delay, 0ms);
     }
 
@@ -639,7 +688,7 @@ class PixelosApp extends LitElement {
       overflow: hidden;
       border-radius: 16px;
       background: var(--md-sys-color-surface-container-high);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 22%, transparent);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent), 0 4px 12px rgb(0 0 0 / 20%);
       aspect-ratio: 9 / 20;
     }
 
@@ -674,7 +723,7 @@ class PixelosApp extends LitElement {
       pointer-events: none;
       opacity: 0;
       background: color-mix(in srgb, var(--md-sys-color-scrim) 24%, transparent);
-      transition: opacity 180ms var(--motion-standard);
+      transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
     }
 
     .route-overlay.active {
@@ -715,8 +764,8 @@ class PixelosApp extends LitElement {
       background: color-mix(in srgb, var(--md-sys-color-primary) 86%, white 14%);
       opacity: 0.42;
       transform-origin: center;
-      animation: expressive-loader 1080ms var(--motion-emphasized) infinite;
-      animation-delay: calc(var(--loader-index, 0) * 90ms);
+      animation: expressive-loader var(--md-sys-motion-duration-long3) var(--md-sys-motion-easing-emphasized) infinite;
+      animation-delay: calc(var(--loader-index, 0) * var(--md-sys-motion-duration-extra-short2));
       box-shadow: 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 22%, transparent);
     }
 
@@ -822,7 +871,7 @@ class PixelosApp extends LitElement {
     }
 
     .warning-card {
-      --md-filled-card-container-color: color-mix(in srgb, var(--md-sys-color-tertiary-container) 52%, var(--md-sys-color-surface-container-low) 48%);
+      --md-filled-card-container-color: color-mix(in srgb, var(--md-sys-color-tertiary-container) 65%, var(--md-sys-color-surface-container) 35%);
       --md-filled-card-container-shape: var(--md-sys-shape-corner-large);
       overflow-x: auto;
     }
@@ -837,17 +886,17 @@ class PixelosApp extends LitElement {
       margin-top: 0.1rem;
       --m3-icon-fill: 1;
       --m3-icon-weight: 600;
-      color: var(--md-sys-color-tertiary);
+      color: var(--md-sys-color-tertiary-fixed-dim);
     }
 
     .warning-content .warning-command {
       display: inline-block;
       padding: 0.15rem 0.5rem;
       border-radius: 6px;
-      background: color-mix(in srgb, var(--md-sys-color-tertiary) 25%, transparent);
+      background: color-mix(in srgb, var(--md-sys-color-tertiary) 35%, transparent);
       color: var(--md-sys-color-on-tertiary-container);
       font: 600 0.85rem/1.5 var(--font-mono);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-tertiary) 40%, transparent);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-tertiary-fixed-dim) 50%, transparent);
       word-break: break-all;
       max-width: 100%;
     }
@@ -875,9 +924,9 @@ class PixelosApp extends LitElement {
     .download-item {
       display: block;
       padding: 0.72rem;
-      --md-outlined-card-container-color: var(--md-sys-color-surface-container-high);
+      --md-outlined-card-container-color: color-mix(in srgb, var(--md-sys-color-primary-container) 15%, var(--md-sys-color-surface-container-high) 85%);
       --md-outlined-card-container-shape: var(--md-sys-shape-corner-medium);
-      --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-outline) 30%, transparent);
+      --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-primary) 40%, transparent);
       --md-outlined-card-outline-width: 1px;
       display: grid;
       gap: 0.35rem;
@@ -930,9 +979,9 @@ class PixelosApp extends LitElement {
     .command-item {
       display: block;
       padding: 0.75rem;
-      --md-outlined-card-container-color: var(--md-sys-color-surface-container-high);
+      --md-outlined-card-container-color: color-mix(in srgb, var(--md-sys-color-primary-container) 12%, var(--md-sys-color-surface-container-high) 88%);
       --md-outlined-card-container-shape: var(--md-sys-shape-corner-medium);
-      --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-outline) 28%, transparent);
+      --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent);
     }
 
     .commands p {
@@ -954,10 +1003,10 @@ class PixelosApp extends LitElement {
       padding: 0.5rem 0.65rem;
       border-radius: 10px;
       color: var(--md-sys-color-on-primary-container);
-      background: color-mix(in srgb, var(--md-sys-color-primary-container) 45%, transparent);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent);
+      background: color-mix(in srgb, var(--md-sys-color-primary-container) 60%, transparent);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 50%, transparent);
       font-family: var(--font-brand);
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .step-guidance {
@@ -973,14 +1022,14 @@ class PixelosApp extends LitElement {
       gap: 0.34rem;
       border-radius: 10px;
       padding: 0.46rem 0.58rem;
-      background: color-mix(in srgb, var(--md-sys-color-surface-container-highest) 86%, transparent);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 20%, transparent);
+      background: color-mix(in srgb, var(--md-sys-color-primary-container) 20%, var(--md-sys-color-surface-container-high) 80%);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 30%, transparent);
     }
 
     .guidance-row.warning {
       color: var(--md-sys-color-on-tertiary-container);
-      background: color-mix(in srgb, var(--md-sys-color-tertiary-container) 52%, transparent);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-tertiary) 48%, transparent);
+      background: color-mix(in srgb, var(--md-sys-color-tertiary-container) 65%, transparent);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-tertiary-fixed-dim) 60%, transparent);
     }
 
     .guidance-label {
@@ -994,8 +1043,8 @@ class PixelosApp extends LitElement {
       letter-spacing: var(--md-sys-typescale-label-medium-tracking);
       font-weight: var(--md-sys-typescale-label-medium-weight);
       text-transform: uppercase;
-      color: var(--md-sys-color-on-surface);
-      background: color-mix(in srgb, var(--md-sys-color-primary) 20%, transparent);
+      color: var(--md-sys-color-on-primary);
+      background: var(--md-sys-color-primary);
     }
 
     .guidance-row.warning .guidance-label {
@@ -1026,8 +1075,8 @@ class PixelosApp extends LitElement {
     .optional-images-dropdown {
       margin-top: 0.5rem;
       border-radius: 12px;
-      background: color-mix(in srgb, var(--md-sys-color-surface-container-highest) 60%, transparent);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 18%, transparent);
+      background: color-mix(in srgb, var(--md-sys-color-primary-container) 25%, var(--md-sys-color-surface-container-high) 75%);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 30%, transparent);
       overflow: hidden;
     }
 
@@ -1045,6 +1094,7 @@ class PixelosApp extends LitElement {
       color: var(--md-sys-color-primary);
       list-style: none;
       user-select: none;
+      background: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
     }
 
     .dropdown-summary::-webkit-details-marker {
@@ -1054,7 +1104,7 @@ class PixelosApp extends LitElement {
     .dropdown-summary md-icon {
       --m3-icon-size: 20px;
       --m3-icon-fill: 1;
-      transition: transform 200ms var(--motion-standard);
+      transition: transform var(--md-sys-motion-duration-short1) var(--md-sys-motion-easing-standard);
     }
 
     details[open] .dropdown-summary md-icon {
@@ -1070,8 +1120,8 @@ class PixelosApp extends LitElement {
     .optional-image-item {
       padding: 0.65rem;
       border-radius: 10px;
-      background: var(--md-sys-color-surface-container-high);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 16%, transparent);
+      background: color-mix(in srgb, var(--md-sys-color-primary-container) 18%, var(--md-sys-color-surface-container-high) 82%);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 25%, transparent);
       display: grid;
       gap: 0.4rem;
       min-width: 0;
@@ -1207,17 +1257,18 @@ class PixelosApp extends LitElement {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      color: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
       text-decoration: none;
-      background: var(--md-sys-color-surface-container-high);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 14%, transparent);
-      transition: transform 160ms var(--motion-standard), box-shadow 160ms var(--motion-standard), color 160ms var(--motion-standard);
+      background: var(--md-sys-color-primary);
+      box-shadow: 0 2px 8px rgb(0 0 0 / 20%), inset 0 0 0 1px color-mix(in srgb, white 15%, transparent);
+      transition: transform var(--md-sys-motion-duration-short1) var(--md-sys-motion-easing-standard), box-shadow var(--md-sys-motion-duration-short1) var(--md-sys-motion-easing-standard), color var(--md-sys-motion-duration-short1) var(--md-sys-motion-easing-standard);
     }
 
     .social-link:hover {
-      transform: translateY(-1px);
-      color: var(--md-sys-color-on-primary-container);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent);
+      transform: translateY(-2px);
+      color: var(--md-sys-color-on-primary-fixed);
+      background: var(--md-sys-color-primary-fixed-dim);
+      box-shadow: 0 4px 12px rgb(0 0 0 / 25%), inset 0 0 0 1px color-mix(in srgb, white 20%, transparent);
     }
 
     .social-link svg {
@@ -1330,7 +1381,7 @@ class PixelosApp extends LitElement {
     @keyframes shared-axis-in {
       from {
         opacity: 0;
-        transform: translateY(10px) scale(0.992);
+        transform: translateY(8px) scale(0.98);
       }
       to {
         opacity: 1;
@@ -1339,9 +1390,22 @@ class PixelosApp extends LitElement {
     }
 
     @keyframes rise-in {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
       to {
         opacity: 1;
         transform: translateY(0);
+      }
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
       }
     }
 
