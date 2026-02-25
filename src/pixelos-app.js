@@ -486,6 +486,7 @@ class PixelosApp extends LitElement {
       --md-primary-tab-active-indicator-shape: 999px;
       --md-primary-tab-container-height: 44px;
       --md-primary-tab-container-shape: 999px;
+      max-width: 100%;
     }
 
     md-tabs::part(divider) {
@@ -515,6 +516,7 @@ class PixelosApp extends LitElement {
     .panel {
       display: block;
       padding: 1.15rem;
+      overflow-x: auto;
     }
 
     md-filled-card.panel {
@@ -556,7 +558,7 @@ class PixelosApp extends LitElement {
     h1 {
       margin-top: 0.85rem;
       font-family: var(--md-sys-typescale-display-small-font);
-      font-size: clamp(2.1rem, 4.6vw, var(--md-sys-typescale-display-small-size));
+      font-size: clamp(1.75rem, 6vw, var(--md-sys-typescale-display-small-size));
       line-height: var(--md-sys-typescale-display-small-line-height);
       letter-spacing: var(--md-sys-typescale-display-small-tracking);
       font-weight: var(--md-sys-typescale-display-small-weight);
@@ -599,7 +601,8 @@ class PixelosApp extends LitElement {
 
     .lead {
       margin: 0;
-      max-width: 70ch;
+      max-width: 100%;
+      width: 70ch;
       font-family: var(--md-sys-typescale-body-large-font);
       font-size: var(--md-sys-typescale-body-large-size);
       line-height: var(--md-sys-typescale-body-large-line-height);
@@ -814,23 +817,26 @@ class PixelosApp extends LitElement {
 
     .warning-content {
       display: flex;
-      align-items: center;
-      gap: 0.55rem;
-      padding: 0.78rem 0.96rem;
+      align-items: flex-start;
+      gap: 0.65rem;
+      padding: 0.8rem 1rem;
       color: var(--md-sys-color-on-tertiary-container);
     }
 
     .warning-card {
       --md-filled-card-container-color: color-mix(in srgb, var(--md-sys-color-tertiary-container) 52%, var(--md-sys-color-surface-container-low) 48%);
       --md-filled-card-container-shape: var(--md-sys-shape-corner-large);
+      overflow-x: auto;
     }
 
     .warning-content p {
       margin: 0;
+      line-height: 1.4;
       color: var(--md-sys-color-on-tertiary-container);
     }
 
     .warning-content md-icon {
+      margin-top: 0.1rem;
       --m3-icon-fill: 1;
       --m3-icon-weight: 600;
       color: var(--md-sys-color-tertiary);
@@ -963,10 +969,13 @@ class PixelosApp extends LitElement {
       display: flex;
       gap: 0.45rem;
       align-items: center;
+      max-width: 100%;
     }
 
     .command-field {
       flex: 1;
+      min-width: 0;
+      max-width: 100%;
       --md-outlined-text-field-container-shape: 14px;
       --md-outlined-text-field-input-text-font: 500 13px/1.4 var(--font-mono);
       --md-outlined-text-field-input-text-color: var(--md-sys-color-on-surface);
@@ -976,14 +985,15 @@ class PixelosApp extends LitElement {
     .command-snippet {
       margin: 0;
       flex: 1;
+      min-width: 0;
       padding: 0.62rem 0.75rem;
       border-radius: 14px;
       background: var(--md-sys-color-surface-container-high);
       box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 24%, transparent);
       color: var(--md-sys-color-on-surface);
       font: 500 13px/1.4 var(--font-mono);
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
+      white-space: pre;
+      overflow-x: auto;
     }
 
     .spoof-list {
@@ -1159,6 +1169,38 @@ class PixelosApp extends LitElement {
       --md-dialog-container-shape: 20px;
     }
 
+    @media (max-width: 600px) {
+      .shell {
+        width: min(100% - 1.2rem, 1100px);
+        padding: 0.6rem 0 1.2rem;
+      }
+
+      .panel {
+        padding: 0.9rem;
+      }
+
+      .footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .social-links {
+        justify-content: center;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+
+      .hero {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
     @keyframes shared-axis-in {
       from {
         opacity: 0;
@@ -1203,21 +1245,36 @@ class PixelosApp extends LitElement {
     }
 
     @media (max-width: 760px) {
-      .screenshots-grid {
-        grid-template-columns: 1fr;
-      }
-
       .top-bar {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.8rem;
         --md-elevated-card-container-shape: var(--md-sys-shape-corner-large);
       }
 
+      .brand {
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 0.2rem;
+      }
+
       md-tabs {
-        justify-self: start;
+        width: 100%;
+        max-width: calc(100vw - 3.6rem);
+        overflow-x: auto;
       }
 
       .command-row {
+        flex-direction: column;
         align-items: stretch;
+        gap: 0.6rem;
+      }
+
+      .command-snippet {
+        min-width: 0;
+        max-width: 100%;
       }
     }
   `;
@@ -1317,7 +1374,7 @@ class PixelosApp extends LitElement {
   }
 
   handleScroll() {
-    if (this.scrollRaf) {
+    if (this.scrollRaf || window.innerWidth < 1320) {
       return;
     }
 
