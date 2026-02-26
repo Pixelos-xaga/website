@@ -480,6 +480,33 @@ class PixelosApp extends LitElement {
       margin-bottom: 1rem;
     }
 
+    .build-warning-card {
+      --md-filled-card-container-color: color-mix(in srgb, var(--md-sys-color-error-container) 78%, var(--md-sys-color-surface-container) 22%);
+      --md-filled-card-container-shape: var(--md-sys-shape-corner-large);
+      margin-bottom: 1rem;
+    }
+
+    .build-warning-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      padding: 0.8rem 1rem;
+      color: var(--md-sys-color-on-error-container);
+    }
+
+    .build-warning-content p {
+      margin: 0;
+      line-height: 1.4;
+      color: var(--md-sys-color-on-error-container);
+    }
+
+    .build-warning-content md-icon {
+      margin-top: 0.1rem;
+      --m3-icon-fill: 1;
+      --m3-icon-weight: 600;
+      color: var(--md-sys-color-error);
+    }
+
     .brand {
       font-family: var(--md-sys-typescale-title-large-font);
       font-size: var(--md-sys-typescale-title-large-size);
@@ -1801,6 +1828,17 @@ class PixelosApp extends LitElement {
     `;
   }
 
+  renderBuildWarning() {
+    return html`
+      <md-filled-card class="build-warning-card" role="alert" aria-live="assertive">
+        <div class="build-warning-content">
+          <md-icon>warning</md-icon>
+          <p><strong>Current build is broken.</strong> Please wait while I am working on the fix.</p>
+        </div>
+      </md-filled-card>
+    `;
+  }
+
   renderHomeView() {
     return html`
       <section class="view home-view" aria-label="Home view">
@@ -2119,6 +2157,7 @@ class PixelosApp extends LitElement {
       </div>
         <div class="shell">
         ${this.renderTopBar()}
+        ${this.renderBuildWarning()}
         ${keyed(this.motionKey, this.route === 'instructions'
           ? this.renderInstructionsView()
           : this.route === 'downloads'
