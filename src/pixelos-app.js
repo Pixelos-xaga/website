@@ -2035,7 +2035,7 @@ class PixelosApp extends LitElement {
             <div class="download-grid">
               <md-outlined-card class="download-item">
                 <md-elevated-button
-                  href="https://drive.google.com/file/d/1Fl0YV91GazFbOFq42DFyB0IlfokD_bUM/view?usp=sharing"
+                  href="https://pub-f99413a1187e4a1a949d375488244b71.r2.dev/Pixelos-xaga.7z"
                   target="_blank"
                   rel="noopener noreferrer">
                   <md-icon slot="icon">download</md-icon>
