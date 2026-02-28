@@ -98,6 +98,11 @@ const FLASH_STEPS = [
     noteHighlighted: true
   },
   {
+    title: 'Factory Reset (Recommended for clean flash)',
+    isInfo: true,
+    note: 'In recovery, go to "Wipe data/factory reset" → "Format data" → confirm. This ensures a clean installation and prevents potential issues.'
+  },
+  {
     title: 'Sideload ROM from recovery',
     command: 'adb sideload <rom-filename>.zip',
     copyable: false,
@@ -480,33 +485,6 @@ class PixelosApp extends LitElement {
       margin-bottom: 1rem;
     }
 
-    .build-warning-card {
-      --md-filled-card-container-color: color-mix(in srgb, var(--md-sys-color-error-container) 78%, var(--md-sys-color-surface-container) 22%);
-      --md-filled-card-container-shape: var(--md-sys-shape-corner-large);
-      margin-bottom: 1rem;
-    }
-
-    .build-warning-content {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.65rem;
-      padding: 0.8rem 1rem;
-      color: var(--md-sys-color-on-error-container);
-    }
-
-    .build-warning-content p {
-      margin: 0;
-      line-height: 1.4;
-      color: var(--md-sys-color-on-error-container);
-    }
-
-    .build-warning-content md-icon {
-      margin-top: 0.1rem;
-      --m3-icon-fill: 1;
-      --m3-icon-weight: 600;
-      color: var(--md-sys-color-error);
-    }
-
     .brand {
       font-family: var(--md-sys-typescale-title-large-font);
       font-size: var(--md-sys-typescale-title-large-size);
@@ -741,83 +719,6 @@ class PixelosApp extends LitElement {
       height: 22px;
     }
 
-    .route-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 25;
-      display: grid;
-      place-items: center;
-      pointer-events: none;
-      opacity: 0;
-      background: color-mix(in srgb, var(--md-sys-color-scrim) 24%, transparent);
-      transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
-    }
-
-    .route-overlay.active {
-      opacity: 1;
-    }
-
-    .route-loader-card {
-      width: min(90vw, 280px);
-      padding: 0.9rem 1rem;
-      display: grid;
-      gap: 0.7rem;
-      justify-items: center;
-      --md-elevated-card-container-color: var(--md-sys-color-surface-container-high);
-      --md-elevated-card-container-shape: var(--md-sys-shape-corner-large);
-      --md-elevated-card-container-elevation: 2;
-    }
-
-    .route-loader-text {
-      color: var(--md-sys-color-on-surface-variant);
-      font-family: var(--md-sys-typescale-label-large-font);
-      font-size: var(--md-sys-typescale-label-large-size);
-      line-height: var(--md-sys-typescale-label-large-line-height);
-      letter-spacing: var(--md-sys-typescale-label-large-tracking);
-      font-weight: var(--md-sys-typescale-label-large-weight);
-    }
-
-    .route-loader-track {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.34rem;
-      padding: 0.16rem 0.08rem;
-    }
-
-    .route-loader-segment {
-      width: 18px;
-      height: 8px;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--md-sys-color-primary) 86%, white 14%);
-      opacity: 0.42;
-      transform-origin: center;
-      animation: expressive-loader var(--md-sys-motion-duration-long3) var(--md-sys-motion-easing-emphasized) infinite;
-      animation-delay: calc(var(--loader-index, 0) * var(--md-sys-motion-duration-extra-short2));
-      box-shadow: 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 22%, transparent);
-    }
-
-    .route-loader-segment.dot {
-      width: 8px;
-      border-radius: 999px;
-    }
-
-    @keyframes expressive-loader {
-      0%, 100% {
-        opacity: 0.35;
-        transform: translateY(0) scaleX(0.7);
-      }
-
-      35% {
-        opacity: 1;
-        transform: translateY(-1px) scaleX(1.18);
-      }
-
-      70% {
-        opacity: 0.55;
-        transform: translateY(1px) scaleX(0.82);
-      }
-    }
-
     md-filled-button,
     md-filled-tonal-button,
     md-elevated-button,
@@ -1009,6 +910,46 @@ class PixelosApp extends LitElement {
       --md-outlined-card-container-color: color-mix(in srgb, var(--md-sys-color-primary-container) 12%, var(--md-sys-color-surface-container-high) 88%);
       --md-outlined-card-container-shape: var(--md-sys-shape-corner-medium);
       --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent);
+    }
+
+    .info-card {
+      --md-filled-card-container-color: color-mix(in srgb, var(--md-sys-color-secondary-container) 65%, var(--md-sys-color-surface-container-high) 35%);
+      --md-filled-card-container-shape: var(--md-sys-shape-corner-medium);
+      padding: 0.85rem 1rem;
+    }
+
+    .info-card-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+    }
+
+    .info-card-content md-icon {
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+      --m3-icon-fill: 1;
+      color: var(--md-sys-color-secondary);
+    }
+
+    .info-card-text h3 {
+      margin: 0 0 0.25rem;
+      font-family: var(--md-sys-typescale-title-medium-font);
+      font-size: var(--md-sys-typescale-title-medium-size);
+      font-weight: var(--md-sys-typescale-title-medium-weight);
+      line-height: var(--md-sys-typescale-title-medium-line-height);
+      letter-spacing: var(--md-sys-typescale-title-medium-tracking);
+      color: var(--md-sys-color-on-secondary-container);
+    }
+
+    .info-card-text p {
+      margin: 0;
+      font-family: var(--md-sys-typescale-body-medium-font);
+      font-size: var(--md-sys-typescale-body-medium-size);
+      font-weight: var(--md-sys-typescale-body-medium-weight);
+      line-height: var(--md-sys-typescale-body-medium-line-height);
+      letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+      color: var(--md-sys-color-on-secondary-container);
+      opacity: 0.9;
     }
 
     .commands p {
@@ -1828,17 +1769,6 @@ class PixelosApp extends LitElement {
     `;
   }
 
-  renderBuildWarning() {
-    return html`
-      <md-filled-card class="build-warning-card" role="alert" aria-live="assertive">
-        <div class="build-warning-content">
-          <md-icon>warning</md-icon>
-          <p><strong>Current build is broken.</strong> Please wait while I am working on the fix.</p>
-        </div>
-      </md-filled-card>
-    `;
-  }
-
   renderHomeView() {
     return html`
       <section class="view home-view" aria-label="Home view">
@@ -1932,6 +1862,17 @@ class PixelosApp extends LitElement {
               <ol class="commands">
                 ${FLASH_STEPS.map((step) => html`
                   <li>
+                    ${step.isInfo ? html`
+                      <md-filled-card class="info-card">
+                        <div class="info-card-content">
+                          <md-icon>info</md-icon>
+                          <div class="info-card-text">
+                            <h3>${step.title}</h3>
+                            ${step.note ? html`<p>${step.note}</p>` : ''}
+                          </div>
+                        </div>
+                      </md-filled-card>
+                    ` : html`
                     <md-outlined-card class="command-item">
                       <h3>${step.title}</h3>
                       ${step.warning ? html`<p class="step-warning"><strong>${step.warning}</strong></p>` : ''}
@@ -1995,6 +1936,7 @@ class PixelosApp extends LitElement {
                         </div>
                       ` : ''}
                     </md-outlined-card>
+                    `}
                   </li>
                 `)}
               </ol>
@@ -2143,21 +2085,8 @@ class PixelosApp extends LitElement {
   render() {
     return html`
       ${this.renderSideGallery('left')}
-      <div class="route-overlay ${this.routeLoading ? 'active' : ''}" role="status" aria-live="polite" aria-label="Loading">
-        <md-elevated-card class="route-loader-card">
-          <div class="route-loader-track" aria-hidden="true">
-            <span class="route-loader-segment dot" style="--loader-index: 0"></span>
-            <span class="route-loader-segment" style="--loader-index: 1"></span>
-            <span class="route-loader-segment" style="--loader-index: 2"></span>
-            <span class="route-loader-segment" style="--loader-index: 3"></span>
-            <span class="route-loader-segment dot" style="--loader-index: 4"></span>
-          </div>
-          <span class="route-loader-text">Loading content...</span>
-        </md-elevated-card>
-      </div>
         <div class="shell">
         ${this.renderTopBar()}
-        ${this.renderBuildWarning()}
         ${keyed(this.motionKey, this.route === 'instructions'
           ? this.renderInstructionsView()
           : this.route === 'downloads'
