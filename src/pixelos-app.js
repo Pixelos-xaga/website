@@ -790,6 +790,17 @@ class PixelosApp extends LitElement {
       color: var(--md-sys-color-primary);
     }
 
+    .firmware-list {
+      margin: 0.5rem 0;
+      padding-left: 1.25rem;
+      color: var(--md-sys-color-on-surface-variant);
+    }
+
+    .firmware-list li {
+      margin-bottom: 0.25rem;
+      line-height: 1.5;
+    }
+
     .warning-content {
       display: flex;
       align-items: flex-start;
@@ -2012,8 +2023,15 @@ class PixelosApp extends LitElement {
           </md-outlined-card>
 
           <md-outlined-card class="panel motion-item" style="--delay: 38ms">
-            <h2>Firmware Prerequisite</h2>
-            <p>If you are coming from an older ROM build or want to flash engineering preloader too, flash the latest firmware images first before continuing with PixelOS installation.</p>
+            <h2 class="section-title">
+              <md-icon>system_update</md-icon>
+              Flash preloader and latest firmware images (Recommended)
+            </h2>
+            <p>Before proceeding with PixelOS installation, ensure you have flashed the latest firmware images. This is especially important if:</p>
+            <ul class="firmware-list">
+              <li>You are upgrading from an older ROM build</li>
+              <li>You want to flash engineering preloader</li>
+            </ul>
             <div class="download-grid">
               <md-outlined-card class="download-item">
                 <md-elevated-button
