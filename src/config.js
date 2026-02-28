@@ -7,23 +7,23 @@ export const DOWNLOADS = [
   {
     name: 'boot.img',
     note: 'Boot image',
-    href: 'https://pixelos-xaga-worker.angxddeep.workers.dev/PixelOS_xaga-16.2-20260228-1452.zip/boot.img'
+    href: 'https://pixelos-xaga-worker.angxddeep.workers.dev/boot.img'
   },
   {
     name: 'vendor_boot.img',
     note: 'Vendor boot image',
-    href: 'https://pixelos-xaga-worker.angxddeep.workers.dev/PixelOS_xaga-16.2-20260228-1452.zip/vendor_boot.img'
+    href: 'https://pixelos-xaga-worker.angxddeep.workers.dev/vendor_boot.img'
   },
   {
     name: 'vbmeta.img',
     note: 'Verified boot metadata',
-    href: 'https://pixelos-xaga-worker.angxddeep.workers.dev/PixelOS_xaga-16.2-20260228-1452.zip/vbmeta.img'
+    href: 'https://pixelos-xaga-worker.angxddeep.workers.dev/vbmeta.img'
 
   },
   {
     name: 'dtbo.img',
     note: 'Device tree blob overlay',
-    href: 'https://pixelos-xaga-worker.angxddeep.workers.dev/PixelOS_xaga-16.2-20260228-1452.zip/dtbo.img'
+    href: 'https://pixelos-xaga-worker.angxddeep.workers.dev/dtbo.img'
   }
 ];
 
