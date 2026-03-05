@@ -15,6 +15,14 @@
     {
       "source": "/downloads/",
       "destination": "/"
+    },
+    {
+      "source": "/changelogs",
+      "destination": "/"
+    },
+    {
+      "source": "/changelogs/",
+      "destination": "/"
     }
   ]
 }

@@ -1,6 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { keyed } from 'lit/directives/keyed.js';
-import { DOWNLOADS, RESOURCE_LINKS } from './config.js';
+import { DOWNLOADS, RESOURCE_LINKS, CHANGELOGS } from './config.js';
 
 const PLATFORM_TOOLS_CLI_COMMANDS = [
   {
@@ -778,6 +778,66 @@ class PixelosApp extends LitElement {
       gap: 1rem;
     }
 
+    .changelog-card {
+      --md-outlined-card-container-color: var(--md-sys-color-surface-container-high);
+      margin-bottom: 1rem;
+    }
+
+    .changelog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.8rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .changelog-title {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin: 0;
+    }
+
+    .changelog-tag {
+      padding: 0.2rem 0.6rem;
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .changelog-date {
+      color: var(--md-sys-color-on-surface-variant);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+
+    .changelog-entry {
+      margin-top: 0.8rem;
+    }
+
+    .changelog-entry h4 {
+      margin: 0.6rem 0 0.4rem;
+      font-family: var(--font-brand);
+      font-size: 1rem;
+      color: var(--md-sys-color-primary);
+    }
+
+    .changelog-list {
+      margin: 0;
+      padding-left: 1.25rem;
+      list-style-type: circle;
+    }
+
+    .changelog-list li {
+      margin-bottom: 0.35rem;
+      color: var(--md-sys-color-on-surface);
+    }
+
     .section-title {
       display: inline-flex;
       align-items: center;
@@ -1544,6 +1604,9 @@ class PixelosApp extends LitElement {
     if (/^\/downloads(?:\/|$)/.test(normalized)) {
       return 'downloads';
     }
+    if (/^\/changelogs(?:\/|$)/.test(normalized)) {
+      return 'changelogs';
+    }
     return 'home';
   }
 
@@ -1556,6 +1619,11 @@ class PixelosApp extends LitElement {
         nextRoute = 'instructions';
         if (window.location.pathname !== '/instructions') {
           window.history.replaceState({}, '', '/instructions');
+        }
+      } else if (legacyHash.startsWith('changelogs')) {
+        nextRoute = 'changelogs';
+        if (window.location.pathname !== '/changelogs') {
+          window.history.replaceState({}, '', '/changelogs');
         }
       }
     }
@@ -1650,7 +1718,7 @@ class PixelosApp extends LitElement {
   }
 
   navigate(route) {
-    const path = route === 'instructions' ? '/instructions' : route === 'downloads' ? '/downloads' : '/';
+    const path = route === 'instructions' ? '/instructions' : route === 'downloads' ? '/downloads' : route === 'changelogs' ? '/changelogs' : '/';
     const currentPath = (window.location.pathname || '/').replace(/\/+$/, '') || '/';
     if (currentPath !== path) {
       window.history.pushState({}, '', path);
@@ -1775,6 +1843,12 @@ class PixelosApp extends LitElement {
             <md-icon slot="icon">folder_zip</md-icon>
             Downloads & Resources
           </md-primary-tab>
+          <md-primary-tab
+            ?active=${this.route === 'changelogs'}
+            @click=${() => this.navigate('changelogs')}>
+            <md-icon slot="icon">history</md-icon>
+            Changelogs
+          </md-primary-tab>
         </md-tabs>
       </md-elevated-card>
     `;
@@ -1839,6 +1913,11 @@ class PixelosApp extends LitElement {
               <md-icon slot="start">shield</md-icon>
               <div slot="headline">Spoofing Notes</div>
               <div slot="supporting-text">Short post-install guidance panel.</div>
+            </md-list-item>
+            <md-list-item @click=${() => this.navigate('changelogs')} type="button">
+              <md-icon slot="start">history</md-icon>
+              <div slot="headline">Changelogs</div>
+              <div slot="supporting-text">Track latest ROM updates and fixes.</div>
             </md-list-item>
           </md-list>
         </md-elevated-card>
@@ -2100,6 +2179,35 @@ class PixelosApp extends LitElement {
     `;
   }
 
+  renderChangelogsView() {
+    return html`
+      <section class="view" aria-label="Changelogs view">
+        <section class="view-grid">
+          ${CHANGELOGS.map((log, index) => html`
+            <md-outlined-card class="panel changelog-card motion-item" style="--delay: ${index * 20}ms">
+              <div class="changelog-header">
+                <div class="changelog-title">
+                  <h2>${log.version}</h2>
+                  ${log.tag ? html`<span class="changelog-tag">${log.tag}</span>` : ''}
+                </div>
+                <span class="changelog-date">${log.date}</span>
+              </div>
+
+              ${log.entries.map(entry => html`
+                <div class="changelog-entry">
+                  <h4>${entry.type}</h4>
+                  <ul class="changelog-list">
+                    ${entry.items.map(item => html`<li>${item}</li>`)}
+                  </ul>
+                </div>
+              `)}
+            </md-outlined-card>
+          `)}
+        </section>
+      </section>
+    `;
+  }
+
   render() {
     return html`
       ${this.renderSideGallery('left')}
@@ -2109,7 +2217,9 @@ class PixelosApp extends LitElement {
           ? this.renderInstructionsView()
           : this.route === 'downloads'
             ? this.renderDownloadsView()
-            : this.renderHomeView())}
+            : this.route === 'changelogs'
+              ? this.renderChangelogsView()
+              : this.renderHomeView())}
 
         <md-elevated-card class="footer">
           <span>PixelOS Xaga community website</span>

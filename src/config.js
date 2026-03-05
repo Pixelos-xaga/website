@@ -27,6 +27,61 @@ export const DOWNLOADS = [
   }
 ];
 
+// Note: When updating changelogs, please also update CHANGELOGS.md for documentation consistency.
+export const CHANGELOGS = [
+  {
+    version: '16.2 Stable',
+    date: '2026-03-05',
+    tag: 'Latest',
+    entries: [
+      {
+        type: 'Added',
+        items: [
+          'Initial build for Xaga.',
+          'Updated security patch to March 2026.',
+          'Added Material You dynamic color support.',
+          'Integrated latest PixelOS features.'
+        ]
+      },
+      {
+        type: 'Fixed',
+        items: [
+          'Fixed random reboots during initial setup.',
+          'Resolved camera crash issue.',
+          'Improved battery life and thermal management.'
+        ]
+      },
+      {
+        type: 'Changed',
+        items: [
+          'Improved overall system stability.',
+          'Updated kernel to version 5.10.x.'
+        ]
+      }
+    ]
+  },
+  {
+    version: '16.1 Beta',
+    date: '2026-02-15',
+    entries: [
+      {
+        type: 'Added',
+        items: [
+          'Preliminary support for Poco X4 GT.',
+          'Basic spoofing implementation.'
+        ]
+      },
+      {
+        type: 'Fixed',
+        items: [
+          'Fixed Wi-Fi connectivity issues.',
+          'Corrected display refresh rate issues.'
+        ]
+      }
+    ]
+  }
+];
+
 export const RESOURCE_LINKS = [
   {
     name: 'Android Bootloader Interface Driver (Windows)',
