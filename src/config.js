@@ -37,6 +37,21 @@ export const TEST_DOWNLOADS = [
     name: 'Test boot.img',
     note: 'Experimental/Test boot image',
     href: '#'
+  },
+  {
+    name: 'Test vendor_boot.img',
+    note: 'Experimental/Test vendor boot image',
+    href: '#'
+  },
+  {
+    name: 'Test vbmeta.img',
+    note: 'Experimental/Test verified boot metadata',
+    href: '#'
+  },
+  {
+    name: 'Test dtbo.img',
+    note: 'Experimental/Test device tree blob overlay',
+    href: '#'
   }
 ];
 
