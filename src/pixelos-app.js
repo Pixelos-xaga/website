@@ -1,6 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { keyed } from 'lit/directives/keyed.js';
-import { DOWNLOADS, RESOURCE_LINKS, CHANGELOGS } from './config.js';
+import { DOWNLOADS, RESOURCE_LINKS } from './config.js';
 
 const PLATFORM_TOOLS_CLI_COMMANDS = [
   {
@@ -117,7 +117,8 @@ class PixelosApp extends LitElement {
     copiedCommand: { state: true },
     copyMessage: { state: true },
     routeLoading: { state: true },
-    pendingScreenshots: { state: true }
+    pendingScreenshots: { state: true },
+    changelogs: { state: true }
   };
 
   static styles = css`
@@ -1549,6 +1550,8 @@ class PixelosApp extends LitElement {
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
     this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
+    this.changelogs = [];
+    this.fetchChangelogs();
   }
 
   connectedCallback() {
@@ -2180,10 +2183,23 @@ class PixelosApp extends LitElement {
   }
 
   renderChangelogsView() {
+    if (!this.changelogs || this.changelogs.length === 0) {
+      return html`
+        <section class="view" aria-label="Changelogs view">
+          <md-outlined-card class="panel motion-item">
+            <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem;">
+              <md-circular-progress indeterminate></md-circular-progress>
+              <span>Loading changelogs from Markdown...</span>
+            </div>
+          </md-outlined-card>
+        </section>
+      `;
+    }
+
     return html`
       <section class="view" aria-label="Changelogs view">
         <section class="view-grid">
-          ${CHANGELOGS.map((log, index) => html`
+          ${this.changelogs.map((log, index) => html`
             <md-outlined-card class="panel changelog-card motion-item" style="--delay: ${index * 20}ms">
               <div class="changelog-header">
                 <div class="changelog-title">
@@ -2206,6 +2222,65 @@ class PixelosApp extends LitElement {
         </section>
       </section>
     `;
+  }
+
+  async fetchChangelogs() {
+    try {
+      const response = await fetch('/CHANGELOGS.md');
+      if (!response.ok) throw new Error('Failed to fetch changelogs');
+      const text = await response.text();
+      
+      const logs = [];
+      const lines = text.split('\n');
+      let currentLog = null;
+      let currentEntry = null;
+
+      for (let line of lines) {
+        line = line.trim();
+        if (!line) continue;
+
+        // Match version and date: ## [2026-03-06] - 16.3 Stable
+        const versionMatch = line.match(/^##\s+\[([\d-]+)\]\s+-\s+(.*)$/);
+        if (versionMatch) {
+          currentLog = {
+            version: versionMatch[2],
+            date: versionMatch[1],
+            tag: logs.length === 0 ? 'Latest' : '', // Mark first one as latest
+            entries: []
+          };
+          logs.push(currentLog);
+          currentEntry = null;
+          continue;
+        }
+
+        // Match entry type: ### Added
+        const typeMatch = line.match(/^###\s+(.*)$/);
+        if (typeMatch && currentLog) {
+          currentEntry = {
+            type: typeMatch[1],
+            items: []
+          };
+          currentLog.entries.push(currentEntry);
+          continue;
+        }
+
+        // Match items: - Enabled Bluetooth...
+        const itemMatch = line.match(/^- (.*)$/);
+        if (itemMatch && currentEntry) {
+          currentEntry.items.push(itemMatch[1]);
+        }
+      }
+
+      this.changelogs = logs;
+    } catch (error) {
+      console.error('Error fetching changelogs:', error);
+      // Fallback if fetch fails
+      this.changelogs = [{
+        version: 'Error',
+        date: '',
+        entries: [{ type: 'Error', items: ['Could not load changelogs from Markdown.'] }]
+      }];
+    }
   }
 
   render() {
