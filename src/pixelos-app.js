@@ -1,6 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { keyed } from 'lit/directives/keyed.js';
-import { DOWNLOADS, RESOURCE_LINKS } from './config.js';
+import { DOWNLOADS, RESOURCE_LINKS, TEST_DOWNLOADS } from './config.js';
 
 const PLATFORM_TOOLS_CLI_COMMANDS = [
   {
@@ -1532,6 +1532,78 @@ class PixelosApp extends LitElement {
         font-size: 0.8rem;
       }
     }
+
+    .boot-modes-list {
+      margin: 0.75rem 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .boot-modes-list li {
+      margin: 0;
+      padding: 0;
+    }
+
+    .boot-modes-list strong {
+      color: var(--md-sys-color-primary);
+      display: block;
+      font-family: var(--md-sys-typescale-title-small-font);
+      font-size: var(--md-sys-typescale-title-small-size);
+      line-height: var(--md-sys-typescale-title-small-line-height);
+      letter-spacing: var(--md-sys-typescale-title-small-tracking);
+      font-weight: var(--md-sys-typescale-title-small-weight);
+      margin-bottom: 0.2rem;
+    }
+
+    .boot-modes-list p {
+      margin: 0;
+      color: var(--md-sys-color-on-surface-variant);
+      font-family: var(--md-sys-typescale-body-medium-font);
+      font-size: var(--md-sys-typescale-body-medium-size);
+      line-height: var(--md-sys-typescale-body-medium-line-height);
+      letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+    }
+
+    .tip-card {
+      margin-top: 1.25rem;
+      --md-filled-card-container-color: color-mix(in srgb, var(--md-sys-color-tertiary-container) 10%, var(--md-sys-color-surface-container-high) 90%);
+      --md-filled-card-container-shape: 16px;
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-tertiary) 15%, transparent);
+      border: none;
+    }
+
+    .tip-card h3 {
+      color: var(--md-sys-color-tertiary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tip-card p {
+      color: var(--md-sys-color-on-surface-variant);
+      line-height: 1.5;
+    }
+
+    .tip-card strong {
+      color: var(--md-sys-color-on-surface);
+    }
+
+    .tip-card code {
+      background: color-mix(in srgb, var(--md-sys-color-tertiary) 15%, transparent);
+      color: var(--md-sys-color-tertiary);
+      padding: 0.1rem 0.3rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.9em;
+    }
+
+    .tip-divider {
+      height: 1px;
+      background: color-mix(in srgb, var(--md-sys-color-outline-variant) 50%, transparent);
+      margin: 0.75rem 0;
+    }
   `;
 
   constructor() {
@@ -1609,6 +1681,9 @@ class PixelosApp extends LitElement {
     }
     if (/^\/changelogs(?:\/|$)/.test(normalized)) {
       return 'changelogs';
+    }
+    if (/^\/test-build(?:\/|$)/.test(normalized)) {
+      return 'test-build';
     }
     return 'home';
   }
@@ -1721,7 +1796,7 @@ class PixelosApp extends LitElement {
   }
 
   navigate(route) {
-    const path = route === 'instructions' ? '/instructions' : route === 'downloads' ? '/downloads' : route === 'changelogs' ? '/changelogs' : '/';
+    const path = route === 'instructions' ? '/instructions' : route === 'downloads' ? '/downloads' : route === 'changelogs' ? '/changelogs' : route === 'test-build' ? '/test-build' : '/';
     const currentPath = (window.location.pathname || '/').replace(/\/+$/, '') || '/';
     if (currentPath !== path) {
       window.history.pushState({}, '', path);
@@ -1947,6 +2022,20 @@ class PixelosApp extends LitElement {
 
         <div class="content-grid">
           <section class="view-grid">
+            <md-outlined-card class="panel motion-item" style="--delay: 40ms">
+              <h2>Special Boot Modes</h2>
+              <ul class="boot-modes-list" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+                <li>
+                  <strong>Recovery</strong>
+                  <p>With the device powered off, hold Volume Up + Power. Keep holding both buttons until the MI logo appears on the screen, then release.</p>
+                </li>
+                <li>
+                  <strong>Fastboot</strong>
+                  <p>With the device powered off, hold Volume Down + Power. Keep holding both buttons until the word FASTBOOT appears on the screen, then release.</p>
+                </li>
+              </ul>
+            </md-outlined-card>
+
             <md-outlined-card id="flash-steps-card" class="panel motion-item" style="--delay: 50ms">
               <h2 class="section-title">
                 <md-icon aria-hidden="true">terminal</md-icon>
@@ -2033,11 +2122,23 @@ class PixelosApp extends LitElement {
                   </li>
                 `)}
               </ol>
+
+              <md-filled-card class="info-card tip-card motion-item" style="--delay: 100ms">
+                <div class="info-card-content">
+                  <md-icon>tips_and_updates</md-icon>
+                  <div class="info-card-text">
+                    <h3>Installation Tips</h3>
+                    <p><strong>After the package is installed</strong>, recovery may inform you that reboot to recovery is required to install add-ons. In case you want to do that, please select <strong>Yes</strong>, otherwise <strong>No</strong>.</p>
+                    <div class="tip-divider"></div>
+                    <p><strong>ADB Sideload Progress Tip:</strong> Normally, adb will report <code>Total xfer: 1.00x</code>, but in some cases, even if the process succeeds the output will stop at 47% and report <code>adb: failed to read command: Success</code>. In some cases it will report <code>adb: failed to read command: No error</code> or <code>adb: failed to read command: Undefined error: 0</code> which is also fine.</p>
+                  </div>
+                </div>
+              </md-filled-card>
             </md-outlined-card>
           </section>
 
           <aside>
-            <md-outlined-card class="panel motion-item" style="--delay: 120ms">
+            <md-outlined-card class="panel motion-item" style="--delay: 120ms; margin-top: 1rem;">
               <h2>Spoofing Guide</h2>
               <p>Keep this section short and update-safe. Replace with your latest tested method.</p>
               <ul class="spoof-list">
@@ -2117,16 +2218,26 @@ class PixelosApp extends LitElement {
             <div class="download-grid">
               <md-outlined-card class="download-item">
                 <md-elevated-button
-                  href="https://pub-f99413a1187e4a1a949d375488244b71.r2.dev/Pixelos-xaga.7z"
-                  target="_blank"
-                  rel="noopener noreferrer">
-                  <md-icon slot="icon">download</md-icon>
-                  Download Latest Firmware Images
+                href="https://pub-f99413a1187e4a1a949d375488244b71.r2.dev/Pixelos-xaga.7z"
+                target="_blank"
+                rel="noopener noreferrer">
+                <md-icon slot="icon">download</md-icon>
+                Download Latest Firmware Images
                 </md-elevated-button>
                 <small>Required for users upgrading from older ROM bases</small>
-              </md-outlined-card>
-            </div>
-          </md-outlined-card>
+                </md-outlined-card>
+
+                <md-outlined-card class="download-item">
+                <md-elevated-button
+                href="https://wiki.itsvixano.me/device_specific/preloader_xaga/"
+                target="_blank"
+                rel="noopener noreferrer">
+                <md-icon slot="icon">menu_book</md-icon>
+                Preloader Wiki
+                </md-elevated-button>
+                <small>Documentation for engineering preloader</small>
+                </md-outlined-card>
+                </div>          </md-outlined-card>
 
           <md-outlined-card class="panel motion-item" style="--delay: 55ms">
             <h2>Downloads & Resources</h2>
@@ -2283,6 +2394,29 @@ class PixelosApp extends LitElement {
     }
   }
 
+  renderTestBuildView() {
+    return html`
+      <section class="view" aria-label="Test builds view">
+        <section class="view-grid">
+          <md-outlined-card class="panel motion-item" style="--delay: 20ms">
+            <h2>Test Builds</h2>
+            <div class="download-grid">
+              ${TEST_DOWNLOADS.map((item) => html`
+                <md-outlined-card class="download-item">
+                  <md-elevated-button href=${item.href} target="_blank" rel="noopener noreferrer">
+                    <md-icon slot="icon">download</md-icon>
+                    ${item.name}
+                  </md-elevated-button>
+                  <small>${item.note}</small>
+                </md-outlined-card>
+              `)}
+            </div>
+          </md-outlined-card>
+        </section>
+      </section>
+    `;
+  }
+
   render() {
     return html`
       ${this.renderSideGallery('left')}
@@ -2294,7 +2428,9 @@ class PixelosApp extends LitElement {
             ? this.renderDownloadsView()
             : this.route === 'changelogs'
               ? this.renderChangelogsView()
-              : this.renderHomeView())}
+              : this.route === 'test-build'
+                ? this.renderTestBuildView()
+                : this.renderHomeView())}
 
         <md-elevated-card class="footer">
           <span>PixelOS Xaga community website</span>

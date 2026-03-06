@@ -23,6 +23,14 @@
     {
       "source": "/changelogs/",
       "destination": "/"
+    },
+    {
+      "source": "/test-build",
+      "destination": "/"
+    },
+    {
+      "source": "/test-build/",
+      "destination": "/"
     }
   ]
 }

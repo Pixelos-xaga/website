@@ -27,6 +27,19 @@ export const DOWNLOADS = [
   }
 ];
 
+export const TEST_DOWNLOADS = [
+  {
+    name: 'Test ROM zip',
+    note: 'Experimental/Test PixelOS ROM zip file',
+    href: '#'
+  },
+  {
+    name: 'Test boot.img',
+    note: 'Experimental/Test boot image',
+    href: '#'
+  }
+];
+
 export const RESOURCE_LINKS = [
   {
     name: 'Android Bootloader Interface Driver (Windows)',
