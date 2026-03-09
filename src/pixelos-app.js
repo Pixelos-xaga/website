@@ -2350,8 +2350,10 @@ class PixelosApp extends LitElement {
         line = line.trim();
         if (!line) continue;
 
-        // Match version and date: ## [2026-03-06] - 16.3 Stable
-        const versionMatch = line.match(/^##\s+\[([\d-]+)\]\s+-\s+(.*)$/);
+        // Match version and date, allowing optional leading labels/emojis:
+        // ## [2026-03-06] - 16.3 Stable
+        // ## 🗓️ [2026-03-06] - 16.3 Stable
+        const versionMatch = line.match(/^##\s+(?:[^\[]*?)?\[([\d-]+)\]\s+-\s+(.*)$/);
         if (versionMatch) {
           currentLog = {
             version: versionMatch[2],
