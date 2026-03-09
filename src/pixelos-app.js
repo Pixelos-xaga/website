@@ -1,49 +1,15 @@
 import { LitElement, css, html } from 'lit';
 import { keyed } from 'lit/directives/keyed.js';
-import { DOWNLOADS, RESOURCE_LINKS, TEST_DOWNLOADS } from './config.js';
 
-const PLATFORM_TOOLS_CLI_COMMANDS = [
-  {
-    title: 'Ubuntu',
-    command: 'sudo apt update\nsudo apt install android-sdk-platform-tools'
-  },
-  {
-    title: 'Windows',
-    command: 'winget install -e --id Google.PlatformTools'
-  }
-];
+const ROUTE_VIEW_LOADERS = {
+  home: () => import('./routes/home-view.js'),
+  instructions: () => import('./routes/instructions-view.js'),
+  downloads: () => import('./routes/downloads-view.js'),
+  changelogs: () => import('./routes/changelogs-view.js'),
+  'test-build': () => import('./routes/test-build-view.js')
+};
 
-const PLATFORM_TOOLS_ZIP_OPTIONS = [
-  {
-    name: 'Windows ZIP',
-    note: 'Official Google ZIP package',
-    href: 'https://dl.google.com/android/repository/platform-tools-latest-windows.zip'
-  },
-  {
-    name: 'Linux ZIP (Ubuntu)',
-    note: 'Official Google ZIP package',
-    href: 'https://dl.google.com/android/repository/platform-tools-latest-linux.zip'
-  }
-];
-
-const HOME_SCREENSHOTS = [
-  {
-    src: '/screenshots/screenshot-1.png',
-    alt: 'PixelOS home screen screenshot 1'
-  },
-  {
-    src: '/screenshots/screenshot-2.png',
-    alt: 'PixelOS home screen screenshot 2'
-  },
-  {
-    src: '/screenshots/screenshot-3.png',
-    alt: 'PixelOS system UI screenshot 1'
-  },
-  {
-    src: '/screenshots/screenshot-4.png',
-    alt: 'PixelOS system UI screenshot 2'
-  }
-];
+const HOME_SCREENSHOT_COUNT = 4;
 
 const MATERIAL_SIDE_SHAPES = [
   { shape: 'shape-circle', tilt: '-4deg' },
@@ -54,71 +20,17 @@ const MATERIAL_SIDE_SHAPES = [
   { shape: 'shape-sunny', tilt: '2deg' }
 ];
 
-const FLASH_STEPS = [
-  {
-    title: 'Reboot to bootloader',
-    command: 'adb reboot bootloader'
-  },
-  {
-    title: 'Flash boot image',
-    command: 'fastboot flash boot boot.img'
-  },
-  {
-    title: 'Flash vendor boot image',
-    command: 'fastboot flash vendor_boot vendor_boot.img'
-  },
-  {
-    title: 'Flash optional images',
-    isDropdown: true,
-    note: 'Flash these optional images if you ran into some issues.',
-    optionalImages: [
-      {
-        name: 'vbmeta.img',
-        command: 'fastboot flash vbmeta vbmeta.img',
-        description: 'Verified boot metadata image'
-      },
-      {
-        name: 'dtbo.img',
-        command: 'fastboot flash dtbo dtbo.img',
-        description: 'Device tree overlay image'
-      }
-    ]
-  },
-  {
-    title: 'Reboot device',
-    command: 'fastboot reboot'
-  },
-  {
-    title: 'Boot into recovery manually',
-    guidance: {
-      avoid: 'adb reboot recovery',
-      action: 'While the phone is turning on, keep pressing only the Volume Up button to enter recovery.'
-    },
-    note: 'In recovery, click Apply update, then Apply from ADB.',
-    noteHighlighted: true
-  },
-  {
-    title: 'Factory Reset (Recommended for clean flash)',
-    isInfo: true,
-    note: 'In recovery, go to "Wipe data/factory reset" → "Format data" → confirm. This ensures a clean installation and prevents potential issues.'
-  },
-  {
-    title: 'Sideload ROM from recovery',
-    command: 'adb sideload <rom-filename>.zip',
-    copyable: false,
-    note: 'In recovery, choose Apply update from ADB, then type this manually with your exact ROM zip filename.'
-  }
-];
-
 class PixelosApp extends LitElement {
   static properties = {
     route: { state: true },
     motionKey: { state: true },
     copiedCommand: { state: true },
     copyMessage: { state: true },
-    routeLoading: { state: true },
     pendingScreenshots: { state: true },
-    changelogs: { state: true }
+    changelogs: { state: true },
+    routeView: { state: true },
+    routeViewLoading: { state: true },
+    routeViewError: { state: true }
   };
 
   static styles = css`
@@ -337,6 +249,7 @@ class PixelosApp extends LitElement {
       color-scheme: dark;
       display: block;
       min-height: 100dvh;
+      position: relative;
       background: var(--md-sys-color-background);
       color: var(--md-sys-color-on-background);
       font-family: var(--font-plain);
@@ -478,12 +391,25 @@ class PixelosApp extends LitElement {
       --md-elevated-card-container-color: var(--md-sys-color-surface-container-high);
       --md-elevated-card-container-shape: var(--md-sys-shape-corner-extra-large);
       --md-elevated-card-container-elevation: 1;
+      border: 1px solid color-mix(in srgb, var(--md-sys-color-primary) 30%, var(--md-sys-color-outline-variant) 70%);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent), 0 8px 18px rgb(0 0 0 / 16%);
+      transition: border-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard), box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard), background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+      position: sticky;
+      top: 0.6rem;
+      z-index: 5;
+      backdrop-filter: blur(14px);
       display: grid;
       grid-template-columns: auto 1fr;
       align-items: center;
       gap: 0.9rem;
       padding: 0.72rem 1rem;
       margin-bottom: 1rem;
+    }
+
+    :host(.is-scrolled) .top-bar {
+      --md-elevated-card-container-color: color-mix(in srgb, var(--md-sys-color-surface-container-high) 85%, var(--md-sys-color-primary-container) 15%);
+      border-color: color-mix(in srgb, var(--md-sys-color-primary) 55%, var(--md-sys-color-outline-variant) 45%);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 30%, transparent), 0 12px 26px rgb(0 0 0 / 28%);
     }
 
     .brand {
@@ -556,7 +482,7 @@ class PixelosApp extends LitElement {
     }
 
     .view {
-      animation: shared-axis-in var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized);
+      animation: shared-axis-in var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-emphasized);
     }
 
     .home-view {
@@ -568,6 +494,24 @@ class PixelosApp extends LitElement {
       display: block;
       padding: 1.15rem;
       overflow-x: auto;
+    }
+
+    md-filled-card.panel,
+    md-elevated-card.panel,
+    md-outlined-card.panel {
+      transition: transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard), box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+    }
+
+    md-filled-card.panel:hover,
+    md-elevated-card.panel:hover,
+    md-outlined-card.panel:hover {
+      transform: translateY(-2px);
+    }
+
+    md-filled-card.panel:focus-within,
+    md-elevated-card.panel:focus-within,
+    md-outlined-card.panel:focus-within {
+      transform: translateY(-1px);
     }
 
     md-filled-card.panel {
@@ -696,6 +640,12 @@ class PixelosApp extends LitElement {
       background: var(--md-sys-color-surface-container-high);
       box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent), 0 4px 12px rgb(0 0 0 / 20%);
       aspect-ratio: 9 / 20;
+      transition: transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard), box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+    }
+
+    .screenshot-item:hover {
+      transform: translateY(-2px);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 45%, transparent), 0 8px 18px rgb(0 0 0 / 24%);
     }
 
     .screenshot-item img {
@@ -1327,6 +1277,12 @@ class PixelosApp extends LitElement {
       box-shadow: 0 4px 12px rgb(0 0 0 / 25%), inset 0 0 0 1px color-mix(in srgb, white 20%, transparent);
     }
 
+    .social-link:focus-visible {
+      outline: 2px solid var(--md-sys-color-primary-fixed);
+      outline-offset: 2px;
+      transform: translateY(-1px);
+    }
+
     .social-link svg {
       width: 19px;
       height: 19px;
@@ -1467,10 +1423,20 @@ class PixelosApp extends LitElement {
 
     @media (prefers-reduced-motion: reduce) {
       .view,
-      .motion-item {
+      .motion-item,
+      md-filled-card.panel,
+      md-elevated-card.panel,
+      md-outlined-card.panel,
+      .screenshot-item,
+      .social-link {
         animation: none;
+        transition: none;
         opacity: 1;
         transform: none;
+      }
+
+      .side-gallery {
+        display: none;
       }
     }
 
@@ -1628,17 +1594,25 @@ class PixelosApp extends LitElement {
     this.motionKey = 0;
     this.copiedCommand = '';
     this.copyMessage = '';
-    this.routeLoading = true;
-    this.pendingScreenshots = HOME_SCREENSHOTS.length;
+    this.pendingScreenshots = HOME_SCREENSHOT_COUNT;
     this.pendingInstructionsTarget = '';
     this.scrollRaf = 0;
-    this.routeLoadingTimer = 0;
-    this.routeLoadingHardStopTimer = 0;
-    this.routeLoadingStart = 0;
+    this.lastParallaxOffset = -1;
+    this.hasScrolledPastTop = false;
+    this.routeView = null;
+    this.routeViewLoading = true;
+    this.routeViewError = '';
+    this.routeViewCache = new Map();
+    this.routeViewPromises = new Map();
+    this.routeLoadToken = 0;
+    this.reduceMotionQuery = typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+      ? window.matchMedia('(prefers-reduced-motion: reduce)')
+      : null;
+    this.prefersReducedMotion = this.reduceMotionQuery?.matches ?? false;
     this.handleLocationChange = this.handleLocationChange.bind(this);
     this.handleHashChange = this.handleHashChange.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
-    this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
+    this.handleMotionPreferenceChange = this.handleMotionPreferenceChange.bind(this);
     this.changelogs = [];
     this.pendingChangelogDate = this.getChangelogDateFromHash();
     this.fetchChangelogs();
@@ -1646,29 +1620,23 @@ class PixelosApp extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    this.startRouteLoading();
     window.addEventListener('popstate', this.handleLocationChange);
     window.addEventListener('hashchange', this.handleHashChange);
     window.addEventListener('scroll', this.handleScroll, { passive: true });
-    document.addEventListener('visibilitychange', this.handleVisibilityChange);
+    this.reduceMotionQuery?.addEventListener('change', this.handleMotionPreferenceChange);
     this.handleLocationChange();
     this.handleScroll();
-  }
-
-  firstUpdated() {
-    this.scheduleRouteLoadingEnd();
   }
 
   disconnectedCallback() {
     window.removeEventListener('popstate', this.handleLocationChange);
     window.removeEventListener('hashchange', this.handleHashChange);
     window.removeEventListener('scroll', this.handleScroll);
-    document.removeEventListener('visibilitychange', this.handleVisibilityChange);
+    this.reduceMotionQuery?.removeEventListener('change', this.handleMotionPreferenceChange);
     if (this.scrollRaf) {
       cancelAnimationFrame(this.scrollRaf);
       this.scrollRaf = 0;
     }
-    this.clearRouteLoadingTimers();
     super.disconnectedCallback();
   }
 
@@ -1676,24 +1644,15 @@ class PixelosApp extends LitElement {
     if (
       this.route === 'instructions'
       && this.pendingInstructionsTarget
-      && (changedProperties.has('route') || changedProperties.has('motionKey'))
+      && (changedProperties.has('route') || changedProperties.has('motionKey') || changedProperties.has('routeView'))
     ) {
-      const target = this.pendingInstructionsTarget;
-      this.pendingInstructionsTarget = '';
-      this.scheduleInstructionsScroll(target);
-    }
-
-    if (
-      this.routeLoading
-      && (changedProperties.has('route') || changedProperties.has('motionKey'))
-    ) {
-      this.scheduleRouteLoadingEnd();
+      this.scheduleInstructionsScroll(this.pendingInstructionsTarget);
     }
 
     if (
       this.route === 'changelogs'
       && this.pendingChangelogDate
-      && (changedProperties.has('route') || changedProperties.has('motionKey') || changedProperties.has('changelogs'))
+      && (changedProperties.has('route') || changedProperties.has('motionKey') || changedProperties.has('changelogs') || changedProperties.has('routeView'))
     ) {
       this.scheduleChangelogScroll(this.pendingChangelogDate);
     }
@@ -1756,97 +1715,55 @@ class PixelosApp extends LitElement {
     }
 
     if (this.route !== nextRoute) {
-      this.startRouteLoading();
       this.route = nextRoute;
       this.motionKey += 1;
+      this.loadRouteView(nextRoute);
       return;
     }
+
+    this.loadRouteView(nextRoute);
 
     if (nextRoute === 'changelogs' && this.pendingChangelogDate) {
       this.scheduleChangelogScroll(this.pendingChangelogDate);
     }
   }
 
+  handleMotionPreferenceChange(event) {
+    this.prefersReducedMotion = event.matches;
+    this.lastParallaxOffset = -1;
+    this.style.setProperty('--side-left-shift', '-62px');
+    this.style.setProperty('--side-right-shift', '-26px');
+
+    if (!this.prefersReducedMotion) {
+      this.handleScroll();
+    }
+  }
+
   handleScroll() {
-    if (this.scrollRaf || window.innerWidth < 1320) {
+    const offset = Math.round(window.scrollY || 0);
+    const isScrolled = offset > 6;
+    if (isScrolled !== this.hasScrolledPastTop) {
+      this.hasScrolledPastTop = isScrolled;
+      this.classList.toggle('is-scrolled', isScrolled);
+    }
+
+    if (this.scrollRaf || this.prefersReducedMotion || window.innerWidth < 1320) {
       return;
     }
 
     this.scrollRaf = requestAnimationFrame(() => {
       this.scrollRaf = 0;
-      const offset = window.scrollY || 0;
-      const leftShift = ((offset * 0.14) % 190) - 72;
-      const rightShift = -(((offset * 0.12) % 190) - 48);
+      const nextOffset = Math.round(window.scrollY || 0);
+      if (Math.abs(nextOffset - this.lastParallaxOffset) < 6) {
+        return;
+      }
+
+      this.lastParallaxOffset = nextOffset;
+      const leftShift = ((nextOffset * 0.14) % 190) - 72;
+      const rightShift = -(((nextOffset * 0.12) % 190) - 48);
       this.style.setProperty('--side-left-shift', `${leftShift}px`);
       this.style.setProperty('--side-right-shift', `${rightShift}px`);
     });
-  }
-
-  handleVisibilityChange() {
-    if (document.visibilityState === 'hidden') {
-      this.finishRouteLoading();
-      return;
-    }
-
-    if (this.routeLoading) {
-      this.scheduleRouteLoadingEnd();
-    }
-  }
-
-  clearRouteLoadingTimers() {
-    if (this.routeLoadingTimer) {
-      clearTimeout(this.routeLoadingTimer);
-      this.routeLoadingTimer = 0;
-    }
-
-    if (this.routeLoadingHardStopTimer) {
-      clearTimeout(this.routeLoadingHardStopTimer);
-      this.routeLoadingHardStopTimer = 0;
-    }
-  }
-
-  finishRouteLoading() {
-    this.clearRouteLoadingTimers();
-    this.routeLoading = false;
-  }
-
-  startRouteLoading() {
-    this.routeLoadingStart = performance.now();
-    this.routeLoading = true;
-    this.clearRouteLoadingTimers();
-
-    if (document.visibilityState !== 'visible') {
-      this.finishRouteLoading();
-      return;
-    }
-
-    this.routeLoadingHardStopTimer = setTimeout(() => {
-      this.finishRouteLoading();
-    }, 2000);
-  }
-
-  scheduleRouteLoadingEnd() {
-    if (!this.routeLoading) {
-      this.clearRouteLoadingTimers();
-      return;
-    }
-
-    if (document.visibilityState !== 'visible') {
-      this.finishRouteLoading();
-      return;
-    }
-
-    if (this.routeLoadingTimer) {
-      clearTimeout(this.routeLoadingTimer);
-      this.routeLoadingTimer = 0;
-    }
-
-    const elapsed = this.routeLoadingStart ? performance.now() - this.routeLoadingStart : 0;
-    const delay = Math.max(180, 520 - elapsed);
-
-    this.routeLoadingTimer = setTimeout(() => {
-      this.finishRouteLoading();
-    }, delay);
   }
 
   navigate(route) {
@@ -1856,11 +1773,11 @@ class PixelosApp extends LitElement {
       window.history.pushState({}, '', path);
     }
 
-    this.startRouteLoading();
     if (this.route !== route) {
       this.route = route;
     }
     this.motionKey += 1;
+    this.loadRouteView(route);
   }
 
   navigateToInstructions(target = 'steps') {
@@ -1883,12 +1800,13 @@ class PixelosApp extends LitElement {
     }
 
     if (this.route !== 'changelogs') {
-      this.startRouteLoading();
       this.route = 'changelogs';
       this.motionKey += 1;
+      this.loadRouteView('changelogs');
       return;
     }
 
+    this.loadRouteView('changelogs');
     this.scheduleChangelogScroll(normalizedDate);
   }
 
@@ -1941,6 +1859,7 @@ class PixelosApp extends LitElement {
     }
 
     window.scrollTo({ top: Math.max(0, scrollTop), behavior: 'smooth' });
+    this.pendingInstructionsTarget = '';
   }
 
   openDialog(id) {
@@ -1978,6 +1897,114 @@ class PixelosApp extends LitElement {
     }
   }
 
+  getRouteLoader(route) {
+    return ROUTE_VIEW_LOADERS[route] || ROUTE_VIEW_LOADERS.home;
+  }
+
+  async ensureRouteView(route) {
+    if (this.routeViewCache.has(route)) {
+      return this.routeViewCache.get(route);
+    }
+
+    let pending = this.routeViewPromises.get(route);
+    if (!pending) {
+      pending = this.getRouteLoader(route)()
+        .then((module) => {
+          if (!module || typeof module.default !== 'function') {
+            throw new Error(`Invalid route view module: ${route}`);
+          }
+
+          this.routeViewCache.set(route, module.default);
+          this.routeViewPromises.delete(route);
+          return module.default;
+        })
+        .catch((error) => {
+          this.routeViewPromises.delete(route);
+          throw error;
+        });
+      this.routeViewPromises.set(route, pending);
+    }
+
+    return pending;
+  }
+
+  async loadRouteView(route) {
+    const normalizedRoute = ROUTE_VIEW_LOADERS[route] ? route : 'home';
+    const currentToken = ++this.routeLoadToken;
+    const cachedView = this.routeViewCache.get(normalizedRoute);
+
+    if (cachedView) {
+      this.routeView = cachedView;
+      this.routeViewError = '';
+      this.routeViewLoading = false;
+      return;
+    }
+
+    this.routeView = null;
+    this.routeViewError = '';
+    this.routeViewLoading = true;
+
+    try {
+      const viewRenderer = await this.ensureRouteView(normalizedRoute);
+      if (currentToken !== this.routeLoadToken || this.route !== normalizedRoute) {
+        return;
+      }
+
+      this.routeView = viewRenderer;
+      this.routeViewLoading = false;
+    } catch (error) {
+      if (currentToken !== this.routeLoadToken) {
+        return;
+      }
+
+      this.routeViewError = 'Could not load this section. Please refresh and try again.';
+      this.routeViewLoading = false;
+      console.error(`Failed to load route view: ${normalizedRoute}`, error);
+    }
+  }
+
+  renderRouteSkeleton() {
+    return html`
+      <section class="view" aria-label="Loading view">
+        <md-outlined-card class="panel motion-item">
+          <div style="display: flex; align-items: center; gap: 0.85rem; padding: 1rem;">
+            <md-circular-progress indeterminate></md-circular-progress>
+            <span>Loading section...</span>
+          </div>
+        </md-outlined-card>
+      </section>
+    `;
+  }
+
+  renderRouteError() {
+    return html`
+      <section class="view" aria-label="Route load error">
+        <md-outlined-card class="panel motion-item">
+          <h2>Section unavailable</h2>
+          <p>${this.routeViewError}</p>
+          <div class="hero-actions">
+            <md-text-button @click=${() => this.loadRouteView(this.route)}>
+              <md-icon slot="icon">refresh</md-icon>
+              Retry
+            </md-text-button>
+          </div>
+        </md-outlined-card>
+      </section>
+    `;
+  }
+
+  renderActiveRoute() {
+    if (this.routeViewError) {
+      return this.renderRouteError();
+    }
+
+    if (this.routeViewLoading || !this.routeView) {
+      return this.renderRouteSkeleton();
+    }
+
+    return this.routeView(this);
+  }
+
   renderSideGallery(side = 'left') {
     const sideTileCount = 8;
     return html`
@@ -1989,7 +2016,7 @@ class PixelosApp extends LitElement {
             <md-outlined-card
               class="side-art ${shapeStyle.shape}"
               style=${`--tile-tilt: ${shapeStyle.tilt};`}>
-              <img src="/side-photo.png" alt="" loading="lazy" decoding="async" />
+              <img src="/side-photo.jpg" alt="" loading="lazy" decoding="async" width="320" height="320" />
             </md-outlined-card>
           `;
           })}
@@ -2034,418 +2061,6 @@ class PixelosApp extends LitElement {
           </md-primary-tab>
         </md-tabs>
       </md-elevated-card>
-    `;
-  }
-
-  renderHomeView() {
-    return html`
-      <section class="view home-view" aria-label="Home view">
-        <md-filled-card class="panel hero motion-item" style="--delay: 10ms">
-          <md-assist-chip label="Official Device Hub"></md-assist-chip>
-          <h1>PixelOS for Xaga</h1>
-          <p class="lead">PixelOS A16 for xaga(REDMI K50i,Poco X4 GT,Redmi Note 11t/pro+).</p>
-          <div class="hero-actions">
-            <md-filled-button @click=${() => this.navigateToInstructions()}>
-              <md-icon slot="icon">rocket_launch</md-icon>
-              Open Instructions
-            </md-filled-button>
-            <md-filled-tonal-button @click=${() => this.navigate('downloads')}>
-              <md-icon slot="icon">download</md-icon>
-              Go to Downloads
-            </md-filled-tonal-button>
-          </div>
-        </md-filled-card>
-
-        <md-elevated-card class="panel screenshots-panel motion-item" style="--delay: 45ms">
-          <h2>Screenshots</h2>
-          <div class="screenshots-grid">
-            ${HOME_SCREENSHOTS.map((shot) => html`
-              <figure class="screenshot-item">
-                <img
-                  src=${shot.src}
-                  alt=${shot.alt}
-                  loading="lazy"
-                  decoding="async"
-                  @load=${() => this.handleScreenshotSettled()}
-                  @error=${() => this.handleScreenshotSettled()} />
-              </figure>
-            `)}
-          </div>
-          ${this.pendingScreenshots > 0 ? html`
-            <div class="screenshots-loader" role="status" aria-live="polite">
-              <md-circular-progress indeterminate></md-circular-progress>
-              <span>Loading screenshots...</span>
-            </div>
-          ` : ''}
-        </md-elevated-card>
-
-        <md-elevated-card class="panel motion-item" style="--delay: 80ms">
-          <h2>What You Get</h2>
-          <md-list>
-            <md-list-item>
-              <md-icon slot="start">terminal</md-icon>
-              <div slot="headline">Install Guide</div>
-              <div slot="supporting-text">Step-by-step flashing with copy actions.</div>
-            </md-list-item>
-            <md-list-item>
-              <md-icon slot="start">download</md-icon>
-              <div slot="headline">Download Hub</div>
-              <div slot="supporting-text">ROM, boot, and vendor_boot entries.</div>
-            </md-list-item>
-            <md-list-item>
-              <md-icon slot="start">shield</md-icon>
-              <div slot="headline">Spoofing Notes</div>
-              <div slot="supporting-text">Short post-install guidance panel.</div>
-            </md-list-item>
-            <md-list-item @click=${() => this.navigate('changelogs')} type="button">
-              <md-icon slot="start">history</md-icon>
-              <div slot="headline">Changelogs</div>
-              <div slot="supporting-text">Track latest ROM updates and fixes.</div>
-            </md-list-item>
-          </md-list>
-        </md-elevated-card>
-      </section>
-    `;
-  }
-
-  renderInstructionsView() {
-    return html`
-      <section class="view" aria-label="Instructions view">
-        <md-filled-card class="warning-card motion-item" style="--delay: 10ms">
-          <div class="warning-content">
-            <md-icon>warning</md-icon>
-            <p><strong>Never run</strong> <code class="warning-command">fastboot reboot recovery</code> on xaga.</p>
-          </div>
-        </md-filled-card>
-
-        <div class="tools motion-item" style="--delay: 30ms">
-          <md-outlined-button @click=${() => this.openDialog('safetyDialog')}>
-            <md-icon slot="icon">gpp_bad</md-icon>
-            Open Safety Dialog
-          </md-outlined-button>
-        </div>
-
-        <div class="content-grid">
-          <section class="view-grid">
-            <md-outlined-card class="panel motion-item" style="--delay: 40ms">
-              <h2>Special Boot Modes</h2>
-              <ul class="boot-modes-list" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
-                <li>
-                  <strong>Recovery</strong>
-                  <p>With the device powered off, hold Volume Up + Power. Keep holding both buttons until the MI logo appears on the screen, then release.</p>
-                </li>
-                <li>
-                  <strong>Fastboot</strong>
-                  <p>With the device powered off, hold Volume Down + Power. Keep holding both buttons until the word FASTBOOT appears on the screen, then release.</p>
-                </li>
-              </ul>
-            </md-outlined-card>
-
-            <md-outlined-card id="flash-steps-card" class="panel motion-item" style="--delay: 50ms">
-              <h2 class="section-title">
-                <md-icon aria-hidden="true">terminal</md-icon>
-                Flash Steps (Type these commands in admin Terminal)
-              </h2>
-              <ol class="commands">
-                ${FLASH_STEPS.map((step) => html`
-                  <li>
-                    ${step.isInfo ? html`
-                      <md-filled-card class="info-card">
-                        <div class="info-card-content">
-                          <md-icon>info</md-icon>
-                          <div class="info-card-text">
-                            <h3>${step.title}</h3>
-                            ${step.note ? html`<p>${step.note}</p>` : ''}
-                          </div>
-                        </div>
-                      </md-filled-card>
-                    ` : html`
-                    <md-outlined-card class="command-item">
-                      <h3>${step.title}</h3>
-                      ${step.warning ? html`<p class="step-warning"><strong>${step.warning}</strong></p>` : ''}
-                      ${step.guidance ? html`
-                        <div class="step-guidance">
-                          <div class="guidance-row warning">
-                            <span class="guidance-label">Avoid</span>
-                            <p class="guidance-text"><strong>Do not use ${step.guidance.avoid}.</strong></p>
-                          </div>
-                          <div class="guidance-row">
-                            <span class="guidance-label">Do this</span>
-                            <p class="guidance-text">${step.guidance.action}</p>
-                          </div>
-                        </div>
-                      ` : ''}
-                      ${step.note ? html`<p class=${step.noteHighlighted ? 'step-note-highlighted' : ''}>${step.note}</p>` : ''}
-                      ${step.isDropdown && step.optionalImages ? html`
-                        <details class="optional-images-dropdown">
-                          <summary class="dropdown-summary">
-                            <md-icon>expand_more</md-icon>
-                            <span>Click to expand optional images</span>
-                          </summary>
-                          <div class="dropdown-content">
-                            ${step.optionalImages.map((image) => html`
-                              <div class="optional-image-item">
-                                <div class="optional-image-info">
-                                  <strong>${image.name}</strong>
-                                  <p>${image.description}</p>
-                                </div>
-                                <div class="command-row">
-                                  <md-outlined-text-field
-                                    class="command-field"
-                                    label="Command"
-                                    readonly
-                                    .value=${image.command}></md-outlined-text-field>
-                                  <md-icon-button
-                                    aria-label="Copy command"
-                                    @click=${() => this.copyCommand(image.command)}>
-                                    <md-icon>${this.copiedCommand === image.command ? 'check' : 'content_copy'}</md-icon>
-                                  </md-icon-button>
-                                </div>
-                              </div>
-                            `)}
-                          </div>
-                        </details>
-                      ` : ''}
-                      ${step.command && !step.isDropdown ? html`
-                        <div class="command-row">
-                          <md-outlined-text-field
-                            class="command-field"
-                            label=${step.copyable === false ? 'Type manually' : 'Command'}
-                            readonly
-                            .value=${step.command}></md-outlined-text-field>
-                          ${step.copyable === false ? '' : html`
-                            <md-icon-button
-                              aria-label="Copy command"
-                              @click=${() => this.copyCommand(step.command)}>
-                              <md-icon>${this.copiedCommand === step.command ? 'check' : 'content_copy'}</md-icon>
-                            </md-icon-button>
-                          `}
-                        </div>
-                      ` : ''}
-                    </md-outlined-card>
-                    `}
-                  </li>
-                `)}
-              </ol>
-
-              <md-filled-card class="info-card tip-card motion-item" style="--delay: 100ms">
-                <div class="info-card-content">
-                  <md-icon>tips_and_updates</md-icon>
-                  <div class="info-card-text">
-                    <h3>Installation Tips</h3>
-                    <p><strong>After the package is installed</strong>, recovery may inform you that reboot to recovery is required to install add-ons. In case you want to do that, please select <strong>Yes</strong>, otherwise <strong>No</strong>.</p>
-                    <div class="tip-divider"></div>
-                    <p><strong>ADB Sideload Progress Tip:</strong> Normally, adb will report <code>Total xfer: 1.00x</code>, but in some cases, even if the process succeeds the output will stop at 47% and report <code>adb: failed to read command: Success</code>. In some cases it will report <code>adb: failed to read command: No error</code> or <code>adb: failed to read command: Undefined error: 0</code> which is also fine.</p>
-                  </div>
-                </div>
-              </md-filled-card>
-            </md-outlined-card>
-          </section>
-
-          <aside>
-            <md-outlined-card class="panel motion-item" style="--delay: 120ms; margin-top: 1rem;">
-              <h2>Spoofing Guide</h2>
-              <p>Keep this section short and update-safe. Replace with your latest tested method.</p>
-              <ul class="spoof-list">
-                <li>
-                  <md-outlined-card class="spoof-card">
-                    <md-icon class="spoof-icon">check_circle</md-icon>
-                    <div>
-                      <strong>Finish first boot first</strong>
-                      <p>Complete setup and sign in before spoofing work.</p>
-                    </div>
-                  </md-outlined-card>
-                </li>
-                <li>
-                  <md-outlined-card class="spoof-card">
-                    <md-icon class="spoof-icon">extension</md-icon>
-                    <div>
-                      <strong>Add keybox or pif.json</strong>
-                      <p>After finish boot setup, add keybox or pif.json through Developer options.</p>
-                    </div>
-                  </md-outlined-card>
-                </li>
-                <li>
-                  <md-outlined-card class="spoof-card">
-                    <md-icon class="spoof-icon">delete_sweep</md-icon>
-                    <div>
-                      <strong>Clear Google app data</strong>
-                      <p>Clear Play Store and Play Services after fingerprint changes.</p>
-                    </div>
-                  </md-outlined-card>
-                </li>
-                <li>
-                  <md-outlined-card class="spoof-card">
-                    <md-icon class="spoof-icon">verified</md-icon>
-                    <div>
-                      <strong>Reboot and verify</strong>
-                      <p>Reboot once and verify certification and login status.</p>
-                    </div>
-                  </md-outlined-card>
-                </li>
-              </ul>
-            </md-outlined-card>
-          </aside>
-        </div>
-      </section>
-    `;
-  }
-
-  renderDownloadsView() {
-    return html`
-      <section class="view" aria-label="Downloads and resources view">
-        <section class="view-grid">
-          <md-outlined-card class="panel motion-item" style="--delay: 20ms">
-            <h2>ROM Downloads</h2>
-            <div class="download-grid">
-              ${DOWNLOADS.map((item) => html`
-                <md-outlined-card class="download-item">
-                  <md-elevated-button href=${item.href} target="_blank" rel="noopener noreferrer">
-                    <md-icon slot="icon">download</md-icon>
-                    ${item.name}
-                  </md-elevated-button>
-                  <small>${item.note}</small>
-                </md-outlined-card>
-              `)}
-            </div>
-          </md-outlined-card>
-
-          <md-outlined-card class="panel motion-item" style="--delay: 38ms">
-            <h2 class="section-title">
-              <md-icon>system_update</md-icon>
-              Flash preloader and latest firmware images (Recommended)
-            </h2>
-            <p>Before proceeding with PixelOS installation, ensure you have flashed the latest firmware images. This is especially important if:</p>
-            <ul class="firmware-list">
-              <li>You are upgrading from an older ROM build</li>
-              <li>You want to flash engineering preloader</li>
-            </ul>
-            <div class="download-grid">
-              <md-outlined-card class="download-item">
-                <md-elevated-button
-                href="https://pub-f99413a1187e4a1a949d375488244b71.r2.dev/Pixelos-xaga.7z"
-                target="_blank"
-                rel="noopener noreferrer">
-                <md-icon slot="icon">download</md-icon>
-                Download Latest Firmware Images
-                </md-elevated-button>
-                <small>Required for users upgrading from older ROM bases</small>
-                </md-outlined-card>
-
-                <md-outlined-card class="download-item">
-                <md-elevated-button
-                href="https://wiki.itsvixano.me/device_specific/preloader_xaga/"
-                target="_blank"
-                rel="noopener noreferrer">
-                <md-icon slot="icon">menu_book</md-icon>
-                Preloader Wiki
-                </md-elevated-button>
-                <small>Documentation for engineering preloader</small>
-                </md-outlined-card>
-                </div>          </md-outlined-card>
-
-          <md-outlined-card class="panel motion-item" style="--delay: 55ms">
-            <h2>Downloads & Resources</h2>
-            <div class="download-grid">
-              ${RESOURCE_LINKS.map((item) => html`
-                <md-outlined-card class="download-item">
-                  <md-elevated-button href=${item.href} target="_blank" rel="noopener noreferrer">
-                    <md-icon slot="icon">link</md-icon>
-                    ${item.name}
-                  </md-elevated-button>
-                  <small>${item.note}</small>
-                </md-outlined-card>
-              `)}
-            </div>
-          </md-outlined-card>
-
-          <md-outlined-card class="panel motion-item" style="--delay: 90ms">
-            <h2>Install Platform-Tools</h2>
-            <h3>Option 1: Install through CLI</h3>
-            <p>Run these in terminal:</p>
-            <ol class="commands">
-              ${PLATFORM_TOOLS_CLI_COMMANDS.map((item) => html`
-                <li>
-                  <md-outlined-card class="command-item">
-                    <h3>${item.title}</h3>
-                    <div class="command-row">
-                      <pre class="command-snippet">${item.command}</pre>
-                      <md-icon-button
-                        aria-label="Copy command"
-                        @click=${() => this.copyCommand(item.command)}>
-                        <md-icon>${this.copiedCommand === item.command ? 'check' : 'content_copy'}</md-icon>
-                      </md-icon-button>
-                    </div>
-                  </md-outlined-card>
-                </li>
-              `)}
-            </ol>
-            <h3>Option 2: Install through ZIP</h3>
-            <div class="download-grid">
-              ${PLATFORM_TOOLS_ZIP_OPTIONS.map((item) => html`
-                <md-outlined-card class="download-item">
-                  <md-elevated-button href=${item.href} target="_blank" rel="noopener noreferrer">
-                    <md-icon slot="icon">folder_zip</md-icon>
-                    ${item.name}
-                  </md-elevated-button>
-                  <small>${item.note}</small>
-                </md-outlined-card>
-              `)}
-            </div>
-          </md-outlined-card>
-        </section>
-      </section>
-    `;
-  }
-
-  renderChangelogsView() {
-    if (!this.changelogs || this.changelogs.length === 0) {
-      return html`
-        <section class="view" aria-label="Changelogs view">
-          <md-outlined-card class="panel motion-item">
-            <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem;">
-              <md-circular-progress indeterminate></md-circular-progress>
-              <span>Loading changelogs from Markdown...</span>
-            </div>
-          </md-outlined-card>
-        </section>
-      `;
-    }
-
-    return html`
-      <section class="view" aria-label="Changelogs view">
-        <section class="view-grid">
-          ${this.changelogs.map((log, index) => html`
-            <md-outlined-card
-              id=${`changelog-${log.date}`}
-              class="panel changelog-card motion-item"
-              style="--delay: ${index * 20}ms">
-              <div class="changelog-header">
-                <div class="changelog-title">
-                  <h2>${log.version}</h2>
-                  ${log.tag ? html`<span class="changelog-tag">${log.tag}</span>` : ''}
-                </div>
-                <button
-                  class="changelog-date changelog-date-link"
-                  type="button"
-                  title="Open link to this changelog"
-                  @click=${() => this.openChangelogDate(log.date)}>
-                  ${log.date}
-                </button>
-              </div>
-
-              ${log.entries.map(entry => html`
-                <div class="changelog-entry">
-                  <h4>${entry.type}</h4>
-                  <ul class="changelog-list">
-                    ${entry.items.map(item => html`<li>${item}</li>`)}
-                  </ul>
-                </div>
-              `)}
-            </md-outlined-card>
-          `)}
-        </section>
-      </section>
     `;
   }
 
@@ -2510,43 +2125,12 @@ class PixelosApp extends LitElement {
     }
   }
 
-  renderTestBuildView() {
-    return html`
-      <section class="view" aria-label="Test builds view">
-        <section class="view-grid">
-          <md-outlined-card class="panel motion-item" style="--delay: 20ms">
-            <h2>Test Builds</h2>
-            <div class="download-grid">
-              ${TEST_DOWNLOADS.map((item) => html`
-                <md-outlined-card class="download-item">
-                  <md-elevated-button href=${item.href} target="_blank" rel="noopener noreferrer">
-                    <md-icon slot="icon">download</md-icon>
-                    ${item.name}
-                  </md-elevated-button>
-                  <small>${item.note}</small>
-                </md-outlined-card>
-              `)}
-            </div>
-          </md-outlined-card>
-        </section>
-      </section>
-    `;
-  }
-
   render() {
     return html`
       ${this.renderSideGallery('left')}
         <div class="shell">
         ${this.renderTopBar()}
-        ${keyed(this.motionKey, this.route === 'instructions'
-          ? this.renderInstructionsView()
-          : this.route === 'downloads'
-            ? this.renderDownloadsView()
-            : this.route === 'changelogs'
-              ? this.renderChangelogsView()
-              : this.route === 'test-build'
-                ? this.renderTestBuildView()
-                : this.renderHomeView())}
+        ${keyed(this.motionKey, this.renderActiveRoute())}
 
         <md-elevated-card class="footer">
           <span>PixelOS Xaga community website</span>

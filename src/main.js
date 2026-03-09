@@ -1,5 +1,9 @@
-import '@material/web/all.js';
-import '@material/web/labs/card/filled-card.js';
+import '@material/web/icon/icon.js';
+import '@material/web/tabs/tabs.js';
+import '@material/web/tabs/primary-tab.js';
+import '@material/web/button/text-button.js';
+import '@material/web/progress/circular-progress.js';
+import '@material/web/dialog/dialog.js';
 import '@material/web/labs/card/elevated-card.js';
 import '@material/web/labs/card/outlined-card.js';
 import './global.css';
