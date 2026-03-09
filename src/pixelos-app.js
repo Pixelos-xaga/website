@@ -817,6 +817,22 @@ class PixelosApp extends LitElement {
       font-size: 0.85rem;
     }
 
+    .changelog-date-link {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.2em;
+      transition: color 160ms var(--motion-standard);
+    }
+
+    .changelog-date-link:hover,
+    .changelog-date-link:focus-visible {
+      color: var(--md-sys-color-primary);
+    }
+
     .changelog-entry {
       margin-top: 0.8rem;
     }
@@ -1620,9 +1636,11 @@ class PixelosApp extends LitElement {
     this.routeLoadingHardStopTimer = 0;
     this.routeLoadingStart = 0;
     this.handleLocationChange = this.handleLocationChange.bind(this);
+    this.handleHashChange = this.handleHashChange.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
     this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
     this.changelogs = [];
+    this.pendingChangelogDate = this.getChangelogDateFromHash();
     this.fetchChangelogs();
   }
 
@@ -1630,6 +1648,7 @@ class PixelosApp extends LitElement {
     super.connectedCallback();
     this.startRouteLoading();
     window.addEventListener('popstate', this.handleLocationChange);
+    window.addEventListener('hashchange', this.handleHashChange);
     window.addEventListener('scroll', this.handleScroll, { passive: true });
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
     this.handleLocationChange();
@@ -1642,6 +1661,7 @@ class PixelosApp extends LitElement {
 
   disconnectedCallback() {
     window.removeEventListener('popstate', this.handleLocationChange);
+    window.removeEventListener('hashchange', this.handleHashChange);
     window.removeEventListener('scroll', this.handleScroll);
     document.removeEventListener('visibilitychange', this.handleVisibilityChange);
     if (this.scrollRaf) {
@@ -1669,6 +1689,14 @@ class PixelosApp extends LitElement {
     ) {
       this.scheduleRouteLoadingEnd();
     }
+
+    if (
+      this.route === 'changelogs'
+      && this.pendingChangelogDate
+      && (changedProperties.has('route') || changedProperties.has('motionKey') || changedProperties.has('changelogs'))
+    ) {
+      this.scheduleChangelogScroll(this.pendingChangelogDate);
+    }
   }
 
   getRouteFromPathname(pathname) {
@@ -1686,6 +1714,20 @@ class PixelosApp extends LitElement {
       return 'test-build';
     }
     return 'home';
+  }
+
+  getChangelogDateFromHash() {
+    const rawHash = (window.location.hash || '').replace(/^#/, '').trim();
+    if (!rawHash) {
+      return '';
+    }
+
+    const decoded = decodeURIComponent(rawHash);
+    return /^\d{4}-\d{2}-\d{2}$/.test(decoded) ? decoded : '';
+  }
+
+  handleHashChange() {
+    this.handleLocationChange();
   }
 
   handleLocationChange() {
@@ -1706,10 +1748,22 @@ class PixelosApp extends LitElement {
       }
     }
 
+    const hashDate = this.getChangelogDateFromHash();
+    if (nextRoute === 'changelogs' && hashDate) {
+      this.pendingChangelogDate = hashDate;
+    } else if (!hashDate) {
+      this.pendingChangelogDate = '';
+    }
+
     if (this.route !== nextRoute) {
       this.startRouteLoading();
       this.route = nextRoute;
       this.motionKey += 1;
+      return;
+    }
+
+    if (nextRoute === 'changelogs' && this.pendingChangelogDate) {
+      this.scheduleChangelogScroll(this.pendingChangelogDate);
     }
   }
 
@@ -1814,10 +1868,61 @@ class PixelosApp extends LitElement {
     this.navigate('instructions');
   }
 
+  openChangelogDate(date) {
+    const normalizedDate = String(date || '').trim();
+    if (!normalizedDate) {
+      return;
+    }
+
+    this.pendingChangelogDate = normalizedDate;
+    const targetPath = `/changelogs#${encodeURIComponent(normalizedDate)}`;
+    const currentPath = (window.location.pathname || '/').replace(/\/+$/, '') || '/';
+    const currentFullPath = `${currentPath}${window.location.hash || ''}`;
+    if (currentFullPath !== targetPath) {
+      window.history.pushState({}, '', targetPath);
+    }
+
+    if (this.route !== 'changelogs') {
+      this.startRouteLoading();
+      this.route = 'changelogs';
+      this.motionKey += 1;
+      return;
+    }
+
+    this.scheduleChangelogScroll(normalizedDate);
+  }
+
   scheduleInstructionsScroll(target) {
     requestAnimationFrame(() => {
       requestAnimationFrame(() => this.scrollInstructionsTarget(target));
     });
+  }
+
+  scheduleChangelogScroll(date) {
+    if (!date) {
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => this.scrollChangelogTarget(date));
+    });
+  }
+
+  scrollChangelogTarget(date) {
+    const targetId = `changelog-${date}`;
+    const targetSelector = typeof CSS !== 'undefined' && typeof CSS.escape === 'function'
+      ? `#${CSS.escape(targetId)}`
+      : `#${targetId}`;
+    const targetElement = this.renderRoot?.querySelector(targetSelector);
+    if (!targetElement) {
+      return;
+    }
+
+    const targetRect = targetElement.getBoundingClientRect();
+    const targetTop = window.scrollY + targetRect.top;
+    const scrollTop = targetTop - 96;
+    window.scrollTo({ top: Math.max(0, scrollTop), behavior: 'smooth' });
+    this.pendingChangelogDate = '';
   }
 
   scrollInstructionsTarget(target) {
@@ -2311,13 +2416,22 @@ class PixelosApp extends LitElement {
       <section class="view" aria-label="Changelogs view">
         <section class="view-grid">
           ${this.changelogs.map((log, index) => html`
-            <md-outlined-card class="panel changelog-card motion-item" style="--delay: ${index * 20}ms">
+            <md-outlined-card
+              id=${`changelog-${log.date}`}
+              class="panel changelog-card motion-item"
+              style="--delay: ${index * 20}ms">
               <div class="changelog-header">
                 <div class="changelog-title">
                   <h2>${log.version}</h2>
                   ${log.tag ? html`<span class="changelog-tag">${log.tag}</span>` : ''}
                 </div>
-                <span class="changelog-date">${log.date}</span>
+                <button
+                  class="changelog-date changelog-date-link"
+                  type="button"
+                  title="Open link to this changelog"
+                  @click=${() => this.openChangelogDate(log.date)}>
+                  ${log.date}
+                </button>
               </div>
 
               ${log.entries.map(entry => html`
