@@ -25,6 +25,14 @@
       "destination": "/"
     },
     {
+      "source": "/spoofing",
+      "destination": "/"
+    },
+    {
+      "source": "/spoofing/",
+      "destination": "/"
+    },
+    {
       "source": "/test-build",
       "destination": "/"
     },

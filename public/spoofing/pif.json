@@ -1,0 +1,16 @@
+{
+  "ID": "CPI1.251209.007.A1",
+  "BRAND": "google",
+  "DEVICE": "komodo",
+  "FINGERPRINT": "google/komodo_beta/komodo:16/CPI1.251209.007.A1/14691868:user/release-keys",
+  "MANUFACTURER": "Google",
+  "MODEL": "Pixel 9 Pro XL",
+  "PRODUCT": "komodo_beta",
+  "SECURITY_PATCH": "2026-01-05",
+  "DEVICE_INITIAL_SDK_INT": "21",
+  "TYPE": "",
+  "TAG": "",
+  "RELEASE": "16",
+  "SDK_INT": "32",
+  "DEBUG": ""
+}

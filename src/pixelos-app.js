@@ -5,6 +5,7 @@ const ROUTE_VIEW_LOADERS = {
   home: () => import('./routes/home-view.js'),
   instructions: () => import('./routes/instructions-view.js'),
   downloads: () => import('./routes/downloads-view.js'),
+  spoofing: () => import('./routes/spoofing-view.js'),
   changelogs: () => import('./routes/changelogs-view.js'),
   'test-build': () => import('./routes/test-build-view.js')
 };
@@ -727,6 +728,33 @@ class PixelosApp extends LitElement {
       margin-top: 1rem;
       display: grid;
       gap: 1rem;
+    }
+
+    .spoofing-guide {
+      grid-template-columns: 1fr;
+    }
+
+    .spoofing-preview {
+      margin: 0.75rem 0 0;
+      max-width: min(360px, 100%);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--md-sys-color-surface-container-high);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 30%, transparent), 0 6px 16px rgb(0 0 0 / 24%);
+    }
+
+    .spoofing-preview img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    .path-note {
+      margin-top: 0.75rem;
+      color: var(--md-sys-color-on-surface-variant);
+      font-family: var(--md-sys-typescale-label-medium-font);
+      font-size: var(--md-sys-typescale-label-medium-size);
     }
 
     .changelog-card {
@@ -1678,6 +1706,9 @@ class PixelosApp extends LitElement {
     if (/^\/downloads(?:\/|$)/.test(normalized)) {
       return 'downloads';
     }
+    if (/^\/spoofing(?:\/|$)/.test(normalized)) {
+      return 'spoofing';
+    }
     if (/^\/changelogs(?:\/|$)/.test(normalized)) {
       return 'changelogs';
     }
@@ -1779,7 +1810,17 @@ class PixelosApp extends LitElement {
   }
 
   navigate(route) {
-    const path = route === 'instructions' ? '/instructions' : route === 'downloads' ? '/downloads' : route === 'changelogs' ? '/changelogs' : route === 'test-build' ? '/test-build' : '/';
+    const path = route === 'instructions'
+      ? '/instructions'
+      : route === 'downloads'
+        ? '/downloads'
+        : route === 'spoofing'
+          ? '/spoofing'
+          : route === 'changelogs'
+            ? '/changelogs'
+            : route === 'test-build'
+              ? '/test-build'
+              : '/';
     const currentPath = (window.location.pathname || '/').replace(/\/+$/, '') || '/';
     if (currentPath !== path) {
       window.history.pushState({}, '', path);
@@ -2064,6 +2105,12 @@ class PixelosApp extends LitElement {
             @click=${() => this.navigate('downloads')}>
             <md-icon slot="icon">folder_zip</md-icon>
             Downloads & Resources
+          </md-primary-tab>
+          <md-primary-tab
+            ?active=${this.route === 'spoofing'}
+            @click=${() => this.navigate('spoofing')}>
+            <md-icon slot="icon">shield</md-icon>
+            Spoofing
           </md-primary-tab>
           <md-primary-tab
             ?active=${this.route === 'changelogs'}

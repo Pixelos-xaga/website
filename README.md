@@ -25,6 +25,7 @@ npm run preview
 - Home: `/`
 - Instructions: `/instructions`
 - Downloads & Resources: `/downloads`
+- Spoofing: `/spoofing`
 
 `instructions.html` redirects to `/instructions` for compatibility.
 
