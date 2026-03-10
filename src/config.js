@@ -2,7 +2,7 @@ export const DOWNLOADS = [
   {
     name: 'Rom zip',
     note: 'Main PixelOS ROM zip file',
-    href: 'https://pixelos-xaga-worker.angxddeep.workers.dev/PixelOS_xaga-16.2-20260228-1452.zip'
+    href: 'https://pixelos-xaga-worker.angxddeep.workers.dev/PixelOS_xaga-16.2-20260310-0556.zip'
   },
   {
     name: 'boot.img',
