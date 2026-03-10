@@ -5,6 +5,7 @@
 ## 🗓️ [2026-03-10] - 16.2 Stable
 
 ### ✨ Added
+- Upstream PixelOS [CHANGELOG](https://blog.pixelos.net/blog/2026-03-09-March-Update)
 - 🔒 Updated to the March security patch.
 - 🌡️ Improved thermal management by adjusting throttling thresholds to keep the device cooler.
 - 📸 Improved MIUI camera lighting and photo quality.
