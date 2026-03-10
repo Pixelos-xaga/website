@@ -2,6 +2,32 @@ import { html } from 'lit';
 import '@material/web/progress/circular-progress.js';
 import '@material/web/labs/card/outlined-card.js';
 
+function renderMarkdownLinks(text) {
+  const value = String(text ?? '');
+  const linkPattern = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+  const parts = [];
+  let lastIndex = 0;
+  let match = null;
+
+  while ((match = linkPattern.exec(value)) !== null) {
+    const [fullMatch, label, href] = match;
+    const start = match.index;
+
+    if (start > lastIndex) {
+      parts.push(value.slice(lastIndex, start));
+    }
+
+    parts.push(html`<a href=${href} target="_blank" rel="noopener noreferrer">${label}</a>`);
+    lastIndex = start + fullMatch.length;
+  }
+
+  if (lastIndex < value.length) {
+    parts.push(value.slice(lastIndex));
+  }
+
+  return parts.length > 0 ? parts : [value];
+}
+
 export default function renderChangelogsView(app) {
   if (!app.changelogs || app.changelogs.length === 0) {
     return html`
@@ -42,7 +68,7 @@ export default function renderChangelogsView(app) {
               <div class="changelog-entry">
                 <h4>${entry.type}</h4>
                 <ul class="changelog-list">
-                  ${entry.items.map((item) => html`<li>${item}</li>`)}
+                  ${entry.items.map((item) => html`<li>${renderMarkdownLinks(item)}</li>`)}
                 </ul>
               </div>
             `)}

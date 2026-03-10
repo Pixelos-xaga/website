@@ -805,6 +805,18 @@ class PixelosApp extends LitElement {
       color: var(--md-sys-color-on-surface);
     }
 
+    .changelog-list a {
+      color: var(--md-sys-color-primary);
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.2em;
+    }
+
+    .changelog-list a:hover,
+    .changelog-list a:focus-visible {
+      color: var(--md-sys-color-primary-fixed-dim);
+    }
+
     .section-title {
       display: inline-flex;
       align-items: center;
