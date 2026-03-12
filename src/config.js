@@ -2,28 +2,28 @@ export const DOWNLOADS = [
   {
     name: 'Rom zip',
     note: 'Main PixelOS ROM zip file',
-    href: 'https://pixelos-xaga-worker.angxddeep.workers.dev/PixelOS_xaga-16.2-20260310-0556.zip'
+    href: 'https://sourceforge.net/projects/xagaproject/files/Pixelos-xaga/Mar-BUGFIX-2026/PixelOS_xaga-16.2-20260312-0925.zip/download'
   },
   {
     name: 'boot.img',
     note: 'Boot image',
-    href: 'https://pixelos-xaga-worker.angxddeep.workers.dev/boot.img'
+    href: 'https://sourceforge.net/projects/xagaproject/files/Pixelos-xaga/Mar-BUGFIX-2026/boot.img/download'
   },
   {
     name: 'vendor_boot.img',
     note: 'Vendor boot image',
-    href: 'https://pixelos-xaga-worker.angxddeep.workers.dev/vendor_boot.img'
+    href: 'https://sourceforge.net/projects/xagaproject/files/Pixelos-xaga/Mar-BUGFIX-2026/vendor_boot.img/download'
   },
   {
     name: 'vbmeta.img',
     note: 'Verified boot metadata',
-    href: 'https://pixelos-xaga-worker.angxddeep.workers.dev/vbmeta.img'
+    href: 'https://sourceforge.net/projects/xagaproject/files/Pixelos-xaga/Mar-BUGFIX-2026/vbmeta.img/download'
 
   },
   {
     name: 'dtbo.img',
     note: 'Device tree blob overlay',
-    href: 'https://pixelos-xaga-worker.angxddeep.workers.dev/dtbo.img'
+    href: 'https://sourceforge.net/projects/xagaproject/files/Pixelos-xaga/Mar-BUGFIX-2026/dtbo.img/download'
   }
 ];
 
