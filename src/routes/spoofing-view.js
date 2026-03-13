@@ -1,5 +1,4 @@
 import { html } from 'lit';
-import '@material/web/button/elevated-button.js';
 import '@material/web/labs/card/filled-card.js';
 import '@material/web/labs/card/outlined-card.js';
 
@@ -12,13 +11,7 @@ export default function renderSpoofingView() {
             <md-icon aria-hidden="true">wallet</md-icon>
             Activate GPay (PIF Method)
           </h2>
-          <p>Download the provided <code>pif.json</code>, then add it from Developer options on your device.</p>
-          <div class="hero-actions">
-            <md-elevated-button href="/spoofing/pif.json" download>
-              <md-icon slot="icon">download</md-icon>
-              Download pif.json
-            </md-elevated-button>
-          </div>
+          <p>Get your own <code>pif.json</code> and add it from Developer options on your device. No PIF files are provided here.</p>
         </md-outlined-card>
 
         <md-outlined-card class="panel motion-item" style="--delay: 40ms">
@@ -41,31 +34,25 @@ export default function renderSpoofingView() {
         <md-outlined-card class="panel motion-item" style="--delay: 60ms">
           <h2 class="section-title">
             <md-icon aria-hidden="true">gpp_maybe</md-icon>
-            Important Compatibility Note
+            Setup Notes
           </h2>
-          <md-filled-card class="warning-card" style="margin-top: 0.55rem;">
-            <div class="warning-content">
-              <md-icon>warning</md-icon>
-              <p><strong>PIF and keybox should not be used together</strong> at the same time.</p>
-            </div>
-          </md-filled-card>
           <ol class="commands" style="margin-top: 0.9rem;">
             <li>
               <md-outlined-card class="command-item">
-                <h3>Step 1: Activate with PIF</h3>
-                <p>Use <code>pif.json</code> first and complete Google Pay sign-in/activation once.</p>
+                <h3>Step 1: Add your spoofing setup</h3>
+                <p>Add your own <code>pif.json</code> or keybox from Developer options after first boot setup is complete.</p>
               </md-outlined-card>
             </li>
             <li>
               <md-outlined-card class="command-item">
-                <h3>Step 2: Move to keybox</h3>
-                <p>After Google Pay is working, remove PIF and switch to a keybox setup.</p>
+                <h3>Step 2: Clear Google app data</h3>
+                <p>Clear Play Store and Play Services data after fingerprint or spoofing changes.</p>
               </md-outlined-card>
             </li>
             <li>
               <md-outlined-card class="command-item">
-                <h3>Step 3: Keep setup stable</h3>
-                <p>Google Pay should generally not ask for this setup step again after initial activation.</p>
+                <h3>Step 3: Reboot and verify</h3>
+                <p>Reboot once, then verify certification status and Wallet or Google Pay sign-in.</p>
               </md-outlined-card>
             </li>
           </ol>
@@ -73,8 +60,8 @@ export default function renderSpoofingView() {
             <div class="info-card-content">
               <md-icon>info</md-icon>
               <div class="info-card-text">
-                <h3>Keybox Notice</h3>
-                <p>Keybox files are not provided here; you must source your own keybox.</p>
+                <h3>Sourcing Notice</h3>
+                <p>PIF and keybox files are not provided here; you must source them yourself.</p>
               </div>
             </div>
           </md-filled-card>
