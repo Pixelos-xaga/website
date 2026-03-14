@@ -50,12 +50,12 @@ export default function renderDownloadsView(app) {
         <md-outlined-card class="panel motion-item" style="--delay: 38ms">
           <h2 class="section-title">
             <md-icon>system_update</md-icon>
-            Flash preloader and latest firmware images (Recommended)
+            Preloader Resources
           </h2>
-          <p>Before proceeding with PixelOS installation, ensure you have flashed the latest firmware images. This is especially important if:</p>
+          <p>This section provides the preloader package and its documentation. Always use the preloader package for safety before proceeding.</p>
           <ul class="firmware-list">
-            <li>You are upgrading from an older ROM build</li>
-            <li>You want to flash engineering preloader</li>
+            <li>Download the preloader package from the link below</li>
+            <li>Read the wiki before flashing engineering preloader</li>
           </ul>
           <div class="download-grid">
             <md-outlined-card class="download-item">
@@ -64,9 +64,9 @@ export default function renderDownloadsView(app) {
               target="_blank"
               rel="noopener noreferrer">
               <md-icon slot="icon">download</md-icon>
-              Download Latest Firmware Images
+              Download Preloader Package
               </md-elevated-button>
-              <small>Required for users upgrading from older ROM bases</small>
+              <small>Preloader package for xaga</small>
               </md-outlined-card>
 
               <md-outlined-card class="download-item">
@@ -77,7 +77,7 @@ export default function renderDownloadsView(app) {
               <md-icon slot="icon">menu_book</md-icon>
               Preloader Wiki
               </md-elevated-button>
-              <small>Documentation for engineering preloader</small>
+              <small>Documentation for flashing and usage</small>
               </md-outlined-card>
               </div>          </md-outlined-card>
 

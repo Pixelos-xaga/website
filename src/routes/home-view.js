@@ -44,7 +44,7 @@ export default function renderHomeView(app) {
         <p class="lead">PixelOS A16 for xaga(REDMI K50i,Poco X4 GT,Redmi Note 11t/pro+).</p>
         <div class="hero-actions">
           <md-filled-button @click=${() => app.navigateToInstructions()}>
-            <md-icon slot="icon">rocket_launch</md-icon>
+            <md-icon slot="icon">terminal</md-icon>
             Open Instructions
           </md-filled-button>
           <md-filled-tonal-button @click=${() => app.navigate('downloads')}>

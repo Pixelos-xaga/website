@@ -1030,6 +1030,107 @@ class PixelosApp extends LitElement {
       opacity: 0.9;
     }
 
+    .tip-card {
+      --md-filled-card-container-color: color-mix(in srgb, var(--md-sys-color-secondary-container) 58%, var(--md-sys-color-surface-container-high) 42%);
+    }
+
+    .tip-card-text {
+      width: 100%;
+    }
+
+    .tip-entry {
+      position: relative;
+      display: grid;
+      gap: 0.45rem;
+      padding-left: 1rem;
+    }
+
+    .tip-entry::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.1rem;
+      bottom: 0.1rem;
+      width: 3px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--md-sys-color-primary) 70%, var(--md-sys-color-secondary) 30%);
+      opacity: 0.9;
+    }
+
+    .tip-entry-header {
+      display: grid;
+      gap: 0.22rem;
+    }
+
+    .tip-entry-header strong {
+      font-family: var(--md-sys-typescale-title-medium-font);
+      font-size: var(--md-sys-typescale-title-medium-size);
+      line-height: var(--md-sys-typescale-title-medium-line-height);
+      letter-spacing: var(--md-sys-typescale-title-medium-tracking);
+      font-weight: 600;
+      color: var(--md-sys-color-on-secondary-container);
+    }
+
+    .tip-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      padding: 0.16rem 0.5rem;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--md-sys-color-primary) 20%, transparent);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 40%, transparent);
+      color: var(--md-sys-color-primary-fixed);
+      font-family: var(--md-sys-typescale-label-medium-font);
+      font-size: var(--md-sys-typescale-label-medium-size);
+      line-height: var(--md-sys-typescale-label-medium-line-height);
+      letter-spacing: var(--md-sys-typescale-label-medium-tracking);
+      font-weight: var(--md-sys-typescale-label-medium-weight);
+      text-transform: uppercase;
+    }
+
+    .tip-callout {
+      padding-top: 0.15rem;
+      color: var(--md-sys-color-on-secondary-container);
+    }
+
+    .tip-divider {
+      height: 1px;
+      margin: 0.9rem 0;
+      background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--md-sys-color-primary) 55%, transparent),
+        color-mix(in srgb, var(--md-sys-color-outline) 45%, transparent)
+      );
+    }
+
+    .tip-status-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 0.42rem;
+    }
+
+    .tip-status-list li {
+      margin: 0;
+      padding: 0.4rem 0.55rem;
+      border-radius: 10px;
+      background: color-mix(in srgb, var(--md-sys-color-surface-container-high) 88%, var(--md-sys-color-primary-container) 12%);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 24%, transparent);
+      color: var(--md-sys-color-on-secondary-container);
+    }
+
+    .tip-card code {
+      padding: 0.12rem 0.38rem;
+      border-radius: 6px;
+      background: color-mix(in srgb, var(--md-sys-color-surface-container-highest) 70%, transparent);
+      color: var(--md-sys-color-primary-fixed);
+      font: 600 0.84rem/1.45 var(--font-mono);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 28%, transparent);
+      word-break: break-word;
+    }
+
     .commands p {
       margin: 0.2rem 0 0;
     }
@@ -1540,6 +1641,18 @@ class PixelosApp extends LitElement {
       .warning-content .warning-command {
         font-size: 0.8rem;
         word-break: break-word;
+      }
+
+      .tip-entry {
+        padding-left: 0.85rem;
+      }
+
+      .tip-divider {
+        margin: 0.75rem 0;
+      }
+
+      .tip-status-list li {
+        padding: 0.46rem 0.5rem;
       }
 
       .download-grid {

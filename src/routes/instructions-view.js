@@ -184,11 +184,30 @@ export default function renderInstructionsView(app) {
             <md-filled-card class="info-card tip-card motion-item" style="--delay: 100ms">
               <div class="info-card-content">
                 <md-icon>tips_and_updates</md-icon>
-                <div class="info-card-text">
+                <div class="info-card-text tip-card-text">
                   <h3>Installation Tips</h3>
-                  <p><strong>After the package is installed</strong>, recovery may inform you that reboot to recovery is required to install add-ons. In case you want to do that, please select <strong>Yes</strong>, otherwise <strong>No</strong>.</p>
+                  <div class="tip-entry">
+                    <div class="tip-entry-header">
+                      <span class="tip-label">Recovery prompt</span>
+                      <strong>Select the correct reboot option</strong>
+                    </div>
+                    <p>After the package is installed, recovery may ask whether it should reboot back into recovery to install add-ons.</p>
+                    <p class="tip-callout">Choose <strong>Yes</strong> only if you want to install add-ons right away. Otherwise, select <strong>No</strong>.</p>
+                  </div>
                   <div class="tip-divider"></div>
-                  <p><strong>ADB Sideload Progress Tip:</strong> Normally, adb will report <code>Total xfer: 1.00x</code>, but in some cases, even if the process succeeds the output will stop at 47% and report <code>adb: failed to read command: Success</code>. In some cases it will report <code>adb: failed to read command: No error</code> or <code>adb: failed to read command: Undefined error: 0</code> which is also fine.</p>
+                  <div class="tip-entry">
+                    <div class="tip-entry-header">
+                      <span class="tip-label">ADB sideload</span>
+                      <strong>47% can still be a successful install</strong>
+                    </div>
+                    <p>ADB usually finishes with <code>Total xfer: 1.00x</code>. On some systems, the sideload output stops at 47% even when the installation succeeds.</p>
+                    <ul class="tip-status-list">
+                      <li><code>adb: failed to read command: Success</code></li>
+                      <li><code>adb: failed to read command: No error</code></li>
+                      <li><code>adb: failed to read command: Undefined error: 0</code></li>
+                    </ul>
+                    <p class="tip-callout">If recovery completes the installation successfully, these messages are normal.</p>
+                  </div>
                 </div>
               </div>
             </md-filled-card>
