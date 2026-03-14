@@ -1,5 +1,5 @@
 import { html } from 'lit';
-import { DOWNLOADS, RESOURCE_LINKS } from '../config.js';
+import { DOWNLOADS, LATEST_XDA_POST, RESOURCE_LINKS } from '../config.js';
 import '@material/web/button/elevated-button.js';
 import '@material/web/iconbutton/icon-button.js';
 import '@material/web/labs/card/outlined-card.js';
@@ -28,6 +28,14 @@ const PLATFORM_TOOLS_ZIP_OPTIONS = [
   }
 ];
 
+const ROM_ARCHIVE_LINKS = [
+  {
+    name: 'All PixelOS xaga Builds',
+    note: 'SourceForge archive for current and older ROM releases',
+    href: 'https://sourceforge.net/projects/xagaproject/files/Pixelos-xaga/'
+  }
+];
+
 export default function renderDownloadsView(app) {
   return html`
     <section class="view" aria-label="Downloads and resources view">
@@ -44,6 +52,34 @@ export default function renderDownloadsView(app) {
                 <small>${item.note}</small>
               </md-outlined-card>
             `)}
+          </div>
+        </md-outlined-card>
+
+        <md-outlined-card class="panel motion-item" style="--delay: 28ms">
+          <h2>ROM Build Archive</h2>
+          <div class="download-grid">
+            ${ROM_ARCHIVE_LINKS.map((item) => html`
+              <md-outlined-card class="download-item">
+                <md-elevated-button href=${item.href} target="_blank" rel="noopener noreferrer">
+                  <md-icon slot="icon">history</md-icon>
+                  ${item.name}
+                </md-elevated-button>
+                <small>${item.note}</small>
+              </md-outlined-card>
+            `)}
+          </div>
+        </md-outlined-card>
+
+        <md-outlined-card class="panel motion-item" style="--delay: 33ms">
+          <h2>Latest XDA Post</h2>
+          <div class="download-grid">
+            <md-outlined-card class="download-item">
+              <md-elevated-button href=${LATEST_XDA_POST.href} target="_blank" rel="noopener noreferrer">
+                <md-icon slot="icon">forum</md-icon>
+                ${LATEST_XDA_POST.name}
+              </md-elevated-button>
+              <small>${LATEST_XDA_POST.note}</small>
+            </md-outlined-card>
           </div>
         </md-outlined-card>
 

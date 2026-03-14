@@ -67,3 +67,9 @@ export const RESOURCE_LINKS = [
     href: 'https://developer.android.com/tools/releases/platform-tools'
   }
 ];
+
+export const LATEST_XDA_POST = {
+  name: 'Latest PixelOS XDA Thread',
+  note: '',
+  href: 'https://xdaforums.com/t/development-rom-android-16-unofficial-pixelos-16-2-recovery-build-xaga-march-build.4781663/'
+};
