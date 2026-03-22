@@ -1,17 +1,18 @@
 const SOURCEFORGE_BASE = 'https://sourceforge.net/projects/xagaproject/files/Pixelos-xaga';
 const MARCH_BUILD_BASE = `${SOURCEFORGE_BASE}/Mar-2026-22`;
 const GOOGLE_DRIVE_BASE = 'https://drive.google.com/file/d';
+const WORKER_BASE = 'https://pixelos-xaga-worker.angxddeep.workers.dev';
 
 const linkItem = (name, note, href, icon = '') => ({ name, note, href, icon });
 const sourceForgeDownload = (fileName) => `${MARCH_BUILD_BASE}/${fileName}/download`;
 const googleDriveFile = (id, access = 'drive_link') => `${GOOGLE_DRIVE_BASE}/${id}/view?usp=${access}`;
 
 export const DOWNLOADS = [
-  linkItem('Rom zip', 'Main PixelOS ROM zip file', sourceForgeDownload('PixelOS_xaga-16.2-20260322-0652.zip')),
-  linkItem('boot.img', 'Boot image', sourceForgeDownload('boot.img')),
-  linkItem('vendor_boot.img', 'Vendor boot image', sourceForgeDownload('vendor_boot.img')),
-  linkItem('vbmeta.img', 'Verified boot metadata', sourceForgeDownload('vbmeta.img')),
-  linkItem('dtbo.img', 'Device tree blob overlay', sourceForgeDownload('dtbo.img'))
+  linkItem('Rom zip', 'Main PixelOS ROM zip file', `${WORKER_BASE}/PixelOS_xaga-16.2-20260322-0652.zip`),
+  linkItem('boot.img', 'Boot image', `${WORKER_BASE}/boot.img`),
+  linkItem('vendor_boot.img', 'Vendor boot image', `${WORKER_BASE}/vendor_boot.img`),
+  linkItem('vbmeta.img', 'Verified boot metadata', `${WORKER_BASE}/vbmeta.img`),
+  linkItem('dtbo.img', 'Device tree blob overlay', `${WORKER_BASE}/dtbo.img`),
 ];
 
 export const RESOURCE_LINKS = [
