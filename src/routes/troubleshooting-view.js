@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import { motionStyle, renderCommandField, renderInfoCard } from '../lib/view-helpers.js';
 import '@material/web/button/elevated-button.js';
+import '@material/web/divider/divider.js';
 import '@material/web/iconbutton/icon-button.js';
 import '@material/web/textfield/outlined-text-field.js';
 import '@material/web/labs/card/filled-card.js';
@@ -57,6 +58,7 @@ export default function renderTroubleshootingView(app) {
             Report an Issue
           </h2>
           ${SUPPORT_GUIDELINES.map((item) => html`<p>${item}</p>`)}
+          <md-divider class="panel-divider"></md-divider>
           <div class="hero-actions">
             <md-elevated-button href="https://t.me/XAGASupport" target="_blank" rel="noopener noreferrer">
               <md-icon slot="icon">send</md-icon>
@@ -71,6 +73,7 @@ export default function renderTroubleshootingView(app) {
             Collect a Logcat
           </h2>
           <ol class="commands">${LOGCAT_STEPS.map((step) => renderLogcatStep(app, step))}</ol>
+          <md-divider class="panel-divider"></md-divider>
 
           ${renderInfoCard({
             icon: 'tips_and_updates',

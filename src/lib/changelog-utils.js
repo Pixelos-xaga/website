@@ -71,6 +71,15 @@ export function parseChangelogs(markdown = '') {
   return logs;
 }
 
+export function sortChangelogsByDate(logs = []) {
+  return [...logs]
+    .sort((left, right) => String(right?.date || '').localeCompare(String(left?.date || '')))
+    .map((log, index) => ({
+      ...log,
+      tag: index === 0 ? 'Latest' : ''
+    }));
+}
+
 export function renderMarkdownLinks(text) {
   const value = String(text ?? '');
   const parts = [];

@@ -21,19 +21,22 @@ export const RESOURCE_LINKS = [
 ];
 
 export const DOWNLOAD_SECTIONS = [
-  { title: 'ROM Downloads', delay: 20, items: DOWNLOADS },
+  { id: 'rom', title: 'ROM Downloads', delay: 20, items: DOWNLOADS },
   {
+    id: 'archive',
     title: 'ROM Build Archive',
     delay: 28,
     items: [linkItem('All PixelOS xaga Builds', 'SourceForge archive for current and older ROM releases', SOURCEFORGE_BASE)]
   },
   {
+    id: 'xda',
     title: 'Latest XDA Post',
     delay: 33,
     defaultIcon: 'forum',
     items: [linkItem('Latest PixelOS XDA Thread', '', 'https://xdaforums.com/t/development-rom-android-16-unofficial-pixelos-16-2-recovery-build-xaga-march-build.4781663/')]
   },
   {
+    id: 'preloader',
     title: 'Preloader Resources',
     delay: 38,
     headingIcon: 'system_update',
@@ -47,7 +50,7 @@ export const DOWNLOAD_SECTIONS = [
       linkItem('Preloader Wiki', 'Documentation for flashing and usage', 'https://wiki.itsvixano.me/device_specific/preloader_xaga/', 'menu_book')
     ]
   },
-  { title: 'Downloads & Resources', delay: 55, defaultIcon: 'link', items: RESOURCE_LINKS }
+  { id: 'resources', title: 'Downloads & Resources', delay: 55, defaultIcon: 'link', items: RESOURCE_LINKS }
 ];
 
 export const PLATFORM_TOOLS_CLI_COMMANDS = [

@@ -1,5 +1,11 @@
 import { LitElement, css, html } from 'lit';
 import { keyed } from 'lit/directives/keyed.js';
+import '@material/web/progress/linear-progress.js';
+import '@material/web/progress/circular-progress.js';
+import '@material/web/fab/fab.js';
+import '@material/web/switch/switch.js';
+import '@material/web/labs/navigationbar/navigation-bar.js';
+import '@material/web/labs/navigationtab/navigation-tab.js';
 import { HOME_SCREENSHOT_COUNT } from './home-screenshots.js';
 import { getChangelogDateFromHash, parseChangelogs } from './lib/changelog-utils.js';
 import { NAV_ROUTES, ROUTE_VIEW_LOADERS, getLegacyHashRoute, getRouteFromPathname, getRoutePath } from './lib/app-routes.js';
@@ -22,12 +28,17 @@ class PixelosApp extends LitElement {
     motionKey: { state: true },
     copiedCommand: { state: true },
     copyMessage: { state: true },
+    copyMessageTone: { state: true },
+    downloadsFilter: { state: true },
     pendingScreenshots: { state: true },
     activeScreenshot: { state: true },
     changelogs: { state: true },
+    changelogsLatestFirst: { state: true },
+    selectedChangelogDate: { state: true },
     routeView: { state: true },
     routeViewLoading: { state: true },
-    routeViewError: { state: true }
+    routeViewError: { state: true },
+    funMode: { state: true }
   };
 
   static styles = css`
@@ -240,6 +251,16 @@ class PixelosApp extends LitElement {
       /* Legacy aliases for backward compatibility */
       --motion-standard: var(--md-sys-motion-easing-standard);
       --motion-emphasized: var(--md-sys-motion-easing-emphasized);
+      --app-panel-edge-rest: color-mix(in srgb, var(--md-sys-color-outline-variant) 84%, var(--md-sys-color-primary) 16%);
+      --app-panel-edge-hover: color-mix(in srgb, var(--md-sys-color-outline-variant) 72%, var(--md-sys-color-primary) 28%);
+      --app-panel-shadow: inset 0 0 0 1px var(--app-panel-edge-rest), 0 8px 24px rgb(0 0 0 / 16%);
+      --app-panel-shadow-hover: inset 0 0 0 1px var(--app-panel-edge-hover), 0 12px 30px rgb(0 0 0 / 20%);
+      --app-tile-edge-rest: color-mix(in srgb, var(--md-sys-color-outline-variant) 82%, var(--md-sys-color-primary) 18%);
+      --app-tile-edge-hover: color-mix(in srgb, var(--md-sys-color-outline-variant) 68%, var(--md-sys-color-primary) 32%);
+      --app-tile-shadow-soft: inset 0 0 0 1px var(--app-tile-edge-rest), 0 4px 12px rgb(0 0 0 / 16%);
+      --app-tile-shadow-soft-hover: inset 0 0 0 1px var(--app-tile-edge-hover), 0 8px 18px rgb(0 0 0 / 20%);
+      --app-tile-shadow: inset 0 0 0 1px var(--app-tile-edge-rest), 0 8px 18px rgb(0 0 0 / 16%);
+      --app-tile-shadow-hover: inset 0 0 0 1px var(--app-tile-edge-hover), 0 12px 26px rgb(0 0 0 / 20%);
       --side-left-shift: -62px;
       --side-right-shift: -26px;
 
@@ -256,6 +277,7 @@ class PixelosApp extends LitElement {
     *::before,
     *::after {
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .shell {
@@ -325,7 +347,7 @@ class PixelosApp extends LitElement {
       height: 100%;
       display: block;
       object-fit: cover;
-      object-position: center;
+      object-position: center 15%;
       background: color-mix(in srgb, var(--md-sys-color-surface-container-low) 90%, transparent);
       opacity: 0.94;
       filter: saturate(1.08) contrast(1.03);
@@ -388,25 +410,53 @@ class PixelosApp extends LitElement {
       --md-elevated-card-container-color: var(--md-sys-color-surface-container-high);
       --md-elevated-card-container-shape: var(--md-sys-shape-corner-extra-large);
       --md-elevated-card-container-elevation: 1;
-      border: 1px solid color-mix(in srgb, var(--md-sys-color-primary) 30%, var(--md-sys-color-outline-variant) 70%);
-      box-shadow: 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent), 0 8px 18px rgb(0 0 0 / 16%);
-      transition: border-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard), box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard), background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+      border: 0;
+      box-shadow: var(--app-panel-shadow);
+      transition: box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard), background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
       position: sticky;
       top: 0.6rem;
       z-index: 5;
       backdrop-filter: blur(14px);
       display: grid;
-      grid-template-columns: auto 1fr;
+      grid-template-columns: auto 1fr auto;
       align-items: center;
       gap: 0.9rem;
       padding: 0.72rem 1rem;
       margin-bottom: 1rem;
     }
 
+    .fun-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: 999px;
+      background: var(--md-sys-color-surface-container-high);
+      box-shadow: inset 0 0 0 1px var(--app-tile-edge-rest);
+      user-select: none;
+      transition: background-color 200ms var(--motion-standard);
+    }
+
+    .fun-toggle:hover {
+      background: color-mix(in srgb, var(--md-sys-color-primary) 12%, var(--md-sys-color-surface-container-high) 88%);
+    }
+
+    .fun-toggle strong {
+      font-family: var(--md-sys-typescale-label-large-font);
+      font-size: var(--md-sys-typescale-label-large-size);
+      font-weight: 600;
+      color: var(--md-sys-color-on-surface);
+    }
+
+    .fun-toggle md-switch {
+      --md-switch-selected-track-color: var(--md-sys-color-primary);
+      --md-switch-selected-handle-color: var(--md-sys-color-on-primary);
+      scale: 0.85;
+    }
+
     :host(.is-scrolled) .top-bar {
       --md-elevated-card-container-color: color-mix(in srgb, var(--md-sys-color-surface-container-high) 85%, var(--md-sys-color-primary-container) 15%);
-      border-color: color-mix(in srgb, var(--md-sys-color-primary) 55%, var(--md-sys-color-outline-variant) 45%);
-      box-shadow: 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 30%, transparent), 0 12px 26px rgb(0 0 0 / 28%);
+      box-shadow: var(--app-panel-shadow-hover);
     }
 
     .brand {
@@ -451,7 +501,7 @@ class PixelosApp extends LitElement {
       padding: 0.2rem;
       border-radius: 999px;
       background: var(--md-sys-color-surface-container);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 14%, transparent);
+      box-shadow: none;
       --md-primary-tab-container-color: transparent;
       --md-primary-tab-active-indicator-color: var(--md-sys-color-primary);
       --md-primary-tab-active-label-text-color: var(--md-sys-color-primary);
@@ -496,38 +546,32 @@ class PixelosApp extends LitElement {
     md-filled-card.panel,
     md-elevated-card.panel,
     md-outlined-card.panel {
-      transition: transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard), box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+      transition: box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard), background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+      box-shadow: var(--app-panel-shadow);
     }
 
     md-filled-card.panel:hover,
     md-elevated-card.panel:hover,
     md-outlined-card.panel:hover {
-      transform: translateY(-2px);
-    }
-
-    md-filled-card.panel:focus-within,
-    md-elevated-card.panel:focus-within,
-    md-outlined-card.panel:focus-within {
-      transform: translateY(-1px);
+      box-shadow: var(--app-panel-shadow-hover);
     }
 
     md-filled-card.panel {
       --md-filled-card-container-color: color-mix(in srgb, var(--md-sys-color-primary-container) 70%, var(--md-sys-color-surface-container-high) 30%);
       --md-filled-card-container-shape: var(--md-sys-shape-corner-extra-large);
-      box-shadow: 0 4px 16px rgb(0 0 0 / 20%), inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 30%, transparent);
     }
 
     md-elevated-card.panel {
       --md-elevated-card-container-color: color-mix(in srgb, var(--md-sys-color-secondary-container) 18%, var(--md-sys-color-surface-container) 82%);
       --md-elevated-card-container-shape: var(--md-sys-shape-corner-large);
       --md-elevated-card-container-elevation: 1;
-      box-shadow: 0 2px 8px rgb(0 0 0 / 15%), inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-secondary) 20%, transparent);
     }
 
     md-outlined-card.panel {
       --md-outlined-card-container-color: color-mix(in srgb, var(--md-sys-color-tertiary-container) 12%, var(--md-sys-color-surface-container) 88%);
       --md-outlined-card-container-shape: var(--md-sys-shape-corner-large);
-      --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent);
+      --md-outlined-card-outline-color: transparent;
+      --md-outlined-card-outline-width: 0;
     }
 
     .hero {
@@ -632,7 +676,7 @@ class PixelosApp extends LitElement {
       scroll-snap-type: x proximity;
       overscroll-behavior-x: contain;
       -webkit-overflow-scrolling: touch;
-      touch-action: pan-x pinch-zoom;
+      touch-action: pan-x pan-y pinch-zoom;
       mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
       -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
     }
@@ -668,7 +712,7 @@ class PixelosApp extends LitElement {
       overflow: hidden;
       border-radius: 16px;
       background: var(--md-sys-color-surface-container-high);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent), 0 4px 12px rgb(0 0 0 / 20%);
+      box-shadow: var(--app-tile-shadow-soft);
       aspect-ratio: 9 / 20;
       scroll-snap-align: start;
       transition: transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard), box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
@@ -687,7 +731,7 @@ class PixelosApp extends LitElement {
     .screenshot-item:hover,
     .screenshot-item:has(.screenshot-button:focus-visible) {
       transform: translateY(-2px);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 45%, transparent), 0 8px 18px rgb(0 0 0 / 24%);
+      box-shadow: var(--app-tile-shadow-soft-hover);
     }
 
     .screenshot-button:focus-visible {
@@ -725,17 +769,32 @@ class PixelosApp extends LitElement {
       height: 44px;
       border: 0;
       border-radius: 999px;
-      background: rgb(20 20 20 / 78%);
-      color: white;
+      background: color-mix(in srgb, var(--md-sys-color-surface-container-high) 84%, rgb(8 10 18 / 88%) 16%);
+      color: var(--md-sys-color-primary-fixed);
       cursor: pointer;
       font: inherit;
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 0 0 1px var(--app-tile-edge-rest), 0 8px 18px rgb(0 0 0 / 24%);
+      transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+        color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+        box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+        transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
     }
 
     .screenshot-overlay-close:hover,
     .screenshot-overlay-close:focus-visible {
-      background: rgb(34 34 34 / 92%);
-      outline: 2px solid rgb(255 255 255 / 72%);
+      background: color-mix(in srgb, var(--md-sys-color-primary-container) 36%, rgb(8 10 18 / 80%) 64%);
+      color: var(--md-sys-color-primary-fixed);
+      box-shadow: inset 0 0 0 1px var(--app-tile-edge-hover), 0 12px 24px rgb(0 0 0 / 28%);
+      outline: 2px solid color-mix(in srgb, var(--md-sys-color-primary-fixed) 88%, white 12%);
       outline-offset: 2px;
+      transform: translateY(-1px);
+    }
+
+    .screenshot-overlay-close md-icon {
+      --m3-icon-size: 22px;
+      --m3-icon-fill: 1;
     }
 
     .screenshot-overlay-image {
@@ -758,19 +817,38 @@ class PixelosApp extends LitElement {
       object-fit: cover;
     }
 
-    .screenshots-loader {
+    .screenshots-loader,
+    .route-loader {
       margin-top: 0.72rem;
-      display: inline-flex;
-      align-items: center;
+      display: grid;
       gap: 0.48rem;
+      width: min(100%, 24rem);
       color: var(--md-sys-color-on-surface-variant);
-      font-size: 0.9rem;
     }
 
-    .screenshots-loader md-circular-progress {
-      --md-circular-progress-active-indicator-color: var(--md-sys-color-primary);
-      width: 22px;
-      height: 22px;
+    .screenshots-loader span,
+    .route-loader span {
+      font-size: 0.9rem;
+      line-height: 1.35;
+    }
+
+    .route-loader {
+      padding: 1rem;
+    }
+
+    .route-loader strong {
+      color: var(--md-sys-color-on-surface);
+      font-family: var(--md-sys-typescale-title-medium-font);
+      font-size: var(--md-sys-typescale-title-medium-size);
+      line-height: var(--md-sys-typescale-title-medium-line-height);
+      letter-spacing: var(--md-sys-typescale-title-medium-tracking);
+      font-weight: 600;
+    }
+
+    .screenshots-loader md-linear-progress,
+    .route-loader md-linear-progress {
+      --md-linear-progress-active-indicator-color: var(--md-sys-color-primary);
+      --md-linear-progress-track-color: color-mix(in srgb, var(--md-sys-color-primary) 14%, var(--md-sys-color-surface-container-high) 86%);
     }
 
     md-filled-button,
@@ -798,32 +876,151 @@ class PixelosApp extends LitElement {
       line-height: 1;
     }
 
-    md-primary-tab md-icon {
+    md-primary-tab md-icon,
+    md-navigation-tab md-icon {
       --m3-icon-fill: 0;
-      --m3-icon-weight: 500;
-      --m3-icon-size: 22px;
+      --m3-icon-weight: 400;
+      --m3-icon-size: 24px;
     }
 
-    md-primary-tab[active] md-icon {
+    md-primary-tab[active] md-icon,
+    md-navigation-tab[active] md-icon {
       --m3-icon-fill: 1;
-      --m3-icon-weight: 600;
+      --m3-icon-weight: 500;
     }
 
-    md-list {
-      border-radius: 16px;
-      overflow: hidden;
+    .feature-list {
       margin-top: 0.65rem;
-      --md-list-container-color: transparent;
+      display: grid;
+      gap: 0.75rem;
     }
 
-    md-list-item {
-      --md-list-item-leading-icon-color: var(--md-sys-color-primary);
-      --md-list-item-label-text-color: var(--md-sys-color-on-surface);
-      --md-list-item-supporting-text-color: var(--md-sys-color-on-surface-variant);
+    .feature-tile {
+      display: grid;
+      grid-template-columns: 46px minmax(0, 1fr) auto;
+      gap: 0.9rem;
+      align-items: center;
+      width: 100%;
+      min-width: 0;
+      padding: 1rem 1.1rem;
+      border: 0;
+      border-radius: 20px;
+      background: color-mix(in srgb, var(--md-sys-color-primary-container) 12%, var(--md-sys-color-surface-container-high) 88%);
+      box-shadow: var(--app-tile-shadow-soft);
+      color: var(--md-sys-color-on-surface);
+    }
+
+    .feature-tile-button {
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+        box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+    }
+
+    .feature-tile-button:hover,
+    .feature-tile-button:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: var(--app-tile-shadow-soft-hover);
+    }
+
+    .feature-tile-button:focus-visible {
+      outline: 2px solid color-mix(in srgb, var(--md-sys-color-primary-fixed) 88%, white 12%);
+      outline-offset: -2px;
+    }
+
+    .feature-tile-icon {
+      width: 46px;
+      height: 46px;
       border-radius: 14px;
-      margin-bottom: 0.45rem;
-      background: var(--md-sys-color-surface-container-high);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 12%, transparent);
+      display: grid;
+      place-items: center;
+      color: var(--md-sys-color-primary);
+      background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent),
+        color-mix(in srgb, var(--md-sys-color-primary-container) 45%, transparent)
+      );
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 24%, transparent);
+    }
+
+    .feature-tile-icon md-icon {
+      --m3-icon-size: 22px;
+      --m3-icon-fill: 1;
+    }
+
+    .feature-tile-copy {
+      min-width: 0;
+      display: grid;
+      gap: 0.18rem;
+    }
+
+    .feature-tile-copy strong {
+      color: var(--md-sys-color-on-surface);
+      font-family: var(--md-sys-typescale-title-medium-font);
+      font-size: var(--md-sys-typescale-title-medium-size);
+      line-height: var(--md-sys-typescale-title-medium-line-height);
+      letter-spacing: var(--md-sys-typescale-title-medium-tracking);
+      font-weight: 600;
+    }
+
+    .feature-tile-copy span {
+      color: var(--md-sys-color-on-surface-variant);
+      font-family: var(--md-sys-typescale-body-medium-font);
+      font-size: var(--md-sys-typescale-body-medium-size);
+      line-height: var(--md-sys-typescale-body-medium-line-height);
+      letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+      font-weight: var(--md-sys-typescale-body-medium-weight);
+    }
+
+    .feature-tile-trailing {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      color: var(--md-sys-color-primary);
+      background: color-mix(in srgb, var(--md-sys-color-primary) 10%, transparent);
+      transition: transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+        background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+    }
+
+    .feature-tile-button:hover .feature-tile-trailing,
+    .feature-tile-button:focus-visible .feature-tile-trailing {
+      transform: translateX(2px);
+      background: color-mix(in srgb, var(--md-sys-color-primary) 16%, transparent);
+    }
+
+    .feature-tile-trailing md-icon {
+      --m3-icon-size: 18px;
+      --m3-icon-fill: 1;
+    }
+
+    .downloads-filter-set {
+      margin-top: 0.1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      align-items: center;
+      overflow-x: auto;
+      padding: 0 0.05rem 0.1rem;
+      scrollbar-width: none;
+    }
+
+    .downloads-filter-set::-webkit-scrollbar {
+      display: none;
+    }
+
+    .downloads-filter-chip {
+      flex: 0 0 auto;
+      --md-filter-chip-container-shape: 999px;
+      --md-filter-chip-outline-color: var(--app-tile-edge-rest);
+      --md-filter-chip-label-text-color: var(--md-sys-color-on-surface-variant);
+      --md-filter-chip-leading-icon-color: var(--md-sys-color-primary);
+      --md-filter-chip-selected-container-color: color-mix(in srgb, var(--md-sys-color-secondary-container) 82%, var(--md-sys-color-surface-container-high) 18%);
+      --md-filter-chip-selected-label-text-color: var(--md-sys-color-on-secondary-container);
+      --md-filter-chip-selected-leading-icon-color: var(--md-sys-color-on-secondary-container);
+      --md-filter-chip-focus-outline-color: var(--app-tile-edge-hover);
     }
 
     .view-grid {
@@ -842,6 +1039,115 @@ class PixelosApp extends LitElement {
     .changelog-card {
       --md-outlined-card-container-color: var(--md-sys-color-surface-container-high);
       margin-bottom: 1rem;
+    }
+
+    .changelog-card.active {
+      --md-outlined-card-container-color: color-mix(in srgb, var(--md-sys-color-primary-container) 20%, var(--md-sys-color-surface-container-high) 80%);
+      box-shadow: var(--app-panel-shadow-hover);
+    }
+
+    .changelog-toolbar-panel {
+      margin-bottom: 0.9rem;
+      --md-outlined-card-container-color: color-mix(in srgb, var(--md-sys-color-primary-container) 10%, var(--md-sys-color-surface-container-high) 90%);
+    }
+
+    .changelog-toolbar {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    .changelog-toolbar-controls {
+      display: grid;
+      gap: 0.85rem;
+      padding: 1rem;
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at top right, color-mix(in srgb, var(--md-sys-color-primary) 16%, transparent), transparent 52%),
+        linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-primary-container) 18%, transparent), transparent 72%),
+        color-mix(in srgb, var(--md-sys-color-surface-container) 76%, var(--md-sys-color-surface-container-high) 24%);
+      box-shadow: var(--app-tile-shadow-soft);
+      align-content: center;
+    }
+
+    .changelog-toolbar-copy {
+      display: grid;
+      gap: 0.45rem;
+      align-content: center;
+      max-width: 28rem;
+    }
+
+    .changelog-toolbar-kicker {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      justify-content: center;
+      padding: 0.28rem 0.72rem;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--md-sys-color-primary) 14%, transparent);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 24%, transparent);
+      color: var(--md-sys-color-primary-fixed);
+      font-family: var(--md-sys-typescale-label-medium-font);
+      font-size: 0.72rem;
+      line-height: 1;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .changelog-toolbar-copy h2 {
+      margin: 0;
+    }
+
+    .changelog-toolbar-copy p {
+      margin: 0;
+      color: var(--md-sys-color-on-surface-variant);
+      max-width: 31rem;
+    }
+
+    .changelog-select {
+      width: 100%;
+      --md-outlined-select-text-field-container-shape: 18px;
+      --md-outlined-select-text-field-container-color: color-mix(in srgb, var(--md-sys-color-surface-container-highest) 68%, var(--md-sys-color-surface-container-high) 32%);
+      --md-outlined-select-text-field-focus-outline-color: var(--md-sys-color-primary);
+      --md-outlined-select-text-field-outline-color: var(--app-tile-edge-rest);
+      --md-outlined-select-text-field-hover-outline-color: var(--app-tile-edge-hover);
+    }
+
+    .changelog-order-toggle {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 18px;
+      background: color-mix(in srgb, var(--md-sys-color-secondary-container) 14%, var(--md-sys-color-surface-container-high) 86%);
+      box-shadow: inset 0 0 0 1px var(--app-tile-edge-rest);
+    }
+
+    .changelog-order-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .changelog-order-copy strong {
+      color: var(--md-sys-color-on-surface);
+      font-family: var(--md-sys-typescale-label-large-font);
+      font-size: var(--md-sys-typescale-label-large-size);
+      font-weight: 600;
+    }
+
+    .changelog-order-copy span {
+      color: var(--md-sys-color-on-surface-variant);
+      font-family: var(--md-sys-typescale-body-small-font);
+      font-size: var(--md-sys-typescale-body-small-size);
+      opacity: 0.8;
+    }
+
+    .changelog-order-toggle md-switch {
+      --md-switch-selected-track-color: var(--md-sys-color-primary);
     }
 
     .changelog-header {
@@ -998,49 +1304,159 @@ class PixelosApp extends LitElement {
     .download-grid {
       margin-top: 0.65rem;
       display: grid;
-      gap: 0.7rem;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.75rem;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 255px), 1fr));
+      justify-content: start;
+    }
+
+    @media (min-width: 600px) {
+      .download-grid {
+        grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+      }
+      
+      .download-item {
+        max-width: 360px;
+      }
     }
 
     .download-item {
       display: block;
-      padding: 0.72rem;
-      --md-outlined-card-container-color: color-mix(in srgb, var(--md-sys-color-primary-container) 15%, var(--md-sys-color-surface-container-high) 85%);
-      --md-outlined-card-container-shape: var(--md-sys-shape-corner-medium);
-      --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-primary) 40%, transparent);
-      --md-outlined-card-outline-width: 1px;
-      display: grid;
-      gap: 0.35rem;
+      padding: 0;
+      overflow: hidden;
+      border-radius: var(--md-sys-shape-corner-extra-large);
+      --md-outlined-card-container-color: color-mix(in srgb, var(--md-sys-color-primary-container) 22%, var(--md-sys-color-surface-container-high) 78%);
+      --md-outlined-card-container-shape: var(--md-sys-shape-corner-extra-large);
+      --md-outlined-card-outline-color: transparent;
+      --md-outlined-card-outline-width: 0;
       min-width: 0;
       max-width: 100%;
+      transition: transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+        box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+        background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+      box-shadow: var(--app-tile-shadow);
     }
 
-    .download-item md-elevated-button {
-      width: 100%;
-      justify-content: flex-start;
-      --md-filled-button-label-text-font: var(--font-plain);
-      --md-filled-button-label-text-size: 0.9rem;
-      --md-filled-button-label-text-line-height: 1.3;
-      --md-filled-button-label-text-weight: 500;
-      --md-filled-button-container-shape: 12px;
+    .download-item:hover,
+    .download-item:has(.download-link:focus-visible) {
+      transform: translateY(-3px);
+      box-shadow: var(--app-tile-shadow-hover);
+    }
+
+    .download-link {
+      position: relative;
+      display: grid;
+      gap: 0.75rem;
+      min-height: 100%;
+      padding: 0.85rem;
+      color: var(--md-sys-color-on-surface);
+      text-decoration: none;
+      background:
+        radial-gradient(circle at top right, color-mix(in srgb, var(--md-sys-color-primary) 16%, transparent), transparent 48%),
+        linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-primary-container) 24%, transparent), transparent 62%);
+    }
+
+    .download-link:focus-visible {
+      outline: 2px solid color-mix(in srgb, var(--md-sys-color-primary-fixed) 88%, white 12%);
+      outline-offset: -2px;
+    }
+
+    .download-link-kicker {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      padding: 0.2rem 0.58rem;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--md-sys-color-primary) 16%, transparent);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 26%, transparent);
+      color: var(--md-sys-color-primary-fixed);
+      font-family: var(--md-sys-typescale-label-medium-font);
+      font-size: 0.72rem;
+      line-height: 1;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .download-link-main {
+      display: grid;
+      grid-template-columns: 42px minmax(0, 1fr) 28px;
+      gap: 0.75rem;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .download-link-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: var(--md-sys-color-primary);
+      background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--md-sys-color-primary) 22%, transparent),
+        color-mix(in srgb, var(--md-sys-color-primary-container) 55%, transparent)
+      );
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 36%, transparent);
+    }
+
+    .download-link-icon md-icon {
+      --m3-icon-size: 20px;
+      --m3-icon-fill: 1;
+    }
+
+    .download-link-copy {
+      min-width: 0;
+      display: grid;
+      gap: 0.22rem;
+      align-content: start;
+    }
+
+    .download-link-copy strong {
+      color: var(--md-sys-color-on-surface);
+      font-family: var(--md-sys-typescale-title-medium-font);
+      font-size: 0.95rem;
+      line-height: 1.3;
+      letter-spacing: var(--md-sys-typescale-title-medium-tracking);
+      font-weight: 700;
+      white-space: nowrap;
       overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .download-item md-elevated-button::part(label) {
-      white-space: normal;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-      hyphens: auto;
-      text-align: left;
+    .download-link-copy span {
+      color: var(--md-sys-color-on-surface-variant);
+      font-family: var(--md-sys-typescale-body-small-font);
+      font-size: 0.78rem;
+      line-height: 1.4;
+      letter-spacing: var(--md-sys-typescale-body-small-tracking);
+      font-weight: var(--md-sys-typescale-body-small-weight);
+      overflow-wrap: anywhere;
     }
 
-    .download-item md-elevated-button::part(container) {
-      width: 100%;
-      justify-content: flex-start;
+    .download-link-trailing {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      align-self: center;
+      color: var(--md-sys-color-primary);
+      background: color-mix(in srgb, var(--md-sys-color-primary) 10%, transparent);
+      transition: transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+        background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
     }
 
-    .download-item md-elevated-button [slot="icon"] {
-      flex-shrink: 0;
+    .download-link-trailing md-icon {
+      --m3-icon-size: 17px;
+      --m3-icon-fill: 1;
+    }
+
+    .download-item:hover .download-link-trailing,
+    .download-link:focus-visible .download-link-trailing {
+      transform: translate(2px, -2px);
+      background: color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent);
     }
 
     .commands {
@@ -1062,7 +1478,9 @@ class PixelosApp extends LitElement {
       padding: 0.75rem;
       --md-outlined-card-container-color: color-mix(in srgb, var(--md-sys-color-primary-container) 12%, var(--md-sys-color-surface-container-high) 88%);
       --md-outlined-card-container-shape: var(--md-sys-shape-corner-medium);
-      --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent);
+      --md-outlined-card-outline-color: transparent;
+      --md-outlined-card-outline-width: 0;
+      box-shadow: var(--app-tile-shadow-soft);
     }
 
     .info-card {
@@ -1169,14 +1587,20 @@ class PixelosApp extends LitElement {
       color: var(--md-sys-color-on-secondary-container);
     }
 
-    .tip-divider {
+    md-divider.panel-divider,
+    md-divider.tip-divider {
+      display: block;
       height: 1px;
+      --md-divider-color: color-mix(in srgb, var(--md-sys-color-primary) 28%, var(--md-sys-color-outline-variant) 72%);
+    }
+
+    md-divider.panel-divider {
+      margin: 1rem 0;
+    }
+
+    md-divider.tip-divider {
       margin: 0.9rem 0;
-      background: linear-gradient(
-        90deg,
-        color-mix(in srgb, var(--md-sys-color-primary) 55%, transparent),
-        color-mix(in srgb, var(--md-sys-color-outline) 45%, transparent)
-      );
+      --md-divider-color: color-mix(in srgb, var(--md-sys-color-primary) 42%, var(--md-sys-color-outline-variant) 58%);
     }
 
     .tip-status-list {
@@ -1192,7 +1616,7 @@ class PixelosApp extends LitElement {
       padding: 0.4rem 0.55rem;
       border-radius: 10px;
       background: color-mix(in srgb, var(--md-sys-color-surface-container-high) 88%, var(--md-sys-color-primary-container) 12%);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 24%, transparent);
+      box-shadow: inset 0 0 0 1px var(--app-tile-edge-rest);
       color: var(--md-sys-color-on-secondary-container);
     }
 
@@ -1245,7 +1669,7 @@ class PixelosApp extends LitElement {
       border-radius: 10px;
       padding: 0.46rem 0.58rem;
       background: color-mix(in srgb, var(--md-sys-color-primary-container) 20%, var(--md-sys-color-surface-container-high) 80%);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 30%, transparent);
+      box-shadow: inset 0 0 0 1px var(--app-tile-edge-rest);
     }
 
     .guidance-row.warning {
@@ -1298,7 +1722,7 @@ class PixelosApp extends LitElement {
       margin-top: 0.5rem;
       border-radius: 12px;
       background: color-mix(in srgb, var(--md-sys-color-primary-container) 25%, var(--md-sys-color-surface-container-high) 75%);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 30%, transparent);
+      box-shadow: inset 0 0 0 1px var(--app-tile-edge-rest);
       overflow: hidden;
     }
 
@@ -1343,7 +1767,7 @@ class PixelosApp extends LitElement {
       padding: 0.65rem;
       border-radius: 10px;
       background: color-mix(in srgb, var(--md-sys-color-primary-container) 18%, var(--md-sys-color-surface-container-high) 82%);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 25%, transparent);
+      box-shadow: inset 0 0 0 1px var(--app-tile-edge-rest);
       display: grid;
       gap: 0.4rem;
       min-width: 0;
@@ -1520,11 +1944,94 @@ class PixelosApp extends LitElement {
       border: 0;
     }
 
+    .copy-snackbar {
+      position: fixed;
+      left: 50%;
+      bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      width: min(30rem, calc(100vw - 1.5rem));
+      padding: 0.8rem 0.95rem;
+      border-radius: 1.15rem;
+      background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--md-sys-color-primary-container) 36%, var(--md-sys-color-secondary-container) 64%),
+        color-mix(in srgb, var(--md-sys-color-secondary-container) 88%, var(--md-sys-color-surface-container-high) 12%)
+      );
+      color: var(--md-sys-color-on-secondary-container);
+      box-shadow:
+        0 18px 38px rgb(0 0 0 / 32%),
+        inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 26%, var(--md-sys-color-outline-variant) 74%);
+      pointer-events: none;
+      z-index: 1100;
+      animation: copy-snackbar-enter 180ms cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    .copy-snackbar.error {
+      background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--md-sys-color-error-container) 92%, var(--md-sys-color-surface-container-high) 8%),
+        color-mix(in srgb, var(--md-sys-color-error-container) 82%, var(--md-sys-color-surface-container) 18%)
+      );
+      color: var(--md-sys-color-on-error-container);
+      box-shadow:
+        0 18px 38px rgb(0 0 0 / 32%),
+        inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-error) 28%, transparent);
+    }
+
+    .copy-snackbar-icon {
+      flex: 0 0 auto;
+      display: inline-grid;
+      place-items: center;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent);
+    }
+
+    .copy-snackbar.error .copy-snackbar-icon {
+      background: color-mix(in srgb, var(--md-sys-color-error) 16%, transparent);
+    }
+
+    .copy-snackbar-icon md-icon {
+      font-size: 1.15rem;
+    }
+
+    .copy-snackbar-label {
+      min-width: 0;
+      font-family: var(--md-sys-typescale-body-medium-font);
+      font-size: var(--md-sys-typescale-body-medium-size);
+      line-height: var(--md-sys-typescale-body-medium-line-height);
+      letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+      font-weight: var(--md-sys-typescale-body-medium-weight);
+    }
+
     md-dialog {
       --md-dialog-container-color: var(--md-sys-color-surface-container-high);
       --md-dialog-headline-color: var(--md-sys-color-on-surface);
       --md-dialog-supporting-text-color: var(--md-sys-color-on-surface-variant);
-      --md-dialog-container-shape: 20px;
+      --md-dialog-container-shape: var(--md-sys-shape-corner-extra-large);
+    }
+
+    .app-fab {
+      position: fixed;
+      right: clamp(1rem, 4vw, 2.5rem);
+      bottom: clamp(1rem, 4vw, 2.5rem);
+      z-index: 100;
+      animation: fab-reveal var(--md-sys-motion-duration-medium1) var(--md-sys-motion-easing-emphasized-decelerate) both;
+    }
+
+    @keyframes fab-reveal {
+      from {
+        opacity: 0;
+        transform: scale(0.5) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
     }
 
     @media (max-width: 600px) {
@@ -1556,6 +2063,43 @@ class PixelosApp extends LitElement {
         display: flex;
         flex-direction: column;
         align-items: center;
+      }
+
+      .feature-tile {
+        grid-template-columns: 42px minmax(0, 1fr);
+        padding: 0.9rem;
+        gap: 0.75rem;
+      }
+
+      .feature-tile-icon {
+        width: 42px;
+        height: 42px;
+      }
+
+      .feature-tile-trailing {
+        display: none;
+      }
+
+      .downloads-filter-set {
+        flex-wrap: nowrap;
+        padding-bottom: 0.2rem;
+      }
+
+      .copy-snackbar {
+        width: min(100vw - 1rem, 24rem);
+        bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+        padding: 0.75rem 0.85rem;
+      }
+    }
+
+    @keyframes copy-snackbar-enter {
+      from {
+        opacity: 0;
+        transform: translate(-50%, 10px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1);
       }
     }
 
@@ -1627,11 +2171,46 @@ class PixelosApp extends LitElement {
       }
     }
 
+    .app-navigation-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      --md-navigation-bar-container-color: var(--md-sys-color-surface-container);
+      --md-navigation-bar-container-elevation: 2;
+    }
+
+    md-navigation-tab {
+      --md-navigation-tab-hover-state-layer-color: transparent;
+      --md-navigation-tab-pressed-state-layer-color: transparent;
+      --md-navigation-tab-focus-state-layer-color: transparent;
+      --md-navigation-tab-active-hover-state-layer-color: transparent;
+      --md-navigation-tab-active-pressed-state-layer-color: transparent;
+      --md-navigation-tab-active-focus-state-layer-color: transparent;
+      --md-focus-ring-color: transparent;
+    }
+
     @media (max-width: 760px) {
-      .screenshots-strip {
-        padding-bottom: 0.4rem;
+      .top-bar md-tabs {
+        display: none;
       }
 
+      .app-navigation-bar {
+        display: flex;
+      }
+
+      .shell {
+        padding-bottom: 100px; /* Space for nav bar */
+      }
+
+      .app-fab {
+        bottom: 96px; /* Avoid nav bar overlap */
+      }
+    }
+
+    @media (max-width: 600px) {
       .screenshot-item {
         flex-basis: min(50vw, 172px);
       }
@@ -1651,16 +2230,14 @@ class PixelosApp extends LitElement {
         margin-bottom: 0.2rem;
       }
 
+      .fun-toggle {
+        display: none;
+      }
+
       md-tabs {
         width: 100%;
         max-width: calc(100vw - 3.6rem);
         overflow-x: auto;
-      }
-
-      .command-row {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.6rem;
       }
 
       .command-snippet {
@@ -1685,7 +2262,7 @@ class PixelosApp extends LitElement {
         padding-left: 0.85rem;
       }
 
-      .tip-divider {
+      md-divider.tip-divider {
         margin: 0.75rem 0;
       }
 
@@ -1694,16 +2271,53 @@ class PixelosApp extends LitElement {
       }
 
       .download-grid {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+      }
+
+      .download-link {
+        padding: 0.9rem;
+        gap: 0.8rem;
+      }
+
+      .download-link-main {
+        grid-template-columns: 42px minmax(0, 1fr) 26px;
+        gap: 0.7rem;
+      }
+
+      .download-link-icon {
+        width: 42px;
+        height: 42px;
+      }
+
+      .download-link-copy strong {
+        font-size: 0.95rem;
+      }
+
+      .changelog-toolbar {
         grid-template-columns: 1fr;
+        align-items: stretch;
       }
 
-      .download-item md-elevated-button {
-        --md-filled-button-label-text-size: 0.85rem;
+      .changelog-toolbar-controls {
+        padding: 0.9rem;
       }
 
-      .download-item small {
-        font-size: 0.8rem;
+      .changelog-order-toggle {
+        border-radius: 16px;
+        padding: 0.8rem 0.85rem;
       }
+
+      .changelog-order-copy {
+        flex-wrap: wrap;
+        align-items: baseline;
+      }
+
+      .changelog-order-copy span {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+      }
+
     }
 
     .boot-modes-list {
@@ -1772,11 +2386,6 @@ class PixelosApp extends LitElement {
       font-size: 0.9em;
     }
 
-    .tip-divider {
-      height: 1px;
-      background: color-mix(in srgb, var(--md-sys-color-outline-variant) 50%, transparent);
-      margin: 0.75rem 0;
-    }
   `;
 
   constructor() {
@@ -1785,10 +2394,15 @@ class PixelosApp extends LitElement {
     this.motionKey = 0;
     this.copiedCommand = '';
     this.copyMessage = '';
+    this.copyMessageTone = 'success';
+    this.downloadsFilter = 'all';
     this.pendingScreenshots = HOME_SCREENSHOT_COUNT;
     this.activeScreenshot = null;
+    this.changelogsLatestFirst = true;
+    this.selectedChangelogDate = '';
     this.pendingInstructionsTarget = '';
     this.scrollRaf = 0;
+    this.copyMessageTimeout = 0;
     this.lastParallaxOffset = -1;
     this.hasScrolledPastTop = false;
     this.routeView = null;
@@ -1797,6 +2411,7 @@ class PixelosApp extends LitElement {
     this.routeViewCache = new Map();
     this.routeViewPromises = new Map();
     this.routeLoadToken = 0;
+    this.funMode = localStorage.getItem('pixelos-fun-mode') === 'true';
     this.reduceMotionQuery = typeof window !== 'undefined' && typeof window.matchMedia === 'function'
       ? window.matchMedia('(prefers-reduced-motion: reduce)')
       : null;
@@ -1810,6 +2425,7 @@ class PixelosApp extends LitElement {
     this.handleMotionPreferenceChange = this.handleMotionPreferenceChange.bind(this);
     this.changelogs = CHANGELOGS;
     this.pendingChangelogDate = getChangelogDateFromHash(window.location.hash);
+    this.selectedChangelogDate = this.pendingChangelogDate || this.changelogs[0]?.date || '';
   }
 
   connectedCallback() {
@@ -1832,6 +2448,10 @@ class PixelosApp extends LitElement {
     if (this.scrollRaf) {
       cancelAnimationFrame(this.scrollRaf);
       this.scrollRaf = 0;
+    }
+    if (this.copyMessageTimeout) {
+      clearTimeout(this.copyMessageTimeout);
+      this.copyMessageTimeout = 0;
     }
     super.disconnectedCallback();
   }
@@ -1873,11 +2493,16 @@ class PixelosApp extends LitElement {
     const hashDate = getChangelogDateFromHash(window.location.hash);
     if (nextRoute === 'changelogs' && hashDate) {
       this.pendingChangelogDate = hashDate;
+      this.selectedChangelogDate = hashDate;
     } else if (!hashDate) {
       this.pendingChangelogDate = '';
+      if (nextRoute === 'changelogs' && !this.selectedChangelogDate) {
+        this.selectedChangelogDate = this.changelogs[0]?.date || '';
+      }
     }
 
     if (this.route !== nextRoute) {
+      window.scrollTo(0, 0);
       this.route = nextRoute;
       this.motionKey += 1;
       this.loadRouteView(nextRoute);
@@ -1950,6 +2575,7 @@ class PixelosApp extends LitElement {
   }
 
   navigate(route) {
+    window.scrollTo(0, 0);
     const path = getRoutePath(route);
     const currentPath = (window.location.pathname || '/').replace(/\/+$/, '') || '/';
     if (currentPath !== path) {
@@ -1975,6 +2601,7 @@ class PixelosApp extends LitElement {
     }
 
     this.pendingChangelogDate = normalizedDate;
+    this.selectedChangelogDate = normalizedDate;
     const targetPath = `/changelogs#${encodeURIComponent(normalizedDate)}`;
     const currentPath = (window.location.pathname || '/').replace(/\/+$/, '') || '/';
     const currentFullPath = `${currentPath}${window.location.hash || ''}`;
@@ -2059,18 +2686,39 @@ class PixelosApp extends LitElement {
     }
   }
 
-  async copyCommand(command) {
+  showCopyMessage(message, tone = 'success') {
+    this.copyMessage = message;
+    this.copyMessageTone = tone;
+    if (this.copyMessageTimeout) {
+      clearTimeout(this.copyMessageTimeout);
+    }
+    this.copyMessageTimeout = setTimeout(() => {
+      this.copyMessage = '';
+      this.copyMessageTone = 'success';
+      this.copyMessageTimeout = 0;
+    }, tone === 'error' ? 2800 : 2200);
+  }
+
+  async copyTextToClipboard(value, successMessage) {
     try {
-      await navigator.clipboard.writeText(command);
+      await navigator.clipboard.writeText(value);
+      this.showCopyMessage(successMessage);
+      return true;
+    } catch {
+      this.showCopyMessage('Copy failed', 'error');
+      return false;
+    }
+  }
+
+  async copyCommand(command) {
+    const copied = await this.copyTextToClipboard(command, 'Command copied to clipboard');
+    if (copied) {
       this.copiedCommand = command;
-      this.copyMessage = `Copied: ${command}`;
       setTimeout(() => {
         if (this.copiedCommand === command) {
           this.copiedCommand = '';
         }
       }, 1200);
-    } catch {
-      this.copyMessage = 'Copy failed';
     }
   }
 
@@ -2146,9 +2794,10 @@ class PixelosApp extends LitElement {
     return html`
       <section class="view" aria-label="Loading view">
         <md-outlined-card class="panel motion-item">
-          <div style="display: flex; align-items: center; gap: 0.85rem; padding: 1rem;">
-            <md-circular-progress indeterminate></md-circular-progress>
-            <span>Loading section...</span>
+          <div class="route-loader" role="status" aria-live="polite">
+            <strong>Loading section...</strong>
+            <md-linear-progress indeterminate></md-linear-progress>
+            <span>Fetching the current page content.</span>
           </div>
         </md-outlined-card>
       </section>
@@ -2185,17 +2834,34 @@ class PixelosApp extends LitElement {
   }
 
   renderSideGallery(side = 'left') {
-    const sideTileCount = 8;
+    if (!this.funMode) {
+      return '';
+    }
+
+    const sideTileCount = 24;
+    const SIDE_IMAGES = [
+      '/side/side-1.png',
+      '/side/side-2.png',
+      '/side/side-3.png',
+      '/side/side-4.jpg',
+      '/side/side-5.png',
+      '/side/side-6.png',
+      '/side/side-7.png',
+      '/side/side-8.png'
+    ];
+
     return html`
       <aside class="side-gallery ${side}" aria-hidden="true">
         <div class="side-track">
           ${Array.from({ length: sideTileCount }).map((_, index) => {
-            const shapeStyle = MATERIAL_SIDE_SHAPES[index % MATERIAL_SIDE_SHAPES.length];
+            const offset = side === 'right' ? 4 : 0;
+            const shapeStyle = MATERIAL_SIDE_SHAPES[(index + offset) % MATERIAL_SIDE_SHAPES.length];
+            const imageSrc = SIDE_IMAGES[(index + offset) % SIDE_IMAGES.length];
             return html`
             <md-outlined-card
               class="side-art ${shapeStyle.shape}"
               style=${`--tile-tilt: ${shapeStyle.tilt};`}>
-              <img src="/side-photo.jpg" alt="" loading="lazy" decoding="async" width="320" height="320" />
+              <img src=${imageSrc} alt="" loading="lazy" decoding="async" width="320" height="320" />
             </md-outlined-card>
           `;
           })}
@@ -2223,6 +2889,17 @@ class PixelosApp extends LitElement {
             </md-primary-tab>
           `)}
         </md-tabs>
+
+        <div class="fun-toggle" title="Toggle Fun Mode">
+          <strong>Fun</strong>
+          <md-switch
+            ?selected=${this.funMode}
+            @change=${(e) => {
+              this.funMode = e.target.selected;
+              localStorage.setItem('pixelos-fun-mode', this.funMode);
+            }}>
+          </md-switch>
+        </div>
       </md-elevated-card>
     `;
   }
@@ -2230,6 +2907,7 @@ class PixelosApp extends LitElement {
   render() {
     return html`
       ${this.renderSideGallery('left')}
+      ${this.renderSideGallery('right')}
       ${this.activeScreenshot ? html`
         <div class="screenshot-overlay" @click=${() => this.closeScreenshotViewer()}>
           <div class="screenshot-overlay-panel" @click=${(event) => event.stopPropagation()}>
@@ -2238,7 +2916,7 @@ class PixelosApp extends LitElement {
               type="button"
               aria-label="Close image"
               @click=${() => this.closeScreenshotViewer()}>
-              ✕
+              <md-icon>close</md-icon>
             </button>
             <img
               class="screenshot-overlay-image"
@@ -2254,6 +2932,18 @@ class PixelosApp extends LitElement {
       <div class="shell">
         ${this.renderTopBar()}
         ${keyed(this.motionKey, this.renderActiveRoute())}
+
+        <md-navigation-bar class="app-navigation-bar">
+          ${NAV_ROUTES.map((route) => html`
+            <md-navigation-tab
+              label=${route.label}
+              ?active=${this.route === route.id}
+              @click=${() => this.navigate(route.id)}>
+              <md-icon slot="active-icon">${route.icon}</md-icon>
+              <md-icon slot="inactive-icon">${route.icon}</md-icon>
+            </md-navigation-tab>
+          `)}
+        </md-navigation-bar>
 
         <md-elevated-card class="footer">
           <span>PixelOS Xaga community website</span>
@@ -2295,7 +2985,37 @@ class PixelosApp extends LitElement {
           </div>
         </md-dialog>
 
+        ${this.copyMessage ? html`
+          <div
+            class="copy-snackbar ${this.copyMessageTone === 'error' ? 'error' : ''}"
+            aria-hidden="true">
+            <span class="copy-snackbar-icon">
+              <md-icon>${this.copyMessageTone === 'error' ? 'error' : 'check_circle'}</md-icon>
+            </span>
+            <span class="copy-snackbar-label">${this.copyMessage}</span>
+          </div>
+        ` : ''}
         <div class="sr-only" aria-live="polite">${this.copyMessage}</div>
+
+        ${this.route === 'downloads' ? html`
+          <md-fab
+            class="app-fab"
+            variant="primary"
+            label="Direct Download"
+            @click=${() => window.open('https://pixelos-xaga-worker.angxddeep.workers.dev/PixelOS_xaga-16.2-20260322-0652.zip', '_blank')}>
+            <md-icon slot="icon">download</md-icon>
+          </md-fab>
+        ` : ''}
+
+        ${this.route === 'changelogs' ? html`
+          <md-fab
+            class="app-fab"
+            variant="secondary"
+            label="Top"
+            @click=${() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <md-icon slot="icon">arrow_upward</md-icon>
+          </md-fab>
+        ` : ''}
       </div>
     `;
   }

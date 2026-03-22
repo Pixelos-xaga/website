@@ -55,11 +55,21 @@ export function renderInfoCard({ icon, title, body, className = '', style = '' }
 export function renderLinkCards(items, defaultIcon = 'download') {
   return items.map((item) => html`
     <md-outlined-card class="download-item">
-      <md-elevated-button href=${item.href} target="_blank" rel="noopener noreferrer">
-        <md-icon slot="icon">${item.icon || defaultIcon}</md-icon>
-        ${item.name}
-      </md-elevated-button>
-      <small>${item.note || ''}</small>
+      <a class="download-link" href=${item.href} target="_blank" rel="noopener noreferrer">
+        <span class="download-link-kicker">Download</span>
+        <span class="download-link-main">
+          <span class="download-link-icon" aria-hidden="true">
+            <md-icon>${item.icon || defaultIcon}</md-icon>
+          </span>
+          <span class="download-link-copy">
+            <strong>${item.name}</strong>
+            <span>${item.note || 'Open file in a new tab'}</span>
+          </span>
+          <span class="download-link-trailing" aria-hidden="true">
+            <md-icon>north_east</md-icon>
+          </span>
+        </span>
+      </a>
     </md-outlined-card>
   `);
 }

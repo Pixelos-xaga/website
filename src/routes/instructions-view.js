@@ -1,6 +1,7 @@
 import { html } from 'lit';
 import { motionStyle, renderCommandField, renderInfoCard } from '../lib/view-helpers.js';
 import '@material/web/button/outlined-button.js';
+import '@material/web/divider/divider.js';
 import '@material/web/textfield/outlined-text-field.js';
 import '@material/web/iconbutton/icon-button.js';
 import '@material/web/labs/card/filled-card.js';
@@ -164,7 +165,7 @@ function renderFlashStep(app, step) {
 
 function renderTipEntry(tip, index) {
   return html`
-    ${index > 0 ? html`<div class="tip-divider"></div>` : ''}
+    ${index > 0 ? html`<md-divider class="tip-divider"></md-divider>` : ''}
     <div class="tip-entry">
       <div class="tip-entry-header">
         <span class="tip-label">${tip.label}</span>
@@ -217,6 +218,7 @@ export default function renderInstructionsView(app) {
             Flash Steps (Type these commands in admin Terminal)
           </h2>
           <ol class="commands">${FLASH_STEPS.map((step) => renderFlashStep(app, step))}</ol>
+          <md-divider class="panel-divider"></md-divider>
 
           ${renderInfoCard({
             icon: 'tips_and_updates',
