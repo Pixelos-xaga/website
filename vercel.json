@@ -25,6 +25,14 @@
     {
       "source": "/changelogs/",
       "destination": "/"
+    },
+    {
+      "source": "/troubleshooting",
+      "destination": "/"
+    },
+    {
+      "source": "/troubleshooting/",
+      "destination": "/"
     }
   ]
 }

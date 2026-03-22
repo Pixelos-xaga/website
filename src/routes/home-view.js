@@ -13,7 +13,8 @@ import '@material/web/labs/card/elevated-card.js';
 const HOME_FEATURES = [
   ['terminal', 'Install Guide', 'Step-by-step flashing with copy actions.'],
   ['download', 'Download Hub', 'ROM, boot, and vendor_boot entries.'],
-  ['history', 'Changelogs', 'Track latest ROM updates and fixes.', 'changelogs']
+  ['history', 'Changelogs', 'Track latest ROM updates and fixes.', 'changelogs'],
+  ['build_circle', 'Troubleshooting', 'Reporting issues, logcats, and support basics.', 'troubleshooting']
 ];
 
 export default function renderHomeView(app) {

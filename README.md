@@ -30,6 +30,7 @@ Edit `src/content/changelog.md`. That is the single source of truth for the `/ch
 - Instructions: `/instructions`
 - Downloads & Resources: `/downloads`
 - Changelogs: `/changelogs`
+- Troubleshooting: `/troubleshooting`
 
 `instructions.html` redirects to `/instructions` for compatibility.
 
@@ -42,4 +43,4 @@ Use these project settings:
 - Build Command: `npm run build`
 - Output Directory: `dist`
 
-`vercel.json` already includes rewrites for `/instructions` and `/downloads` to `/` so SPA routing works on direct loads.
+`vercel.json` already includes rewrites for the routed pages so SPA navigation works on direct loads.
