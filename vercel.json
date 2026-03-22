@@ -1,0 +1,28 @@
+{
+  "rewrites": [
+    {
+      "source": "/instructions",
+      "destination": "/"
+    },
+    {
+      "source": "/instructions/",
+      "destination": "/"
+    },
+    {
+      "source": "/downloads",
+      "destination": "/"
+    },
+    {
+      "source": "/downloads/",
+      "destination": "/"
+    },
+    {
+      "source": "/changelogs",
+      "destination": "/"
+    },
+    {
+      "source": "/changelogs/",
+      "destination": "/"
+    }
+  ]
+}
