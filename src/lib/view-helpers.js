@@ -52,29 +52,54 @@ export function renderInfoCard({ icon, title, body, className = '', style = '' }
   `;
 }
 
-export function renderLinkCards(items, defaultIcon = 'download') {
+export function renderLinkCards(app, items, defaultIcon = 'download') {
   return items.map((item) => html`
     <md-outlined-card class="download-item">
       <a class="download-link" href=${item.href} target="_blank" rel="noopener noreferrer">
-        <span class="download-link-kicker">Download</span>
-        <span class="download-link-main">
-          <span class="download-link-icon" aria-hidden="true">
+        <div class="download-link-header">
+          <span class="download-link-kicker">Download</span>
+          ${item.optional ? html`<span class="optional-tag">Optional</span>` : ''}
+        </div>
+        <div class="download-link-main">
+          <div class="download-link-icon">
             <md-icon>${item.icon || defaultIcon}</md-icon>
-          </span>
-          <span class="download-link-copy">
+          </div>
+          <div class="download-link-copy">
             <strong>${item.name}</strong>
             <span>${item.note || 'Open file in a new tab'}</span>
-          </span>
-          <span class="download-link-trailing" aria-hidden="true">
+          </div>
+          <div class="download-link-trailing">
             <md-icon>north_east</md-icon>
-          </span>
-        </span>
+          </div>
+        </div>
       </a>
+      ${item.sha256 ? html`
+        <div class="download-checksum-container">
+          <div class="download-link-checksum">
+            <div class="checksum-label">
+              <md-icon>verified_user</md-icon>
+              SHA256
+            </div>
+            <div class="checksum-value-row">
+              <code class="checksum-value">${item.sha256}</code>
+              <md-icon-button
+                aria-label="Copy checksum"
+                @click=${(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  app.copyChecksum(item.sha256);
+                }}>
+                <md-icon>${app.copiedCommand === item.sha256 ? 'check' : 'content_copy'}</md-icon>
+              </md-icon-button>
+            </div>
+          </div>
+        </div>
+      ` : ''}
     </md-outlined-card>
   `);
 }
 
-export function renderLinkSection(section) {
+export function renderLinkSection(app, section) {
   const {
     title,
     items,
@@ -99,7 +124,7 @@ export function renderLinkSection(section) {
           ${listItems.map((item) => html`<li>${item}</li>`)}
         </ul>
       ` : ''}
-      <div class="download-grid">${renderLinkCards(items, defaultIcon)}</div>
+      <div class="download-grid">${renderLinkCards(app, items, defaultIcon)}</div>
     </md-outlined-card>
   `;
 }

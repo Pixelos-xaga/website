@@ -8,11 +8,28 @@ const sourceForgeDownload = (fileName) => `${MARCH_BUILD_BASE}/${fileName}/downl
 const googleDriveFile = (id, access = 'drive_link') => `${GOOGLE_DRIVE_BASE}/${id}/view?usp=${access}`;
 
 export const DOWNLOADS = [
-  linkItem('Rom zip', 'Main PixelOS ROM zip file', `${WORKER_BASE}/PixelOS_xaga-16.2-20260322-0652.zip`),
-  linkItem('boot.img', 'Boot image', `${WORKER_BASE}/boot.img`),
-  linkItem('vendor_boot.img', 'Vendor boot image', `${WORKER_BASE}/vendor_boot.img`),
-  linkItem('vbmeta.img', 'Verified boot metadata', `${WORKER_BASE}/vbmeta.img`),
-  linkItem('dtbo.img', 'Device tree blob overlay', `${WORKER_BASE}/dtbo.img`),
+  {
+    ...linkItem('Rom zip', 'Main PixelOS ROM zip file', `${WORKER_BASE}/PixelOS_xaga-16.2-20260323-0026.zip`),
+    sha256: '663F5EA2FB9344F18E07A423EA2370A8C160E2028974B3F088A33ECACAD881DF'
+  },
+  {
+    ...linkItem('boot.img', 'Boot image', `${WORKER_BASE}/boot.img`),
+    sha256: '9eeaca043e57958841f01b9330adba8eb70650404cadc7a66141486d59f843f3'
+  },
+  {
+    ...linkItem('vendor_boot.img', 'Vendor boot image', `${WORKER_BASE}/vendor_boot.img`),
+    sha256: 'b733f7054160068faece91e6741e1748c742cb1e5a60770c6e678860ab8a2091'
+  },
+  {
+    ...linkItem('vbmeta.img', 'Verified boot metadata', `${WORKER_BASE}/vbmeta.img`),
+    sha256: 'da82450fe9f55fb2e3a1e8340841c78a5e8d5e4d98533f3ea8009eda6a3f0dfb',
+    optional: true
+  },
+  {
+    ...linkItem('dtbo.img', 'Device tree blob overlay', `${WORKER_BASE}/dtbo.img`),
+    sha256: 'eaddec1613b9086fb0a5d1326cb51b4a0d98a218df0e2cc1487a2be92c0a777c',
+    optional: true
+  },
 ];
 
 export const RESOURCE_LINKS = [

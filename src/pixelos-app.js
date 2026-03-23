@@ -2,6 +2,7 @@ import { LitElement, css, html } from 'lit';
 import { keyed } from 'lit/directives/keyed.js';
 import '@material/web/progress/linear-progress.js';
 import '@material/web/progress/circular-progress.js';
+import '@material/web/iconbutton/icon-button.js';
 import '@material/web/fab/fab.js';
 import '@material/web/switch/switch.js';
 import '@material/web/labs/navigationbar/navigation-bar.js';
@@ -1304,159 +1305,200 @@ class PixelosApp extends LitElement {
     .download-grid {
       margin-top: 0.65rem;
       display: grid;
-      gap: 0.75rem;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 255px), 1fr));
+      gap: 0.85rem;
+      grid-template-columns: 1fr;
       justify-content: start;
     }
 
-    @media (min-width: 600px) {
+    @media (min-width: 720px) {
       .download-grid {
-        grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
-      }
-      
-      .download-item {
-        max-width: 360px;
+        grid-template-columns: repeat(2, 1fr);
       }
     }
 
     .download-item {
-      display: block;
-      padding: 0;
+      display: flex;
+      flex-direction: column;
       overflow: hidden;
-      border-radius: var(--md-sys-shape-corner-extra-large);
-      --md-outlined-card-container-color: color-mix(in srgb, var(--md-sys-color-primary-container) 22%, var(--md-sys-color-surface-container-high) 78%);
-      --md-outlined-card-container-shape: var(--md-sys-shape-corner-extra-large);
-      --md-outlined-card-outline-color: transparent;
-      --md-outlined-card-outline-width: 0;
+      border-radius: 20px;
+      --md-outlined-card-container-color: color-mix(in srgb, var(--md-sys-color-surface-container-high) 85%, var(--md-sys-color-primary-container) 15%);
+      --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-outline) 15%, transparent);
+      --md-outlined-card-outline-width: 1px;
       min-width: 0;
       max-width: 100%;
-      transition: transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
-        box-shadow var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
-        background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
-      box-shadow: var(--app-tile-shadow);
+      transition: transform 200ms var(--motion-standard), box-shadow 200ms var(--motion-standard);
+      box-shadow: var(--app-tile-shadow-soft);
     }
 
-    .download-item:hover,
-    .download-item:has(.download-link:focus-visible) {
-      transform: translateY(-3px);
-      box-shadow: var(--app-tile-shadow-hover);
+    .download-item:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--app-tile-shadow-soft-hover);
+      --md-outlined-card-outline-color: color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent);
     }
 
     .download-link {
-      position: relative;
-      display: grid;
-      gap: 0.75rem;
-      min-height: 100%;
-      padding: 0.85rem;
+      display: block;
+      padding: 1rem;
       color: var(--md-sys-color-on-surface);
       text-decoration: none;
-      background:
-        radial-gradient(circle at top right, color-mix(in srgb, var(--md-sys-color-primary) 16%, transparent), transparent 48%),
-        linear-gradient(180deg, color-mix(in srgb, var(--md-sys-color-primary-container) 24%, transparent), transparent 62%);
+      background: linear-gradient(135deg, color-mix(in srgb, var(--md-sys-color-primary-container) 15%, transparent), transparent);
     }
 
-    .download-link:focus-visible {
-      outline: 2px solid color-mix(in srgb, var(--md-sys-color-primary-fixed) 88%, white 12%);
-      outline-offset: -2px;
+    .download-link-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
     }
 
     .download-link-kicker {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      width: fit-content;
-      padding: 0.2rem 0.58rem;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--md-sys-color-primary) 16%, transparent);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 26%, transparent);
-      color: var(--md-sys-color-primary-fixed);
-      font-family: var(--md-sys-typescale-label-medium-font);
-      font-size: 0.72rem;
-      line-height: 1;
-      letter-spacing: 0.08em;
+      padding: 0.2rem 0.65rem;
+      border-radius: 8px;
+      background: color-mix(in srgb, var(--md-sys-color-primary) 15%, transparent);
+      color: var(--md-sys-color-primary);
+      font-family: var(--md-sys-typescale-label-small-font);
+      font-size: 0.68rem;
       font-weight: 700;
       text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .optional-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      background: color-mix(in srgb, var(--md-sys-color-tertiary-container) 40%, transparent);
+      color: var(--md-sys-color-tertiary-fixed-dim);
+      font-family: var(--md-sys-typescale-label-small-font);
+      font-size: 0.64rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-tertiary) 25%, transparent);
     }
 
     .download-link-main {
-      display: grid;
-      grid-template-columns: 42px minmax(0, 1fr) 28px;
-      gap: 0.75rem;
+      display: flex;
       align-items: center;
-      min-width: 0;
+      gap: 1rem;
     }
 
     .download-link-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
       display: grid;
       place-items: center;
+      background: color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent);
       color: var(--md-sys-color-primary);
-      background: linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--md-sys-color-primary) 22%, transparent),
-        color-mix(in srgb, var(--md-sys-color-primary-container) 55%, transparent)
-      );
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 36%, transparent);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-primary) 20%, transparent);
     }
 
     .download-link-icon md-icon {
-      --m3-icon-size: 20px;
+      --m3-icon-size: 22px;
       --m3-icon-fill: 1;
     }
 
     .download-link-copy {
+      flex: 1;
       min-width: 0;
-      display: grid;
-      gap: 0.22rem;
-      align-content: start;
     }
 
     .download-link-copy strong {
-      color: var(--md-sys-color-on-surface);
+      display: block;
       font-family: var(--md-sys-typescale-title-medium-font);
-      font-size: 0.95rem;
-      line-height: 1.3;
-      letter-spacing: var(--md-sys-typescale-title-medium-tracking);
+      font-size: 1rem;
+      margin-bottom: 0.1rem;
+      color: var(--md-sys-color-on-surface);
+    }
+
+    .download-link-copy span {
+      display: block;
+      font-family: var(--md-sys-typescale-body-small-font);
+      font-size: 0.78rem;
+      color: var(--md-sys-color-on-surface-variant);
+    }
+
+    .download-link-trailing {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      color: var(--md-sys-color-primary);
+      background: color-mix(in srgb, var(--md-sys-color-primary) 10%, transparent);
+      transition: transform 200ms var(--motion-standard), opacity 200ms var(--motion-standard);
+    }
+
+    .download-link-trailing md-icon {
+      --m3-icon-size: 18px;
+      --m3-icon-fill: 1;
+    }
+
+    .download-item:hover .download-link-trailing {
+      transform: translate(2px, -2px);
+      background: color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent);
+    }
+
+    .download-checksum-container {
+      margin-top: auto;
+      padding: 0.75rem 1rem 1rem;
+      background: color-mix(in srgb, var(--md-sys-color-surface-container-highest) 35%, transparent);
+      border-top: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 10%, transparent);
+    }
+
+    .download-link-checksum {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .checksum-label {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--md-sys-typescale-label-small-font);
+      font-size: 0.7rem;
       font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--md-sys-color-primary);
+    }
+
+    .checksum-label md-icon {
+      --m3-icon-size: 14px;
+      --m3-icon-fill: 1;
+    }
+
+    .checksum-value-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: color-mix(in srgb, var(--md-sys-color-surface-container-lowest) 50%, transparent);
+      padding: 0.4rem 0.6rem;
+      border-radius: 10px;
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-sys-color-outline) 15%, transparent);
+    }
+
+    .checksum-value {
+      flex: 1;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--md-sys-color-on-surface-variant);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    .download-link-copy span {
-      color: var(--md-sys-color-on-surface-variant);
-      font-family: var(--md-sys-typescale-body-small-font);
-      font-size: 0.78rem;
-      line-height: 1.4;
-      letter-spacing: var(--md-sys-typescale-body-small-tracking);
-      font-weight: var(--md-sys-typescale-body-small-weight);
-      overflow-wrap: anywhere;
-    }
-
-    .download-link-trailing {
-      width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      display: grid;
-      place-items: center;
-      align-self: center;
+    .checksum-copy-button {
+      --md-icon-button-icon-size: 18px;
+      --md-icon-button-container-width: 28px;
+      --md-icon-button-container-height: 28px;
+      margin: -4px;
       color: var(--md-sys-color-primary);
-      background: color-mix(in srgb, var(--md-sys-color-primary) 10%, transparent);
-      transition: transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
-        background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
-    }
-
-    .download-link-trailing md-icon {
-      --m3-icon-size: 17px;
-      --m3-icon-fill: 1;
-    }
-
-    .download-item:hover .download-link-trailing,
-    .download-link:focus-visible .download-link-trailing {
-      transform: translate(2px, -2px);
-      background: color-mix(in srgb, var(--md-sys-color-primary) 18%, transparent);
     }
 
     .commands {
@@ -2716,6 +2758,18 @@ class PixelosApp extends LitElement {
       this.copiedCommand = command;
       setTimeout(() => {
         if (this.copiedCommand === command) {
+          this.copiedCommand = '';
+        }
+      }, 1200);
+    }
+  }
+
+  async copyChecksum(checksum) {
+    const copied = await this.copyTextToClipboard(checksum, 'Checksum copied to clipboard');
+    if (copied) {
+      this.copiedCommand = checksum;
+      setTimeout(() => {
+        if (this.copiedCommand === checksum) {
           this.copiedCommand = '';
         }
       }, 1200);

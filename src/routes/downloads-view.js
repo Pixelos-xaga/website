@@ -52,7 +52,7 @@ export default function renderDownloadsView(app) {
       </md-chip-set>
 
       <section class="view-grid">
-        ${visibleSections.map((section) => renderLinkSection(section))}
+        ${visibleSections.map((section) => renderLinkSection(app, section))}
         ${showPlatformTools ? html`
           <md-outlined-card class="panel motion-item" style=${motionStyle(90)}>
             <h2>Install Platform-Tools</h2>
@@ -69,7 +69,7 @@ export default function renderDownloadsView(app) {
               `)}
             </ol>
             <h3>Option 2: Install through ZIP</h3>
-            <div class="download-grid">${renderLinkCards(PLATFORM_TOOLS_ZIP_OPTIONS, 'folder_zip')}</div>
+            <div class="download-grid">${renderLinkCards(app, PLATFORM_TOOLS_ZIP_OPTIONS, 'folder_zip')}</div>
           </md-outlined-card>
         ` : ''}
       </section>
