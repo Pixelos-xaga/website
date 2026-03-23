@@ -1,0 +1,105 @@
+@import url('https://fonts.cdnfonts.com/css/google-sans');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #a7c7ff;
+  --color-brand-container: #00459e;
+  --color-on-brand: #002f6c;
+  --color-surface: #0f1424;
+  --color-surface-container: #1a2138;
+  --color-surface-container-high: #242d47;
+  --color-on-surface: #e3e3eb;
+  --color-on-surface-variant: #c4c6cf;
+  
+  --color-accent: #60a5fa; /* Vibrant blue */
+  --color-accent-hover: #3b82f6;
+  
+  --font-brand: "Google Sans", "Product Sans", sans-serif;
+  --font-plain: "Google Sans", "Product Sans", sans-serif;
+  --font-mono: "JetBrains Mono", "Google Sans Mono", monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-surface text-on-surface font-plain;
+    background-image: radial-gradient(circle at top right, color-mix(in srgb, var(--color-brand) 5%, transparent), transparent 40%),
+                      radial-gradient(circle at bottom left, color-mix(in srgb, var(--color-brand) 3%, transparent), transparent 30%);
+    min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-themed::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+  }
+  .scrollbar-themed::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  .scrollbar-themed::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-surface-container/80 border border-white/5;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    /* Force GPU acceleration */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  .glass-high {
+    @apply bg-surface-container-high/90 border border-white/10;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  /* Aggressive mobile optimization */
+  @media (max-width: 768px) {
+    .glass {
+      /* High-performance backgrounds for mobile */
+      @apply bg-surface-container/95;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+    .glass-high {
+      @apply bg-surface-container-high/98;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    /* Disable complex gradients on mobile body to save paint cycles */
+    body {
+      background-image: none;
+      @apply bg-surface;
+    }
+  }
+
+  .card-hover {
+    @apply transition-transform duration-300;
+    will-change: transform;
+  }
+...
+  .card-hover:hover {
+    @apply translate-y-[-2px] shadow-xl shadow-brand/10 border-brand/20;
+  }
+
+  /* Fade out edges for horizontal scrolls */
+  .mask-fade-edges {
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+}

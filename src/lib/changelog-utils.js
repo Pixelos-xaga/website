@@ -1,5 +1,3 @@
-import { html } from 'lit';
-
 const CHANGELOG_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const CHANGELOG_HEADER_PATTERN = /^##\s+(?:[^\[]*?)?\[([\d-]+)\]\s+-\s+(.*)$/;
 const CHANGELOG_ENTRY_PATTERN = /^(?:#{3,6}\s+)?(.+)$/;
@@ -78,27 +76,4 @@ export function sortChangelogsByDate(logs = []) {
       ...log,
       tag: index === 0 ? 'Latest' : ''
     }));
-}
-
-export function renderMarkdownLinks(text) {
-  const value = String(text ?? '');
-  const parts = [];
-  let lastIndex = 0;
-  let match = null;
-
-  while ((match = MARKDOWN_LINK_PATTERN.exec(value)) !== null) {
-    const [fullMatch, label, href] = match;
-    if (match.index > lastIndex) {
-      parts.push(value.slice(lastIndex, match.index));
-    }
-
-    parts.push(html`<a href=${href} target="_blank" rel="noopener noreferrer">${label}</a>`);
-    lastIndex = match.index + fullMatch.length;
-  }
-
-  if (lastIndex < value.length) {
-    parts.push(value.slice(lastIndex));
-  }
-
-  return parts.length ? parts : [value];
 }

@@ -1,39 +1,11 @@
 {
-  "buildCommand": "bun run build",
+  "version": 2,
+  "framework": "vite",
   "installCommand": "bun install",
+  "buildCommand": "bun run build",
+  "devCommand": "bun run dev",
   "outputDirectory": "dist",
   "rewrites": [
-    {
-      "source": "/instructions",
-      "destination": "/"
-    },
-    {
-      "source": "/instructions/",
-      "destination": "/"
-    },
-    {
-      "source": "/downloads",
-      "destination": "/"
-    },
-    {
-      "source": "/downloads/",
-      "destination": "/"
-    },
-    {
-      "source": "/changelogs",
-      "destination": "/"
-    },
-    {
-      "source": "/changelogs/",
-      "destination": "/"
-    },
-    {
-      "source": "/troubleshooting",
-      "destination": "/"
-    },
-    {
-      "source": "/troubleshooting/",
-      "destination": "/"
-    }
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
