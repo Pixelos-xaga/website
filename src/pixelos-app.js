@@ -8,6 +8,7 @@ import '@material/web/switch/switch.js';
 import '@material/web/labs/navigationbar/navigation-bar.js';
 import '@material/web/labs/navigationtab/navigation-tab.js';
 import { HOME_SCREENSHOT_COUNT } from './home-screenshots.js';
+import { DOWNLOADS } from './config.js';
 import { getChangelogDateFromHash, parseChangelogs } from './lib/changelog-utils.js';
 import { NAV_ROUTES, ROUTE_VIEW_LOADERS, getLegacyHashRoute, getRouteFromPathname, getRoutePath } from './lib/app-routes.js';
 import changelogMarkdown from './content/changelog.md?raw';
@@ -3056,7 +3057,7 @@ class PixelosApp extends LitElement {
             class="app-fab"
             variant="primary"
             label="Direct Download"
-            @click=${() => window.open('https://pixelos-xaga-worker.angxddeep.workers.dev/PixelOS_xaga-16.2-20260322-0652.zip', '_blank')}>
+            @click=${() => window.open(DOWNLOADS[0].href, '_blank')}>
             <md-icon slot="icon">download</md-icon>
           </md-fab>
         ` : ''}

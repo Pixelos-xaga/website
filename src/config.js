@@ -63,7 +63,7 @@ export const DOWNLOAD_SECTIONS = [
       'Read the wiki before flashing engineering preloader'
     ],
     items: [
-      linkItem('Download Preloader Package', 'Preloader package for xaga', `${SOURCEFORGE_BASE}/Preloader_xaga.zip/download`),
+      linkItem('Download Preloader Package', 'Preloader package for xaga', `${WORKER_BASE}/Preloader_xaga.zip`),
       linkItem('Preloader Wiki', 'Documentation for flashing and usage', 'https://wiki.itsvixano.me/device_specific/preloader_xaga/', 'menu_book')
     ]
   },
