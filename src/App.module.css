@@ -1,0 +1,41 @@
+.app {
+  position: relative;
+  min-height: 100vh;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.backgroundBlobs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.blob1 {
+  position: absolute;
+  top: -10%;
+  right: -5%;
+  width: 40vw;
+  height: 40vw;
+  background: radial-gradient(circle, rgba(66, 133, 244, 0.15) 0%, transparent 70%);
+  filter: blur(80px);
+}
+
+.blob2 {
+  position: absolute;
+  bottom: 10%;
+  left: -5%;
+  width: 35vw;
+  height: 35vw;
+  background: radial-gradient(circle, rgba(52, 168, 83, 0.1) 0%, transparent 70%);
+  filter: blur(80px);
+}
+
+main {
+  flex: 1;
+}
