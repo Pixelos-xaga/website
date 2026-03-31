@@ -45,7 +45,7 @@ export const FlashGuide = () => {
             <span>Xaga is easy to brick. You <strong>MUST</strong> flash the engineering preloader first.</span>
           </div>
           <p className={styles.preloaderHelp}>
-            Download the engineering preloader from the <a href={getSectionPath('downloads')} onClick={handleSectionLinkClick('preloader-download', getSectionPath('downloads'))}>preloader section</a> in Essential Tools before continuing.
+            Download the engineering preloader from the <a href={getSectionPath('downloads')} onClick={handleSectionLinkClick('preloader-download', getSectionPath('downloads'))}>Engineering Preloader</a> section in the Downloads hub before continuing.
           </p>
           <CodeBlock code={`fastboot flash preloader1 preloader_aristotle.bin\nfastboot flash preloader2 preloader_aristotle.bin`} />
         </>

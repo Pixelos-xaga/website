@@ -3,11 +3,9 @@ import { Card } from '../ui/Card';
 import { CodeBlock } from '../ui/CodeBlock';
 import {
   CheckIcon,
-  ChevronRightIcon,
   CopyIcon,
   DownloadIcon,
   ExternalLinkIcon,
-  WrenchIcon,
 } from '../ui/Icons';
 import { DOWNLOADS } from '../../data/downloads';
 import styles from './Downloads.module.css';
@@ -111,22 +109,10 @@ export const Downloads = () => {
               </div>
             </Card>
 
-            <Card className={styles.toolsCard}>
-              <h3 id="preloader-download" className={`${styles.groupTitle} ${styles.anchorTitle}`}>Essential Tools</h3>
-              <div className={styles.toolsList}>
-                {DOWNLOADS.essential.map((tool) => (
-                  <div key={tool.name} className={styles.toolItem}>
-                    <div className={styles.toolHeader}>
-                      <WrenchIcon size={20} className={styles.toolIcon} />
-                      <span className={styles.toolName}>{tool.name}</span>
-                    </div>
-                    <p className={styles.toolDesc}>{tool.description}</p>
-                    <a href={tool.link} className={styles.toolLink}>
-                      Download
-                      <ChevronRightIcon size={14} />
-                    </a>
-                  </div>
-                ))}
+            <Card className={styles.preloaderCard}>
+              <h3 id="preloader-download" className={`${styles.groupTitle} ${styles.anchorTitle}`}>Engineering Preloader</h3>
+              <div className={styles.imageList}>
+                {DOWNLOADS.preloader.map(renderImageItem)}
               </div>
             </Card>
 

@@ -268,10 +268,27 @@
   background: rgba(249, 115, 22, 0.1);
 }
 
-.recoveryCard .miniDownload:hover {
+.preloaderCard {
+  display: flex;
+  flex-direction: column;
+  background: rgba(239, 68, 68, 0.06);
+  border-color: rgba(239, 68, 68, 0.22);
+}
+
+.preloaderCard .groupTitle {
+  color: #ef4444;
+  margin-bottom: var(--spacing-lg);
+}
+
+.preloaderCard .miniDownload {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.preloaderCard .miniDownload:hover {
   color: var(--color-text-bright);
-  background: rgba(249, 115, 22, 0.18);
-  border-color: rgba(249, 115, 22, 0.34);
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.34);
 }
 
 .groupTitle {
@@ -384,36 +401,7 @@
   color: var(--color-text-bright);
 }
 
-.toolsList {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xl);
-}
-
-.toolItem {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-}
-
-.toolHeader {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  font-weight: 600;
-  color: var(--color-text-bright);
-}
-
-.toolIcon {
-  color: var(--color-accent);
-}
-
-.toolDesc {
-  font-size: 0.875rem;
-  color: var(--color-text-dim);
-}
-
-.toolLink, .externalLink {
+.externalLink {
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--color-primary);

@@ -19,11 +19,11 @@ export const DOWNLOADS = {
       sha256: "b733f7054160068faece91e6741e1748c742cb1e5a60770c6e678860ab8a2091"
     }
   ],
-  essential: [
+  preloader: [
     {
       name: "preloader_aristotle.bin",
       link: "https://pixelos-xaga-worker.angxddeep.workers.dev/preloader_aristotle.bin",
-      description: "Engineering preloader to prevent bricks."
+      sha256: "4de6447117f81ba306f8d80ecaed838ab3739a8389e513e4cb9f0e79c18b9745"
     }
   ],
   platform_tools: {
