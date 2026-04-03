@@ -77,12 +77,10 @@ export const FlashGuide = () => {
       )
     },
     {
-      title: "Sideload ROM",
+      title: "Turn on ADB Sideload",
       content: (
         <>
-          <p>In Recovery, go to <strong>Apply Update {"->"} Apply from ADB</strong>. Then run the following on your PC:</p>
-          <CodeBlock code={`adb sideload ${DOWNLOADS.rom.filename}`} />
-          <p className={styles.smallText}>Note: The process may stop at 47% or 94%, this is normal.</p>
+          <p>Click <strong>Apply update</strong> and then click <strong>adb sideload</strong>.</p>
         </>
       )
     },
@@ -90,11 +88,21 @@ export const FlashGuide = () => {
       title: "Format and Reboot",
       content: (
         <>
-          <p>After sideloading, go to <strong>Factory Reset {"->"} Format Data/Factory Reset</strong> and confirm.</p>
-          <p>Finally, select <strong>Reboot System Now</strong>.</p>
+          <p>Go to <strong>Factory Reset {"->"} Format Data/Factory Reset</strong> and confirm.</p>
         </>
       )
-    }
+    },
+    {
+      title: "Sideload ROM",
+      content: (
+        <>
+          <p>Run the following on your PC:</p>
+          <CodeBlock code={`adb sideload ${DOWNLOADS.rom.filename}`} />
+          <p>Finally, select <strong>Reboot System Now</strong>.</p>
+          <p className={styles.smallText}>Note: The process may stop at 47% or 94%, this is normal.</p>
+        </>
+      )
+    },
   ];
 
   return (
