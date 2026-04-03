@@ -66,6 +66,10 @@
   .platformCard {
     grid-column: 1 / -1;
   }
+
+  .driversCard {
+    grid-column: 1 / -1;
+  }
 }
 
 .romCard {
@@ -416,14 +420,63 @@
   gap: var(--spacing-md);
 }
 
+.driversCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  background: rgba(16, 185, 129, 0.06);
+  border-color: rgba(16, 185, 129, 0.22);
+}
+
 .platformCard .groupTitle {
   margin-bottom: 0;
+}
+
+.driversCard .groupTitle {
+  color: #6ee7b7;
+  margin-bottom: 0;
+}
+
+.driversCard .miniDownload {
+  color: #6ee7b7;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.driversCard .miniDownload:hover {
+  color: var(--color-text-bright);
+  background: rgba(16, 185, 129, 0.18);
+  border-color: rgba(16, 185, 129, 0.34);
+}
+
+.driversCard .imageItem {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.driversCard .imageHashLabel {
+  color: #6ee7b7;
 }
 
 .platformIntro {
   font-size: 0.875rem;
   color: var(--color-text-dim);
   line-height: 1.6;
+}
+
+.instructionsList {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  color: var(--color-text-dim);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.instructionItem::marker {
+  color: #6ee7b7;
+  font-weight: 700;
 }
 
 .orDivider {

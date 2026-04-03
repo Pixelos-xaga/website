@@ -43,6 +43,16 @@ export const DOWNLOADS = {
       }
     ]
   },
+  drivers: {
+    filename: "android-bootloader-interface-304243.zip",
+    link: "https://pixelos-xaga-worker.angxddeep.workers.dev/android-bootloader-interface-304243.zip",
+    sha256: "6A27295B66979F8B29E727BC806D4FD1C013D05D2D387C0769403AEC4809A308",
+    instructions: [
+      "Locate the android_winusb.inf file.",
+      "Right click on it.",
+      "Click on Install."
+    ]
+  },
   links: {
     xda: "https://xdaforums.com/t/development-rom-android-16-unofficial-pixelos-16.2-recovery-build-xaga-march-build.4781663/",
     telegram_support: "https://t.me/XAGASupport",

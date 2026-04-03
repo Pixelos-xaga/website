@@ -164,6 +164,47 @@ export const Downloads = () => {
               ))}
             </div>
           </Card>
+
+          <Card className={styles.driversCard}>
+            <h3 className={styles.groupTitle}>Drivers</h3>
+            <p className={styles.platformIntro}>
+              Install the Windows USB drivers before using Fastboot if your device is not detected.
+            </p>
+
+            <div className={styles.imageItem}>
+              <div className={styles.imageHeader}>
+                <span className={styles.imageName}>{DOWNLOADS.drivers.filename}</span>
+                <a
+                  href={DOWNLOADS.drivers.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.miniDownload}
+                  title={`Download ${DOWNLOADS.drivers.filename}`}
+                >
+                  <DownloadIcon size={16} />
+                </a>
+              </div>
+              <span className={styles.imageHashLabel}>SHA256 Hash</span>
+              <div className={styles.imageHash}>
+                <code className={styles.imageHashText}>{DOWNLOADS.drivers.sha256}</code>
+                <button
+                  onClick={() => copyToClipboard(DOWNLOADS.drivers.sha256)}
+                  className={styles.imageCopyButton}
+                  title={`Copy ${DOWNLOADS.drivers.filename} SHA256`}
+                >
+                  {copiedHash === DOWNLOADS.drivers.sha256 ? <CheckIcon size={12} /> : <CopyIcon size={12} />}
+                </button>
+              </div>
+            </div>
+
+            <ol className={styles.instructionsList}>
+              {DOWNLOADS.drivers.instructions.map((instruction) => (
+                <li key={instruction} className={styles.instructionItem}>
+                  {instruction}
+                </li>
+              ))}
+            </ol>
+          </Card>
         </div>
       </div>
     </section>
