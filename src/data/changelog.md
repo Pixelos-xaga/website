@@ -9,6 +9,7 @@
 - 🔦 Added torch brightness control.
 - 🎧 Added Dolby Atmos.
 - 📳 Improved haptics and enabled them in more places.
+- Upstream Pixelos [Changelog](https://blog.pixelos.net/blog/2026-04-08-April-Update)
 
 🛠️ Fixed
 
