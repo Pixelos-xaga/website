@@ -2,6 +2,21 @@
 
 - 🎯 The Priority of the Rom is overall stability over peak gaming performance for a smoother daily experience.
 
+## 🗓️ [2026-04-10] - 16.2 Stable
+
+✨ Added
+
+- 🔦 Added torch brightness control.
+- 🎧 Added Dolby Atmos.
+- 📳 Improved haptics and enabled them in more places.
+
+🛠️ Fixed
+
+- 🎙️ Fixed "Ok Google."
+- 🎥 Fixed Instagram video lag.
+- 🪪 Switched devices to a common Global POCO X4 GT fingerprint, as the Indian fingerprint was automatically installing bloatware with no reliable way to prevent it.
+
+
 ## 🗓️ [2026-03-22] - 16.2 Stable
 
 ✨ Added
@@ -46,4 +61,3 @@
 🔄 Changed
 - 🧠 Optimized memory management for 6GB RAM models to improve multitasking.
 - 🐞 Miscellaneous bug fixes and improvements.
-
