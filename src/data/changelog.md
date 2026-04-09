@@ -2,13 +2,14 @@
 
 - 🎯 The Priority of the Rom is overall stability over peak gaming performance for a smoother daily experience.
 
-## 🗓️ [2026-04-10] - 16.2 Stable
+## 🗓️ [2026-04-9] - 16.2 Stable
 
 ✨ Added
 
 - 🔦 Added torch brightness control.
 - 🎧 Added Dolby Atmos.
 - 📳 Improved haptics and enabled them in more places.
+- 📷 Added Aperture Camera alongside Miui cam.
 - Upstream Pixelos [Changelog](https://blog.pixelos.net/blog/2026-04-08-April-Update)
 
 🛠️ Fixed
