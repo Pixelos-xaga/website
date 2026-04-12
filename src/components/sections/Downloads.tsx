@@ -103,7 +103,7 @@ export const Downloads = () => {
             </Card>
 
             <Card className={styles.imagesCard}>
-              <h3 className={styles.groupTitle}>Boot Images</h3>
+              <h3 className={styles.groupTitle}>Boot Image</h3>
               <div className={styles.imageList}>
                 {primaryImages.map(renderImageItem)}
               </div>

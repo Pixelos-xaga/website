@@ -249,10 +249,28 @@
 .imagesCard {
   display: flex;
   flex-direction: column;
+  background: rgba(168, 85, 247, 0.06);
+  border-color: rgba(168, 85, 247, 0.22);
 }
 
 .imagesCard .groupTitle {
+  color: #a855f7;
   margin-bottom: var(--spacing-lg);
+}
+
+.imagesCard .miniDownload {
+  color: #a855f7;
+  background: rgba(168, 85, 247, 0.1);
+}
+
+.imagesCard .miniDownload:hover {
+  color: var(--color-text-bright);
+  background: rgba(168, 85, 247, 0.18);
+  border-color: rgba(168, 85, 247, 0.34);
+}
+
+.imagesCard .imageHashLabel {
+  color: #a855f7;
 }
 
 .recoveryCard {

@@ -31,7 +31,6 @@ export const Hero = () => {
   const [activeScreenshot, setActiveScreenshot] = useState(0);
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(screenshots.length > 1);
-  const [isDragging, setIsDragging] = useState(false);
 
   const moveToPrevious = () => {
     emblaApi?.scrollPrev();
@@ -51,27 +50,15 @@ export const Hero = () => {
       setCanScrollPrev(emblaApi.canScrollPrev());
       setCanScrollNext(emblaApi.canScrollNext());
     };
-    const handlePointerDown = () => {
-      setIsDragging(true);
-    };
-    const handlePointerRelease = () => {
-      setIsDragging(false);
-    };
 
     syncScreenshotState();
 
     emblaApi.on('select', syncScreenshotState);
     emblaApi.on('reInit', syncScreenshotState);
-    emblaApi.on('pointerDown', handlePointerDown);
-    emblaApi.on('pointerUp', handlePointerRelease);
-    emblaApi.on('settle', handlePointerRelease);
 
     return () => {
       emblaApi.off('select', syncScreenshotState);
       emblaApi.off('reInit', syncScreenshotState);
-      emblaApi.off('pointerDown', handlePointerDown);
-      emblaApi.off('pointerUp', handlePointerRelease);
-      emblaApi.off('settle', handlePointerRelease);
     };
   }, [emblaApi]);
 
@@ -151,7 +138,7 @@ export const Hero = () => {
               </button>
 
               <div
-                className={`${styles.phoneMockup} ${isDragging ? styles.isDragging : ''}`}
+                className={styles.phoneMockup}
               >
                 <div
                   ref={emblaRef}
