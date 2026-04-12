@@ -78,7 +78,14 @@ const parseChangelog = (source: string): ChangelogData => {
       continue;
     }
 
-    if (line.startsWith('- ') && currentSection) {
+    if (line.startsWith('- ')) {
+      if (!currentSection) {
+        currentSection = {
+          title: 'Changes',
+          items: [],
+        };
+        currentEntry.sections.push(currentSection);
+      }
       currentSection.items.push(line.slice(2).trim());
     }
   }
