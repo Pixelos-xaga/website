@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { KeyboardEvent } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
@@ -13,12 +13,14 @@ const screenshots = Array.from({ length: 14 }, (_, index) => ({
 }));
 
 export const Hero = () => {
-  const wheelGestures = useRef(
-    WheelGesturesPlugin({
+  const wheelGestures = useMemo(
+    () =>
+      WheelGesturesPlugin({
       forceWheelAxis: 'x',
       wheelDraggingClass: styles.isWheelDragging,
-    }),
-  ).current;
+      }),
+    [],
+  );
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
       align: 'start',

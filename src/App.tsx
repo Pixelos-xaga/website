@@ -33,11 +33,6 @@ function App() {
 
   return (
     <div className={styles.app}>
-      <div className={styles.backgroundBlobs}>
-        <div className={styles.blob1} />
-        <div className={styles.blob2} />
-      </div>
-      
       <Navbar />
       
       <main>

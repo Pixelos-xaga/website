@@ -27,468 +27,541 @@
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--spacing-xl);
+  gap: 38px;
 }
 
-.secondaryGrid {
+.romFeature {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--spacing-xl);
+  gap: 28px;
 }
 
-.grid > * {
-  min-width: 0;
-}
-
-.secondaryGrid > * {
-  min-width: 0;
-}
-
-@media (min-width: 992px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-
-  .metaInline {
-    flex-wrap: nowrap;
-    gap: var(--spacing-xl);
-  }
-
-  .romCard {
-    grid-column: 1 / -1;
-  }
-
-  .secondaryGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .platformCard {
-    grid-column: 1 / -1;
-  }
-
-  .driversCard {
-    grid-column: 1 / -1;
-  }
-}
-
-.romCard {
-  display: flex;
-  flex-direction: column;
-  align-self: start;
-}
-
-.cardHeader {
-  display: flex;
+.romIntro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.85fr);
+  gap: 28px;
   align-items: center;
-  gap: var(--spacing-md);
-  margin-bottom: var(--spacing-xl);
 }
 
-.iconWrapper {
-  width: 56px;
-  height: 56px;
-  background: var(--color-primary);
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
+.romLead {
+  display: grid;
+  gap: 12px;
 }
 
-.cardInfo {
-  display: flex;
-  flex-direction: column;
-}
-
-.cardTitle {
-  font-size: 1.5rem;
-  font-weight: 700;
+.romTitle {
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 0.96;
+  letter-spacing: -0.05em;
   color: var(--color-text-bright);
 }
 
-.versionTag {
-  font-size: 0.875rem;
-  color: var(--color-primary);
-  font-weight: 600;
-}
-
-.cardBody {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-2xl);
-}
-
-.metaInline {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--spacing-md);
-  min-width: 0;
-}
-
-.metaLabel {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-text-dim);
-}
-
-.metaValue {
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.filename {
-  font-family: var(--font-mono);
-  font-size: 0.875rem;
+.romTitleBase {
   color: var(--color-text-bright);
-  min-width: 0;
+}
+
+.romTitleAccent {
+  color: #87b0ff;
+}
+
+.romDescription {
+  max-width: 44rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.romVisual,
+.assetVisual {
+  position: relative;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 18% 24%, rgba(110, 167, 255, 0.88), transparent 38%),
+    radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.28), transparent 26%),
+    radial-gradient(circle at 66% 78%, rgba(120, 117, 255, 0.76), transparent 34%),
+    linear-gradient(150deg, rgba(24, 31, 74, 0.95), rgba(165, 196, 255, 0.84));
 }
 
-.hashSection {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
+.romVisual {
+  width: min(100%, 360px);
+  min-height: 190px;
+  justify-self: end;
 }
 
-.hashBox {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  width: 100%;
-  min-width: 0;
-  background: #000;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
+.assetVisual {
+  width: min(100%, 320px);
+  min-height: 220px;
+  justify-self: start;
 }
 
-.hashText {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--color-text-dim);
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.romVisual::after,
+.assetVisual::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 28%),
+    radial-gradient(circle at 62% 12%, rgba(255, 255, 255, 0.18), transparent 30%);
+  pointer-events: none;
 }
 
-.copyButton {
-  color: var(--color-text-dim);
-  transition: var(--transition-fast);
-}
-
-.copyButton:hover {
-  color: var(--color-text-bright);
-}
-
-.cardActions {
-  display: flex;
-}
-
-.downloadButton {
-  background: var(--color-primary);
-  color: white;
-  width: 100%;
-  text-align: center;
-  padding: var(--spacing-md);
-  border-radius: var(--radius-md);
-  font-weight: 600;
+.visualChipSecondary,
+.assetGlyphSecondary {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-sm);
-  transition: var(--transition-normal);
-}
-
-.downloadButton:hover {
-  filter: brightness(1.1);
-}
-
-.archiveCard {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-}
-
-.archiveCard .groupTitle {
-  margin-bottom: 0;
-}
-
-.archiveText {
-  color: var(--color-text-dim);
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  margin-bottom: var(--spacing-xs);
-}
-
-.archiveButton {
-  border: 1px solid var(--color-border);
-  color: var(--color-text-bright);
-  padding: var(--spacing-md);
-  border-radius: var(--radius-md);
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-sm);
-  transition: var(--transition-normal);
-}
-
-.archiveButton:hover {
-  background: var(--color-surface);
-}
-
-.imagesCard {
-  display: flex;
-  flex-direction: column;
-  background: rgba(168, 85, 247, 0.06);
-  border-color: rgba(168, 85, 247, 0.22);
-}
-
-.imagesCard .groupTitle {
-  color: #a855f7;
-  margin-bottom: var(--spacing-lg);
-}
-
-.imagesCard .miniDownload {
-  color: #a855f7;
-  background: rgba(168, 85, 247, 0.1);
-}
-
-.imagesCard .miniDownload:hover {
-  color: var(--color-text-bright);
-  background: rgba(168, 85, 247, 0.18);
-  border-color: rgba(168, 85, 247, 0.34);
-}
-
-.imagesCard .imageHashLabel {
-  color: #a855f7;
-}
-
-.recoveryCard {
-  display: flex;
-  flex-direction: column;
-  background: rgba(249, 115, 22, 0.06);
-  border-color: rgba(249, 115, 22, 0.22);
-}
-
-.recoveryCard .groupTitle {
-  color: #fb923c;
-  margin-bottom: var(--spacing-lg);
-}
-
-.recoveryCard .miniDownload {
-  color: #fb923c;
-  background: rgba(249, 115, 22, 0.1);
-}
-
-.preloaderCard {
-  display: flex;
-  flex-direction: column;
-  background: rgba(239, 68, 68, 0.06);
-  border-color: rgba(239, 68, 68, 0.22);
-}
-
-.preloaderCard .groupTitle {
-  color: #ef4444;
-  margin-bottom: var(--spacing-lg);
-}
-
-.preloaderCard .miniDownload {
-  color: #ef4444;
-  background: rgba(239, 68, 68, 0.1);
-}
-
-.preloaderCard .miniDownload:hover {
-  color: var(--color-text-bright);
-  background: rgba(239, 68, 68, 0.18);
-  border-color: rgba(239, 68, 68, 0.34);
-}
-
-.groupTitle {
-  font-size: 1.125rem;
   font-weight: 700;
-  color: var(--color-text-bright);
-  margin-bottom: var(--spacing-xl);
+  color: white;
+  background: rgba(20, 23, 34, 0.82);
+  backdrop-filter: blur(18px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 12px 28px rgba(0, 0, 0, 0.2);
 }
 
-.anchorTitle {
-  scroll-margin-top: 110px;
+.visualChipSecondary {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
 }
 
-.imageList {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
+.romStats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
 }
 
-.imageItem {
-  padding-bottom: var(--spacing-md);
-  border-bottom: 1px solid var(--color-border);
+.statItem,
+.platformItem,
+.driverCard,
+.assetItem {
+  min-width: 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.imageItem:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
+.statItem {
+  display: grid;
+  gap: 8px;
 }
 
-.imageHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--spacing-xs);
-}
-
-.imageName {
-  font-weight: 600;
-  font-size: 0.9375rem;
-}
-
-.imageHashLabel {
-  display: inline-block;
-  margin-bottom: var(--spacing-xs);
-  font-size: 0.75rem;
+.statLabel,
+.detailLabel,
+.platformOs {
+  font-size: 0.72rem;
   font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-text-dim);
+  color: rgba(255, 255, 255, 0.48);
 }
 
-.miniDownload {
-  color: var(--color-primary);
+.assetHashLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6ee7b7;
+}
+
+.hashLabelAccent {
+  color: #6ee7b7;
+}
+
+.statValue {
+  color: var(--color-text-bright);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.romFooter {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: end;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.detailBlock {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.detailValue,
+.hashValue,
+.assetHashValue {
+  font-family: var(--font-mono);
+}
+
+.detailValue {
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.86rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hashInline {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.hashValue,
+.assetHashValue {
+  display: block;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  word-break: break-all;
+}
+
+.hashValue {
+  min-width: 0;
+}
+
+.hashCopyButton,
+.assetCopyButton,
+.assetDownload {
   width: 32px;
   height: 32px;
   border-radius: 999px;
-  border: 1px solid transparent;
-  background: rgba(66, 133, 244, 0.08);
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  color: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
   flex-shrink: 0;
-  transition: transform var(--transition-normal), background var(--transition-normal), border-color var(--transition-normal), color var(--transition-normal);
+  transition:
+    transform var(--transition-normal),
+    background var(--transition-normal),
+    border-color var(--transition-normal),
+    color var(--transition-normal),
+    box-shadow var(--transition-normal);
 }
 
-.miniDownload:hover {
+.assetDownload {
+  width: 38px;
+  height: 38px;
+  color: white;
+  border-color: var(--asset-download-border, rgba(95, 157, 255, 0.65));
+  background: linear-gradient(
+    135deg,
+    var(--asset-download-start, #5f9dff),
+    var(--asset-download-end, #4f7fff)
+  );
+  box-shadow:
+    0 10px 24px var(--asset-download-shadow, rgba(79, 127, 255, 0.28)),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.hashCopyButton:hover,
+.assetCopyButton:hover,
+.assetDownload:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
   color: var(--color-text-bright);
-  background: rgba(66, 133, 244, 0.16);
-  border-color: rgba(66, 133, 244, 0.3);
-  transform: scale(1.14);
 }
 
-.imageHash {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+.assetDownload:hover {
+  background: linear-gradient(
+    135deg,
+    var(--asset-download-hover-start, #72abff),
+    var(--asset-download-hover-end, #5a88ff)
+  );
+  border-color: var(--asset-download-hover-border, rgba(114, 171, 255, 0.9));
+  box-shadow:
+    0 14px 28px var(--asset-download-hover-shadow, rgba(90, 136, 255, 0.34)),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.primaryAction {
+  display: inline-flex;
   align-items: center;
-  gap: var(--spacing-sm);
-  width: 100%;
-  max-width: 100%;
-  font-size: 0.75rem;
-  color: var(--color-text-dim);
-  font-family: var(--font-mono);
-  background: #000;
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-}
-
-.imageHashText {
-  display: block;
-  color: var(--color-text-dim);
-  min-width: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
-  scrollbar-width: none;
-}
-
-.imageHashText::-webkit-scrollbar {
-  display: none;
-}
-
-.imageCopyButton {
-  color: var(--color-text-dim);
-  flex-shrink: 0;
-  transition: var(--transition-fast);
-}
-
-.imageCopyButton:hover {
-  color: var(--color-text-bright);
-}
-
-.externalLink {
-  font-size: 0.875rem;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #5f9dff, #4f7fff);
+  color: white;
   font-weight: 600;
-  color: var(--color-primary);
+  white-space: nowrap;
+  transition: transform var(--transition-normal), filter var(--transition-normal);
+}
+
+.primaryAction:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+}
+
+.assetGrid,
+.utilityGrid {
+  display: grid;
+  gap: 22px 18px;
+}
+
+.assetGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.assetCard {
+  --asset-download-start: #5f9dff;
+  --asset-download-end: #4f7fff;
+  --asset-download-border: rgba(95, 157, 255, 0.65);
+  --asset-download-shadow: rgba(79, 127, 255, 0.28);
+  --asset-download-hover-start: #72abff;
+  --asset-download-hover-end: #5a88ff;
+  --asset-download-hover-border: rgba(114, 171, 255, 0.9);
+  --asset-download-hover-shadow: rgba(90, 136, 255, 0.34);
+  display: grid;
+  gap: 14px;
+}
+
+.recovery .assetVisual {
+  background:
+    radial-gradient(circle at 16% 24%, rgba(255, 177, 118, 0.88), transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(255, 238, 213, 0.26), transparent 24%),
+    radial-gradient(circle at 65% 80%, rgba(132, 62, 20, 0.8), transparent 34%),
+    linear-gradient(150deg, rgba(54, 24, 8, 0.96), rgba(205, 125, 72, 0.9));
+}
+
+.recovery {
+  --asset-download-start: #ffb26d;
+  --asset-download-end: #d37a3d;
+  --asset-download-border: rgba(255, 178, 109, 0.68);
+  --asset-download-shadow: rgba(211, 122, 61, 0.3);
+  --asset-download-hover-start: #ffc286;
+  --asset-download-hover-end: #e28949;
+  --asset-download-hover-border: rgba(255, 194, 134, 0.92);
+  --asset-download-hover-shadow: rgba(226, 137, 73, 0.36);
+}
+
+.boot .assetVisual {
+  background:
+    radial-gradient(circle at 16% 24%, rgba(197, 140, 255, 0.88), transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(239, 227, 255, 0.24), transparent 24%),
+    radial-gradient(circle at 65% 80%, rgba(78, 45, 122, 0.8), transparent 34%),
+    linear-gradient(150deg, rgba(22, 10, 41, 0.96), rgba(103, 55, 167, 0.9));
+}
+
+.boot {
+  --asset-download-start: #c68cff;
+  --asset-download-end: #8d56dc;
+  --asset-download-border: rgba(198, 140, 255, 0.68);
+  --asset-download-shadow: rgba(141, 86, 220, 0.3);
+  --asset-download-hover-start: #d4a8ff;
+  --asset-download-hover-end: #9a63ea;
+  --asset-download-hover-border: rgba(212, 168, 255, 0.92);
+  --asset-download-hover-shadow: rgba(154, 99, 234, 0.36);
+}
+
+.preloader .assetVisual {
+  background:
+    radial-gradient(circle at 16% 24%, rgba(255, 120, 120, 0.88), transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(255, 232, 232, 0.22), transparent 24%),
+    radial-gradient(circle at 65% 80%, rgba(100, 19, 19, 0.82), transparent 34%),
+    linear-gradient(150deg, rgba(42, 10, 10, 0.96), rgba(132, 39, 39, 0.88));
+}
+
+.preloader {
+  --asset-download-start: #ff8989;
+  --asset-download-end: #cc4f4f;
+  --asset-download-border: rgba(255, 137, 137, 0.68);
+  --asset-download-shadow: rgba(204, 79, 79, 0.3);
+  --asset-download-hover-start: #ffa0a0;
+  --asset-download-hover-end: #df6262;
+  --asset-download-hover-border: rgba(255, 160, 160, 0.92);
+  --asset-download-hover-shadow: rgba(223, 98, 98, 0.36);
+}
+
+.archive .assetVisual {
+  background:
+    radial-gradient(circle at 16% 24%, rgba(197, 211, 255, 0.62), transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(255, 255, 255, 0.28), transparent 24%),
+    radial-gradient(circle at 65% 80%, rgba(67, 76, 107, 0.82), transparent 34%),
+    linear-gradient(150deg, rgba(18, 20, 30, 0.96), rgba(85, 94, 126, 0.88));
+}
+
+.assetGlyphSecondary {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  min-width: 58px;
+  height: 58px;
+  padding: 0 16px;
+  border-radius: 17px;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.assetBody {
+  display: grid;
+  gap: 10px;
+}
+
+.assetTitle {
+  font-size: 1.55rem;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  color: var(--color-text-bright);
+}
+
+.assetDescription,
+.utilityText {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+  line-height: 1.68;
+}
+
+.recovery .assetTitle {
+  color: #ffb26d;
+}
+
+.boot .assetTitle {
+  color: #c68cff;
+}
+
+.preloader .assetTitle {
+  color: #ff8989;
+}
+
+.archive .assetTitle {
+  color: #cad5ff;
+}
+
+.assetList {
+  display: grid;
+  gap: 10px;
+}
+
+.assetTopRow,
+.assetHashRow {
   display: flex;
   align-items: center;
-  gap: 4px;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-.platformCard {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
+.assetFileName {
+  min-width: 0;
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.driversCard {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-  background: rgba(16, 185, 129, 0.06);
-  border-color: rgba(16, 185, 129, 0.22);
+.archiveLink,
+.inlineLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  font-size: 0.94rem;
+  font-weight: 600;
 }
 
-.platformCard .groupTitle {
-  margin-bottom: 0;
+.archiveLink {
+  color: #cad5ff;
 }
 
-.driversCard .groupTitle {
-  color: #6ee7b7;
-  margin-bottom: 0;
+.inlineLink {
+  color: #87b0ff;
 }
 
-.driversCard .miniDownload {
-  color: #6ee7b7;
-  background: rgba(16, 185, 129, 0.1);
-}
-
-.driversCard .miniDownload:hover {
+.archiveLink:hover,
+.inlineLink:hover {
   color: var(--color-text-bright);
-  background: rgba(16, 185, 129, 0.18);
-  border-color: rgba(16, 185, 129, 0.34);
 }
 
-.driversCard .imageItem {
-  border-bottom: none;
-  padding-bottom: 0;
+.utilityGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
 }
 
-.driversCard .imageHashLabel {
-  color: #6ee7b7;
+.utilityPanel {
+  display: grid;
+  gap: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.platformIntro {
-  font-size: 0.875rem;
-  color: var(--color-text-dim);
-  line-height: 1.6;
+.platformPanel {
+  display: grid;
+  gap: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.platformPanel .utilityTitle {
+  color: #87b0ff;
+}
+
+.archivePanel .utilityTitle {
+  color: #cad5ff;
+}
+
+.driversPanel {
+  --asset-download-start: #6ee7b7;
+  --asset-download-end: #26b981;
+  --asset-download-border: rgba(110, 231, 183, 0.68);
+  --asset-download-shadow: rgba(38, 185, 129, 0.28);
+  --asset-download-hover-start: #88efc5;
+  --asset-download-hover-end: #34c98f;
+  --asset-download-hover-border: rgba(136, 239, 197, 0.92);
+  --asset-download-hover-shadow: rgba(52, 201, 143, 0.34);
+}
+
+.utilityHeader {
+  display: grid;
+  gap: 10px;
+}
+
+.utilityTitle {
+  font-size: 1.45rem;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  color: var(--color-text-bright);
+}
+
+.platformList {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.platformItem {
+  display: grid;
+  gap: 10px;
+}
+
+.platformCodeBlock {
+  margin: 0;
+  min-width: 0;
 }
 
 .instructionsList {
   margin: 0;
-  padding-left: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-  color: var(--color-text-dim);
-  font-size: 0.9375rem;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.92rem;
   line-height: 1.6;
 }
 
@@ -497,95 +570,123 @@
   font-weight: 700;
 }
 
-.orDivider {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-  color: var(--color-text-dim);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
+@media (max-width: 1100px) {
+  .romFooter {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 
-.orDivider::before,
-.orDivider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--color-border);
-}
+  .primaryAction {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
 
-.platformList {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--spacing-md);
-  min-width: 0;
-}
-
-@media (min-width: 992px) {
   .platformList {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    align-items: start;
+    grid-template-columns: 1fr;
   }
 }
 
-.platformItem {
-  min-width: 0;
-}
+@media (max-width: 920px) {
+  .romIntro,
+  .utilityGrid {
+    grid-template-columns: 1fr;
+  }
 
-.platformCodeBlock {
-  margin: 0;
-  min-width: 0;
+  .assetGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .romVisual {
+    width: min(100%, 340px);
+    min-height: 180px;
+    justify-self: start;
+  }
+
+  .assetVisual {
+    width: min(100%, 340px);
+    justify-self: start;
+  }
+
+  .romStats {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 640px) {
+  .downloads {
+    padding: 88px 0;
+  }
+
   .container {
     padding: 0 var(--spacing-lg);
+  }
+
+  .header {
+    margin-bottom: var(--spacing-2xl);
   }
 
   .sectionTitle {
     font-size: 2rem;
   }
 
-  .cardHeader {
-    align-items: flex-start;
+  .sectionSubtitle {
+    font-size: 1rem;
   }
 
-  .cardTitle {
-    font-size: 1.375rem;
+  .grid {
+    gap: 44px;
   }
 
-  .hashBox {
-    padding: var(--spacing-sm);
+  .assetGrid,
+  .utilityGrid {
+    gap: 20px;
   }
 
-  .hashText {
-    font-size: 0.6875rem;
+  .assetGrid,
+  .archiveRow {
+    grid-template-columns: 1fr;
   }
 
-  .imageHash {
-    display: flex;
-    width: 100%;
-    padding: var(--spacing-sm);
+  .romTitle {
+    font-size: 2rem;
   }
 
-  .imageHashText {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .romFooter {
+    grid-template-columns: 1fr;
   }
 
-  .archiveButton {
-    width: 100%;
+  .romVisual {
+    width: min(100%, 280px);
+    min-height: 156px;
   }
 
-  .orDivider {
-    gap: var(--spacing-sm);
+  .assetVisual {
+    width: min(100%, 280px);
+    min-height: 185px;
   }
 
-  .platformCodeBlock {
-    margin: 0;
+  .visualChipSecondary,
+  .assetGlyphSecondary {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+  }
+
+  .visualChipSecondary {
+    left: 50%;
+  }
+
+  .assetGlyphSecondary {
+    left: 50%;
+  }
+
+  .assetTitle,
+  .utilityTitle {
+    font-size: 1.3rem;
+  }
+
+  .detailValue,
+  .hashValue,
+  .assetHashValue {
+    font-size: 0.74rem;
   }
 }
