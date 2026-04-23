@@ -2,21 +2,21 @@ export const DOWNLOADS = {
   rom: {
     name: "PixelOS ROM",
     version: "16.2 (Android 16)",
-    date: "2026-04-16",
-    filename: "PixelOS_xaga-16.2-20260416-1046.zip",
-    link: "https://pixelos-xaga-worker.angxddeep.workers.dev/PixelOS_xaga-16.2-20260416-1046.zip",
-    sha256: "E0AFFBD3C7E1573048352A1E391DD512037CC58938534A3262CD34E885A4A6C0"
+    date: "2026-04-23",
+    filename: "PixelOS_xaga-16.2-20260423-1335.zip",
+    link: "https://pixelos-xaga-worker.angxddeep.workers.dev/PixelOS_xaga-16.2-20260423-1335.zip",
+    sha256: "CD9C53AAC6B6EFED3BAC05E1A7D68574A7AE108D29C7BB236D5592107881B246"
   },
   recovery_images: [
     {
       name: "boot.img",
       link: "https://pixelos-xaga-worker.angxddeep.workers.dev/boot.img",
-      sha256: "214788f1db1d51c59da8ad0983f29b4ea30995418cda51b6eb01607bb88b453c"
+      sha256: "cf1906d499bee2d0d27f68dd30763db570533aa672fa6b63f6e73e209773fd3c"
     },
     {
       name: "vendor_boot.img",
       link: "https://pixelos-xaga-worker.angxddeep.workers.dev/vendor_boot.img",
-      sha256: "c9b8ef475b8b6bb529bca78f8ec0f3d384f932d10ea45655c854c1ac8bbf56bc"
+      sha256: "9ddf923f8ff89c495b1dfa3d42af301bbde47facadcad2e0a5db98d9c2ebb747"
     }
   ],
   preloader: [
