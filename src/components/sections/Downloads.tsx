@@ -123,7 +123,9 @@ export const Downloads = () => {
               </div>
 
               <div className={styles.romVisual} aria-hidden="true">
-                <div className={styles.visualChipSecondary}>ZIP</div>
+                <div className={clsx(styles.visualChipSecondary, styles.romIconChip)}>
+                  <img src="/android-icon.svg" alt="" className={styles.romIcon} />
+                </div>
               </div>
             </div>
 

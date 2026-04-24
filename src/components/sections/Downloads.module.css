@@ -130,6 +130,19 @@
   letter-spacing: 0.08em;
 }
 
+.romIconChip {
+  width: 104px;
+  height: 76px;
+  padding: 12px;
+}
+
+.romIcon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .romStats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -673,6 +686,11 @@
 
   .visualChipSecondary {
     left: 50%;
+  }
+
+  .romIconChip {
+    width: 88px;
+    height: 64px;
   }
 
   .assetGlyphSecondary {
