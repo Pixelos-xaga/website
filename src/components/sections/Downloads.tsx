@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { clsx } from 'clsx';
+import { AnimatePresence, motion } from 'framer-motion';
 import { CodeBlock } from '../ui/CodeBlock';
 import {
   CheckIcon,
@@ -24,6 +25,74 @@ type AssetGroup = {
   tone: 'recovery' | 'boot' | 'preloader' | 'archive';
   items?: DownloadAsset[];
   href?: string;
+};
+
+type HashCopyButtonProps = {
+  copied: boolean;
+  label: string;
+  onCopy: () => void;
+  size?: number;
+};
+
+const HashCopyButton = ({ copied, label, onCopy, size = 16 }: HashCopyButtonProps) => {
+  const [recentlyCopied, setRecentlyCopied] = useState(false);
+  const feedbackTimeout = useRef<number | null>(null);
+  const showCopied = copied || recentlyCopied;
+
+  const copy = () => {
+    if (feedbackTimeout.current) {
+      window.clearTimeout(feedbackTimeout.current);
+    }
+
+    setRecentlyCopied(true);
+    onCopy();
+    feedbackTimeout.current = window.setTimeout(() => setRecentlyCopied(false), 1800);
+  };
+
+  useEffect(() => () => {
+    if (feedbackTimeout.current) {
+      window.clearTimeout(feedbackTimeout.current);
+    }
+  }, []);
+
+  return (
+    <motion.button
+      type="button"
+      onClick={copy}
+      className={styles.copyButton}
+      title={label}
+      aria-label={label}
+      animate={
+        showCopied
+          ? {
+              backgroundColor: 'rgba(110, 231, 183, 0.13)',
+              borderColor: 'rgba(110, 231, 183, 0.58)',
+              color: '#6ee7b7',
+            }
+          : {
+              backgroundColor: 'rgba(255, 255, 255, 0.04)',
+              borderColor: 'rgba(255, 255, 255, 0.08)',
+              color: 'rgba(255, 255, 255, 0.72)',
+            }
+      }
+      whileHover={{ y: -1 }}
+      whileTap={{ scale: 0.9 }}
+      transition={{ type: 'spring', stiffness: 420, damping: 28 }}
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={showCopied ? 'copied' : 'copy'}
+          initial={{ opacity: 0, scale: 0.72, rotate: showCopied ? -12 : 0 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          exit={{ opacity: 0, scale: 0.72, rotate: showCopied ? 0 : 12 }}
+          transition={{ duration: 0.18 }}
+          className={styles.copyIcon}
+        >
+          {showCopied ? <CheckIcon size={size} /> : <CopyIcon size={size} />}
+        </motion.span>
+      </AnimatePresence>
+    </motion.button>
+  );
 };
 
 export const Downloads = () => {
@@ -80,19 +149,17 @@ export const Downloads = () => {
       <div className={styles.assetTopRow}>
         <span className={styles.assetFileName}>{asset.name}</span>
         <a href={asset.link} className={styles.assetDownload} title={`Download ${asset.name}`}>
-          <DownloadIcon size={15} />
+          <DownloadIcon size={18} />
         </a>
       </div>
 
       <div className={styles.assetHashRow}>
         <span className={styles.assetHashLabel}>SHA256</span>
-        <button
-          onClick={() => copyToClipboard(asset.sha256)}
-          className={styles.assetCopyButton}
-          title={`Copy ${asset.name} SHA256`}
-        >
-          {copiedHash === asset.sha256 ? <CheckIcon size={12} /> : <CopyIcon size={12} />}
-        </button>
+        <HashCopyButton
+          copied={copiedHash === asset.sha256}
+          label={`Copy ${asset.name} SHA256`}
+          onCopy={() => copyToClipboard(asset.sha256)}
+        />
       </div>
 
       <code className={styles.assetHashValue} title={asset.sha256}>
@@ -152,17 +219,12 @@ export const Downloads = () => {
                   <code className={styles.hashValue} title={DOWNLOADS.rom.sha256}>
                     {DOWNLOADS.rom.sha256}
                   </code>
-                  <button
-                    onClick={() => copyToClipboard(DOWNLOADS.rom.sha256)}
-                    className={styles.hashCopyButton}
-                    title="Copy ROM SHA256"
-                  >
-                    {copiedHash === DOWNLOADS.rom.sha256 ? (
-                      <CheckIcon size={14} />
-                    ) : (
-                      <CopyIcon size={14} />
-                    )}
-                  </button>
+                  <HashCopyButton
+                    copied={copiedHash === DOWNLOADS.rom.sha256}
+                    label="Copy ROM SHA256"
+                    onCopy={() => copyToClipboard(DOWNLOADS.rom.sha256)}
+                    size={18}
+                  />
                 </div>
               </div>
 
@@ -279,23 +341,17 @@ export const Downloads = () => {
                     className={styles.assetDownload}
                     title={`Download ${DOWNLOADS.drivers.filename}`}
                   >
-                    <DownloadIcon size={15} />
+                    <DownloadIcon size={18} />
                   </a>
                 </div>
 
                 <div className={styles.assetHashRow}>
                   <span className={styles.assetHashLabel}>SHA256</span>
-                  <button
-                    onClick={() => copyToClipboard(DOWNLOADS.drivers.sha256)}
-                    className={styles.assetCopyButton}
-                    title={`Copy ${DOWNLOADS.drivers.filename} SHA256`}
-                  >
-                    {copiedHash === DOWNLOADS.drivers.sha256 ? (
-                      <CheckIcon size={12} />
-                    ) : (
-                      <CopyIcon size={12} />
-                    )}
-                  </button>
+                  <HashCopyButton
+                    copied={copiedHash === DOWNLOADS.drivers.sha256}
+                    label={`Copy ${DOWNLOADS.drivers.filename} SHA256`}
+                    onCopy={() => copyToClipboard(DOWNLOADS.drivers.sha256)}
+                  />
                 </div>
 
                 <code className={styles.assetHashValue} title={DOWNLOADS.drivers.sha256}>

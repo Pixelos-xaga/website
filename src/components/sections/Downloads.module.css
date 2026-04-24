@@ -243,11 +243,11 @@
   min-width: 0;
 }
 
-.hashCopyButton,
-.assetCopyButton,
+.copyButton,
 .assetDownload {
-  width: 32px;
-  height: 32px;
+  position: relative;
+  width: 44px;
+  height: 44px;
   border-radius: 999px;
   display: inline-flex;
   align-items: center;
@@ -256,6 +256,8 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.04);
   flex-shrink: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition:
     transform var(--transition-normal),
     background var(--transition-normal),
@@ -264,9 +266,15 @@
     box-shadow var(--transition-normal);
 }
 
+.copyIcon {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+}
+
 .assetDownload {
-  width: 38px;
-  height: 38px;
+  width: 46px;
+  height: 46px;
   color: white;
   border-color: var(--asset-download-border, rgba(95, 157, 255, 0.65));
   background: linear-gradient(
@@ -279,16 +287,15 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
-.hashCopyButton:hover,
-.assetCopyButton:hover,
+.copyButton:hover,
 .assetDownload:hover {
-  transform: translateY(-1px);
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.16);
   color: var(--color-text-bright);
 }
 
 .assetDownload:hover {
+  transform: translateY(-1px);
   background: linear-gradient(
     135deg,
     var(--asset-download-hover-start, #72abff),
@@ -459,7 +466,13 @@
 
 .assetList {
   display: grid;
-  gap: 10px;
+  gap: 18px;
+}
+
+.assetItem,
+.driverCard {
+  display: grid;
+  gap: 14px;
 }
 
 .assetTopRow,
