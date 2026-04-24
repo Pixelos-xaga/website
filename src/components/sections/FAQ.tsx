@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import type { MouseEvent } from 'react';
 import { Card } from '../ui/Card';
-import { CodeBlock } from '../ui/CodeBlock';
 import {
   BugIcon,
   ExternalLinkIcon,
@@ -9,10 +9,71 @@ import {
   TerminalIcon,
 } from '../ui/Icons';
 import { DOWNLOADS } from '../../data/downloads';
+import { scrollToSection } from '../../utils/sectionNavigation';
 import styles from './FAQ.module.css';
 
+type FaqTab = 'safetynet' | 'bugs';
+
+const LOGCAT_GUIDE_URL = 'https://blog.pixelos.net/docs/guides/HowToLog';
+
+const tabPaths: Record<FaqTab, string> = {
+  safetynet: '/integrity',
+  bugs: '/report-bugs',
+};
+
+const getTabFromPath = (pathname: string): FaqTab | null => {
+  const normalizedPath = pathname.replace(/\/+$/, '') || '/';
+
+  if (normalizedPath === '/integrity' || normalizedPath === '/intrgrity') {
+    return 'safetynet';
+  }
+
+  if (normalizedPath === '/report-bugs' || normalizedPath === '/bugs') {
+    return 'bugs';
+  }
+
+  return null;
+};
+
+const isLogcatPath = (pathname: string) => {
+  return (pathname.replace(/\/+$/, '') || '/') === '/logcat';
+};
+
 export const FAQ = () => {
-  const [activeTab, setActiveTab] = useState<'safetynet' | 'logcat' | 'bugs'>('safetynet');
+  const [activeTab, setActiveTab] = useState<FaqTab>(() => getTabFromPath(window.location.pathname) ?? 'safetynet');
+
+  useEffect(() => {
+    const syncTabFromLocation = () => {
+      if (isLogcatPath(window.location.pathname)) {
+        window.location.assign(LOGCAT_GUIDE_URL);
+        return;
+      }
+
+      const routeTab = getTabFromPath(window.location.pathname);
+
+      if (routeTab) {
+        setActiveTab(routeTab);
+      }
+    };
+
+    syncTabFromLocation();
+    window.addEventListener('popstate', syncTabFromLocation);
+
+    return () => {
+      window.removeEventListener('popstate', syncTabFromLocation);
+    };
+  }, []);
+
+  const selectTab = (tab: FaqTab) => (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setActiveTab(tab);
+    scrollToSection('troubleshooting', { path: tabPaths[tab], history: 'push' });
+  };
+
+  const openLogcatGuide = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    window.location.assign(LOGCAT_GUIDE_URL);
+  };
 
   return (
     <section id="troubleshooting" className={styles.faq}>
@@ -25,24 +86,26 @@ export const FAQ = () => {
         <div className={styles.tabs}>
           <button 
             className={activeTab === 'safetynet' ? styles.activeTab : ''} 
-            onClick={() => setActiveTab('safetynet')}
+            onClick={selectTab('safetynet')}
           >
             <ShieldCheckIcon size={20} />
             Integrity
           </button>
           <button 
             className={activeTab === 'bugs' ? styles.activeTab : ''} 
-            onClick={() => setActiveTab('bugs')}
+            onClick={selectTab('bugs')}
           >
             <BugIcon size={20} />
             Report Bugs
           </button>
           <button 
-            className={activeTab === 'logcat' ? styles.activeTab : ''} 
-            onClick={() => setActiveTab('logcat')}
+            className={styles.redirectTab}
+            onClick={openLogcatGuide}
+            aria-label="Open Logcat guide on the PixelOS blog"
           >
             <TerminalIcon size={20} />
-            Logcat
+            Logcat Guide
+            <ExternalLinkIcon size={14} />
           </button>
         </div>
 
@@ -73,20 +136,6 @@ export const FAQ = () => {
                 <MessageCircleIcon size={18} />
                 <span>Ask in the Telegram group for more info on sourcing keyboxes or PIF files.</span>
               </div>
-            </Card>
-          )}
-
-          {activeTab === 'logcat' && (
-            <Card className={styles.contentCard}>
-              <h3>How to Collect a Logcat</h3>
-              <p>Logs are essential for developers to fix bugs. Here's how to get them:</p>
-              <ol>
-                <li>Enable <strong>Developer Options</strong> by tapping Build Number 7 times in Settings.</li>
-                <li>Turn on <strong>USB Debugging</strong>.</li>
-                <li>Connect to PC and run:</li>
-              </ol>
-              <CodeBlock code="adb logcat -b all > logcat.log" />
-              <p>Reproduce the issue, then press <code>Ctrl + C</code> to stop logging.</p>
             </Card>
           )}
 

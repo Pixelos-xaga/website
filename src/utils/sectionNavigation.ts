@@ -12,7 +12,11 @@ const sectionRoutes: SectionRoute[] = [
   { sectionId: 'changelog', path: '/changelogs', aliases: ['/changelog'] },
   { sectionId: 'downloads', path: '/downloads' },
   { sectionId: 'guide', path: '/instructions', aliases: ['/guide'] },
-  { sectionId: 'troubleshooting', path: '/support', aliases: ['/troubleshooting', '/faq'] },
+  {
+    sectionId: 'troubleshooting',
+    path: '/support',
+    aliases: ['/troubleshooting', '/faq', '/integrity', '/intrgrity', '/report-bugs', '/bugs', '/logcat'],
+  },
 ];
 
 const normalizePath = (pathname: string) => {
@@ -64,9 +68,17 @@ const scrollToElement = (sectionId: string, behavior: ScrollBehavior) => {
 const resolvePathToRoute = (pathname: string) => {
   const normalizedPath = normalizePath(pathname);
 
-  return sectionRoutes.find((route) => {
-    return route.path === normalizedPath || route.aliases?.includes(normalizedPath);
-  }) ?? null;
+  for (const route of sectionRoutes) {
+    if (route.path === normalizedPath) {
+      return route;
+    }
+
+    if (route.aliases?.includes(normalizedPath)) {
+      return { ...route, path: normalizedPath };
+    }
+  }
+
+  return null;
 };
 
 export const getSectionPath = (sectionId: string) => {

@@ -57,6 +57,10 @@
   color: var(--color-text-bright);
 }
 
+.tabs .redirectTab {
+  color: var(--color-text-bright);
+}
+
 .tabs .activeTab {
   background: var(--button-gradient);
   border-color: var(--button-gradient-border);
