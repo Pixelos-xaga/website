@@ -2,21 +2,21 @@ export const DOWNLOADS = {
   rom: {
     name: "PixelOS ROM",
     version: "16.2 (Android 16)",
-    date: "2026-04-23",
-    filename: "PixelOS_xaga-16.2-20260423-1335.zip",
-    link: "https://pixelos-xaga-worker.angxddeep.workers.dev/PixelOS_xaga-16.2-20260423-1335.zip",
-    sha512: "63E3533E1E48F6B05F55B69AE4C41F5CD77370B61CEE88C386800C16ADBBAE48844E310ED793BB98D8E4B19664AC08F122C77458B189DC58FF640FBC1C4CB6E1"
+    date: "2026-04-25",
+    filename: "PixelOS_xaga-16.2-20260425-2055.zip",
+    link: "https://pixelos-xaga-worker.angxddeep.workers.dev/PixelOS_xaga-16.2-20260425-2055.zip",
+    sha512: "A157FC0ACEB8CB38215E18D946C47ABC4C7D4003C52B7E460F436B35453F76A2F167E84113932E868A697D6697EE509AE067A6EEAF3A31E64A77E70F32940807"
   },
   recovery_images: [
     {
       name: "boot.img",
       link: "https://pixelos-xaga-worker.angxddeep.workers.dev/boot.img",
-      sha512: "1ca705758e5cc87e3b007905b54669e40100895f4a7adde36d4acf5497c940cc6647126302b43d0863c5880d4a076f771f7e8752033942815b8f179d0e928195"
+      sha512: "4a7e478c900c04c1fa66a4047ebab26e3aa1955be2339897c53a86176739dfb1129aa8f4b22284d6d2cb6e20c7fcff78f896a1028b4e0acefaa651f371d45002"
     },
     {
       name: "vendor_boot.img",
       link: "https://pixelos-xaga-worker.angxddeep.workers.dev/vendor_boot.img",
-      sha512: "8fe4fbc8b62625fee54426bef594af3e6fad38072ee5a96b3112b248dd266d3057dcfb2376c340562838e103dca750c7369bdf3dbd514f6d04302f353414c783"
+      sha512: "8c68adc83fcbb2c042a79c899fcb7598fcec170f220658e2c157a8adec9462d088459f8c3c469a6dc2cfe5f0f199e497591d1a3d81354757a34868397eb55d83"
     }
   ],
   preloader: [
@@ -45,11 +45,11 @@ export const DOWNLOADS = {
   },
   fastboot_package: {
     name: "Fastboot Package",
-    version: "1.0",
-    date: "2026-04-26",
-    filename: "fastboot-package-xaga.zip",
-    link: "#",
-    sha512: "REPLACE_WITH_ACTUAL_SHA512"
+    version: "2026-04-25",
+    date: "2026-04-25",
+    filename: "PixelOS_20260425-2055_FASTBOOT.zip",
+    link: "https://pixelos-xaga-worker.angxddeep.workers.dev/PixelOS_20260425-2055_FASTBOOT.zip",
+    sha512: "476C99B9EA71B228FB64C71A9287B430D75DC8425E9FC5FEA94FFD9BFFBC25029D10C95C45B2762B7F9DEBFF1603BFC88F51951D7B31DF214873EDDC310C84ED"
   },
   drivers: {
     filename: "android-bootloader-interface-304243.zip",
