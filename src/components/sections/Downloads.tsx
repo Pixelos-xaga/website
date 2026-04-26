@@ -244,7 +244,7 @@ export const Downloads = () => {
                   <span className={styles.fastbootTitleAccent}>Package</span>
                 </h3>
                 <p className={styles.romDescription}>
-                  Flash directly via fastbootd — no recovery needed
+                  Flash directly via fastboot using a single script
                 </p>
               </div>
 

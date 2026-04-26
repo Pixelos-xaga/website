@@ -104,7 +104,7 @@ export const FlashGuide = () => {
               onClick={() => setMethod('fastboot')}
               icon={<WrenchIcon size={28} />}
               title="Fastboot Method"
-              description="Flash directly with the fastboot package via fastbootd"
+              description="Flash directly with the fastboot package via fastboot"
             />
           </div>
           {method && (
